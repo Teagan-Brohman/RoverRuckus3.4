@@ -102,6 +102,9 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //            robot.right1.setPower(gamepad1.right_stick_y);
 
             //Arm that shoots blocks and balls
+
+
+
             if(gamepad1.right_trigger > 0.5) {
                 robot.sorter.setPower(0.6);
             } else if(gamepad1.left_trigger > 0.5){

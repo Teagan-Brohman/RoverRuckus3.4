@@ -62,6 +62,8 @@ public class RoverHardware {
     public ColorSensor bottomLimit;
     public ColorSensor upperLimit;
     public ColorSensor cornerSensor;
+    public ColorSensor bopLimit;
+    public ColorSensor sorterLimit;
 
     //Create Gyro
     BNO055IMU imu;
@@ -126,6 +128,8 @@ public class RoverHardware {
         bottomLimit = HwMap.colorSensor.get("bottomLimit");
         upperLimit = HwMap.colorSensor.get("upperLimit");
         cornerSensor = HwMap.colorSensor.get("cornerSensor");
+        bopLimit = HwMap.colorSensor.get("bopLimit");
+        sorterLimit = HwMap.colorSensor.get("sorterLimit");
 
         //Gyro
         imu = HwMap.get(BNO055IMU.class, "imu");

@@ -155,6 +155,7 @@ public class CraterOneBlock extends LinearOpMode {
 
         //Change the arm angle so it can hit the block
         //if (robot.angles.firstAngle > 2) {
+        robot.drop.setPosition(robot.BOTTOM_INTAKE);
         robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rotateMech.setTargetPosition(180);
         robot.rotateMech.setPower(0.8);
@@ -176,25 +177,23 @@ public class CraterOneBlock extends LinearOpMode {
             robot.bop.setTargetPosition(-1450);
             robot.bop.setPower(-0.9);
             while (robot.bop.isBusy() && opModeIsActive()) {
-                robot.drop.setPosition(robot.BOTTOM_INTAKE);
             }
         } else{
             robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.bop.setTargetPosition(-1600);
             robot.bop.setPower(-0.9);
             while (robot.bop.isBusy() && opModeIsActive()) {
-                robot.drop.setPosition(robot.BOTTOM_INTAKE);
             }
         }
 
         //bring arm back in
 //        robot.bop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setTargetPosition(300);
-        robot.bop.setPower(0.8);
-        while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {
-            robot.drop.setPosition(robot.TOP_INTAKE);
+        robot.bop.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        while (robot.bopLimit.red() <= 200){
+            robot.bop.setPower(0.8);
         }
+        robot.bop.setPower(0);
+        robot.drop.setPosition(robot.TOP_INTAKE);
 
 //        //turn right
         robot.angles.firstAngle = angleTurn;
