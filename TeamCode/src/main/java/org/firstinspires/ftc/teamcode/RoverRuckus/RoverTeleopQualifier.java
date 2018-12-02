@@ -102,7 +102,7 @@ public class RoverTeleopQualifier extends LinearOpMode{
             yValue = gamepad1.left_stick_y;
             xValue = gamepad1.left_stick_x;
 
-            leftPower =  (yValue - xValue) / currentDiv ;
+            leftPower =  (yValue - xValue) / 2*currentDiv ;
             rightPower = (yValue + xValue) / currentDiv;
 
             robot.left1.setPower(Range.clip(leftPower, -1.0, 1.0));
@@ -152,13 +152,13 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
           //Ball Catching Controls
             if(gamepad1.right_bumper){
-              robot.ballCatch.setPower(0.75);
+              robot.sorter.setPower(0.75);
             }
             else if(gamepad1.left_bumper){
-              robot.ballCatch.setPower(-0.75);
+              robot.sorter.setPower(-0.75);
             }
             else{
-              robot.ballCatch.setPower(0);
+              robot.sorter.setPower(0);
             }
 
             if(gamepad1.right_bumper){

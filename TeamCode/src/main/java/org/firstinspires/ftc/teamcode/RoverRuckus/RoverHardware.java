@@ -44,7 +44,7 @@ public class RoverHardware {
     //Rotation Mechanism
     public DcMotor rotateMech;
     // Ball Catcher???
-    public DcMotor  ballCatch;
+    public DcMotor sorter;
     //dropper
     public Servo drop;
     //marker dropper
@@ -114,7 +114,7 @@ public class RoverHardware {
         //Rotation Mechanism
         rotateMech = HwMap.dcMotor.get("rotate");
         //Ball Catcher
-        ballCatch = HwMap.dcMotor.get("ballCatch");
+        sorter = HwMap.dcMotor.get("ballCatch");
         //dropper
         drop = HwMap.servo.get("drop");
         //marker dropper
