@@ -131,9 +131,9 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             //GAMEPAD 2
 
             //Sets Servo Position to Top or Bottom
-            if (gamepad2.y) {
+            if (gamepad2.right_bumper) {
                 robot.drop.setPosition(robot.TOP_INTAKE);
-            }else if(gamepad2.a){
+            }else if(gamepad2.left_bumper){
                 robot.drop.setPosition(robot.BOTTOM_INTAKE);
             }
 
@@ -142,22 +142,26 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 
             //Rotates the Intake Arm
             if(gamepad2.right_trigger >= 0.5){
-                robot.rotateMech.setPower(-gamepad1.right_trigger * 0.5);
+                robot.rotateMech.setPower(-gamepad2.right_trigger * 0.5);
             }
             else if (gamepad2.left_trigger >= 0.5){
-                robot.rotateMech.setPower(gamepad1.left_trigger * 0.5);
+                robot.rotateMech.setPower(gamepad2.left_trigger * 0.5);
             }
-            else {
+            else{
                 robot.rotateMech.setPower(0);
             }
 
             //Move intake in or out
             if(gamepad2.b){
-                robot.intake.setPower(0.6);
+                robot.intake.setPower(-0.9);
             } else if(gamepad2.a){
-                robot.intake.setPower(-0.6);
-            } else{
+                robot.intake.setPower(0.9);
+            } else if(gamepad2.y){
                 robot.intake.setPower(0.0);
+            }
+
+            if(robot.drop.getPosition() != robot.BOTTOM_INTAKE && robot.drop.getPosition() != robot.TOP_INTAKE){
+                robot.intake.setPower(0);
             }
 
             bulkData = expansionHub.getBulkInputData();
@@ -186,21 +190,21 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //            telemetry.addData("turret position", robot.rotateMech.getCurrentPosition());
 //            telemetry.addData("Turret Power", robot.rotateMech.getPower());
             //telemetry.addData("heading", robot.angles.firstAngle);
-
-            telemetry.addData("Total current", expansionHub.getTotalModuleCurrentDraw());
-            telemetry.addData("I2C current", expansionHub.getI2cBusCurrentDraw());
-            telemetry.addData("GPIO current", expansionHub.getGpioBusCurrentDraw());
-            telemetry.addData("Left current", left.getCurrentDraw());
-            telemetry.addData("Right current", right.getCurrentDraw());
+//            telemetry.addData("Total current", expansionHub.getTotalModuleCurrentDraw());
+//            telemetry.addData("I2C current", expansionHub.getI2cBusCurrentDraw());
+//            telemetry.addData("GPIO current", expansionHub.getGpioBusCurrentDraw());
+//            telemetry.addData("Left current", left.getCurrentDraw());
+//            telemetry.addData("Right current", right.getCurrentDraw());
+            telemetry.addData("drop position", robot.drop.getPosition());
             telemetry.update();
         }
     }
-    class RemindTask extends TimerTask {
-        public void run(){
-            robot.launcher.setPower(0);
-            stopMotor.cancel();
-        }
-    }
+//    class RemindTask extends TimerTask {
+//        public void run(){
+//            robot.launcher.setPower(0);
+//            stopMotor.cancel();
+//        }
+//    }
     void composeTelemetry() {
 
 

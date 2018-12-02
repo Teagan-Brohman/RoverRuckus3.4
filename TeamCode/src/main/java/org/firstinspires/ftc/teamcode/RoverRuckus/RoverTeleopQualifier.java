@@ -122,12 +122,12 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
 
             //Shoots blocks
-          if (gamepad1.b){
-                robot.launcher.setPower(-1);
-              stopMotor = new Timer();
-              stopMotor.schedule(new RemindTask(),1,5000);
-
-            }
+//          if (gamepad1.b){
+//                robot.launcher.setPower(-1);
+//              stopMotor = new Timer();
+//              stopMotor.schedule(new RemindTask(),1,5000);
+//
+//            }
 
             //Sets Servo Position to Top
           if (gamepad1.y) {
@@ -151,15 +151,15 @@ public class RoverTeleopQualifier extends LinearOpMode{
           }
 
           //Ball Catching Controls
-            if(gamepad1.right_bumper){
-              robot.sorter.setPower(0.75);
-            }
-            else if(gamepad1.left_bumper){
-              robot.sorter.setPower(-0.75);
-            }
-            else{
-              robot.sorter.setPower(0);
-            }
+//            if(gamepad1.right_bumper){
+//              robot.sorter.setPower(0.75);
+//            }
+//            else if(gamepad1.left_bumper){
+//              robot.sorter.setPower(-0.75);
+//            }
+//            else{
+//              robot.sorter.setPower(0);
+//            }
 
             if(gamepad1.right_bumper){
               robot.marker.setPosition(robot.DILBERT_DOWN);
@@ -203,12 +203,12 @@ public class RoverTeleopQualifier extends LinearOpMode{
             telemetry.update();
         }
     }
-    class RemindTask extends TimerTask{
-        public void run(){
-            robot.launcher.setPower(0);
-            stopMotor.cancel();
-        }
-    }
+//    class RemindTask extends TimerTask{
+//        public void run(){
+//            robot.launcher.setPower(0);
+//            stopMotor.cancel();
+//        }
+//    }
 
     class CurrentReg extends TimerTask{
         public void run(){

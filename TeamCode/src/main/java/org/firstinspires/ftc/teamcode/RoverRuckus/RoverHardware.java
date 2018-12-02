@@ -36,7 +36,7 @@ public class RoverHardware {
     // DcMotor left2;
     public DcMotor right1;
    //DcMotor right2;
-    public DcMotor launcher;
+//    public DcMotor launcher;
     //Hanging Mechanism
     public DcMotor hang;
     //bopper
@@ -81,7 +81,7 @@ public class RoverHardware {
     DigitalChannel d0, d1, d2, d3, d4, d5, d6, d7;
 
     public final double BOTTOM_INTAKE = 1;
-    public final double TOP_INTAKE = 0.3;
+    public final double TOP_INTAKE = 0.2;
     public final double DILBERT_DOWN = 1.0;
     public final double DILBERT_UP = 0.0;
 
@@ -108,7 +108,7 @@ public class RoverHardware {
         //Hanging Motor
         hang = HwMap.dcMotor.get("hang");
         //Launching Motor
-        launcher = HwMap.dcMotor.get("launcher");
+        //launcher = HwMap.dcMotor.get("launcher");
         //bopper
         bop = HwMap.dcMotor.get("bop");
         //Rotation Mechanism
@@ -138,14 +138,14 @@ public class RoverHardware {
         right1.setDirection(DcMotorSimple.Direction.REVERSE); //should be the other way
         hang.setDirection(DcMotorSimple.Direction.FORWARD);
         bop.setDirection(DcMotorSimple.Direction.FORWARD);
-        launcher.setDirection(DcMotorSimple.Direction.FORWARD);
+        //launcher.setDirection(DcMotorSimple.Direction.FORWARD);
         rotateMech.setDirection(DcMotorSimple.Direction.FORWARD);
 
         left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         hang.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rotateMech.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 //

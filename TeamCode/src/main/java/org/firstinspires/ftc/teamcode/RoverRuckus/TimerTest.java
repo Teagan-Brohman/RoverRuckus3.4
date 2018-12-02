@@ -8,17 +8,17 @@ public class TimerTest {
     Timer stopMotor;
 
 
-    public TimerTest () {
-        stopMotor = new Timer();
-        stopMotor.schedule(new RemindTask(),1,5);
-    }
+//    public TimerTest () {
+//        stopMotor = new Timer();
+//        stopMotor.schedule(new RemindTask(),1,5);
+//    }
 
-class RemindTask extends TimerTask{
-        public void run(){
-            robot.launcher.setPower(0);
-            stopMotor.cancel();
-        }
-    }
+//class RemindTask extends TimerTask{
+//        public void run(){
+//            robot.launcher.setPower(0);
+//            stopMotor.cancel();
+//        }
+//    }
     public static void main(String args[]) {
         new TimerTest();
         System.out.println("Task scheduled.");
