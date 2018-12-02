@@ -6,6 +6,7 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -18,6 +19,7 @@ import org.openftc.revextensions2.RevExtensions2;
 import java.util.Locale;
 
 @Autonomous (name = "BlueCraterTwoBlock", group = "Autonomous")
+@Disabled
 public class CraterTwoBlocks extends LinearOpMode {
     public RoverHardware robot = new RoverHardware();
 
