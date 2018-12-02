@@ -186,12 +186,11 @@ public class IdleOneBlock extends LinearOpMode {
         }
 
         //bring arm back in
-        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setTargetPosition(100);
-        robot.bop.setPower(0.5);
-        while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {
-            robot.intake.setPower(0.0);
+        robot.bop.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        while (robot.bopLimit.red() <= 200){
+            robot.bop.setPower(0.8);
         }
+        robot.bop.setPower(0);
         robot.drop.setPosition(robot.TOP_INTAKE);
 
         //turn right

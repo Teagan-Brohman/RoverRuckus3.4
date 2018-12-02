@@ -87,7 +87,7 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
         while(opModeIsActive()){
         if (xValue >= 0.2 || yValue >= 0.2 ) {
-            if (right.getCurrentDraw() >= 3500 || left.getCurrentDraw() >= 3500) {
+            if (right.getCurrentDraw() >= 3000 || left.getCurrentDraw() >= 3000) {
                 currentReg = new Timer();
                 currentReg.schedule(new CurrentReg(), 0, 250);
             } else {
@@ -109,7 +109,13 @@ public class RoverTeleopQualifier extends LinearOpMode{
             robot.right1.setPower(Range.clip(rightPower, -1.0, 1.0));
 
             //Move block intake in and out
-            robot.bop.setPower(gamepad1.right_stick_y * 0.5);
+            if(robot.bopLimit.red() >= 300){
+                robot.bop.setPower(Math.abs(gamepad1.right_stick_y) * -0.5);
+            }
+            else{
+                robot.bop.setPower(gamepad1.right_stick_y * 0.5);
+            }
+
 
             //Hanging Mechanism
           if (gamepad1.dpad_up && robot.upperLimit.red() > 300){
@@ -151,15 +157,15 @@ public class RoverTeleopQualifier extends LinearOpMode{
           }
 
           //Ball Catching Controls
-//            if(gamepad1.right_bumper){
-//              robot.sorter.setPower(0.75);
-//            }
-//            else if(gamepad1.left_bumper){
-//              robot.sorter.setPower(-0.75);
-//            }
-//            else{
-//              robot.sorter.setPower(0);
-//            }
+            if(gamepad1.right_bumper && robot.sorterLimit.red() <= 200){
+              robot.sorter.setPower(0.75);
+            }
+            else if(gamepad1.left_bumper){
+              robot.sorter.setPower(-0.75);
+            }
+            else{
+              robot.sorter.setPower(0);
+            }
 
             if(gamepad1.right_bumper){
               robot.marker.setPosition(robot.DILBERT_DOWN);
@@ -212,7 +218,7 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
     class CurrentReg extends TimerTask{
         public void run(){
-            currentDiv = currentDiv + 5 ;
+            currentDiv = currentDiv + 7 ;
         }
 }
     void composeTelemetry() {
