@@ -139,7 +139,6 @@ public class RoverTeleopQualifier extends LinearOpMode{
           if (gamepad1.y) {
                 robot.drop.setPosition(robot.TOP_INTAKE);
           }
-
             //Sets Servo Position to Bottom
           if(gamepad1.a){
               robot.drop.setPosition(robot.BOTTOM_INTAKE);

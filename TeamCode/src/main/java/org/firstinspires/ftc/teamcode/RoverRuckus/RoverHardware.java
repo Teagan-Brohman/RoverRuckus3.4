@@ -49,6 +49,8 @@ public class RoverHardware {
     public Servo drop;
     //marker dropper
     public Servo marker;
+    //Sorter Flipper
+    public Servo sorterFlip;
     //Intake Servo
     public CRServo intake;
 
@@ -83,9 +85,12 @@ public class RoverHardware {
     DigitalChannel d0, d1, d2, d3, d4, d5, d6, d7;
 
     public final double BOTTOM_INTAKE = 1;
+    public final double MIDDLE_INTAKE = 0.6;
     public final double TOP_INTAKE = 0.2;
     public final double DILBERT_DOWN = 1.0;
     public final double DILBERT_UP = 0.0;
+    public final double SORTER_DOWN = 0.2;
+    public final double SORTER_UP = 0.5;
 
     public RoverHardware() {
         System.out.println("Created new RRHardwarePresets Object!");
@@ -116,11 +121,13 @@ public class RoverHardware {
         //Rotation Mechanism
         rotateMech = HwMap.dcMotor.get("rotate");
         //Ball Catcher
-        sorter = HwMap.dcMotor.get("ballCatch");
+        sorter = HwMap.dcMotor.get("sorter");
         //dropper
         drop = HwMap.servo.get("drop");
         //marker dropper
         marker = HwMap.servo.get("marker");
+        //sorterFlips
+        sorterFlip = HwMap.servo.get("sorterFlip");
         //Intake servo
         intake = HwMap.crservo.get("intake");
 
