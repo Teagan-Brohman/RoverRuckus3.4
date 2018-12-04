@@ -110,13 +110,13 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             if(gamepad1.right_bumper) {
                 robot.sorter.setPower(1.0);
             } else if(gamepad1.left_bumper){
-                robot.sorter.setPower(-0.8);
+                robot.sorter.setPower(-1.0);
                 if(robot.bopLimit.red() >= 200){
 //                    sorterOut = new Timer();
 //                    sorterOut.schedule(new PennyslvaniaTeleop.MoveOut(), 0, 1000);
                 }
             }else{
-                robot.sorter.setPower(-0.1);
+                robot.sorter.setPower(0.1);
             }
 
             if(gamepad1.a){
@@ -216,7 +216,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //            telemetry.addData("Left current", left.getCurrentDraw());
 //            telemetry.addData("Right current", right.getCurrentDraw());
 //            telemetry.addData("drop position", robot.drop.getPosition());
-            telemetry.addData("Sorter red", robot.bopLimit.red());
+            telemetry.addData("Sorter red", robot.sorterLimit.red());
             telemetry.update();
         }
     }
