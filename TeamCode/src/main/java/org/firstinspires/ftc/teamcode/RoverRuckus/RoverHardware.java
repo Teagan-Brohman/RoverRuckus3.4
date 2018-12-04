@@ -161,6 +161,7 @@ public class RoverHardware {
     }
 //
     public void initServoPositions() {
+        sorterFlip.setPosition(SORTER_UP);
         drop.setPosition(TOP_INTAKE);
     }
 

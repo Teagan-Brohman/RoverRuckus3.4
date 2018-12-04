@@ -35,6 +35,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
     ExpansionHubEx expansionHub;
     Timer stopMotor;
     Timer sorterOut;
+    Timer intakeOut;
     ExpansionHubMotor left,right;
     RevBulkData bulkData;
 
@@ -82,6 +83,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                     }
                 });
         telemetry.update();
+        robot.initServoPositions();
         waitForStart();
 
         while(opModeIsActive()){
@@ -106,12 +108,12 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 
 
             if(gamepad1.right_bumper) {
-                robot.sorter.setPower(0.9);
+                robot.sorter.setPower(1.0);
             } else if(gamepad1.left_bumper){
                 robot.sorter.setPower(-0.5);
                 if(robot.bopLimit.red() >= 200){
-                    sorterOut = new Timer();
-                    sorterOut.schedule(new PennyslvaniaTeleop.MoveOut(), 0, 1000);
+//                    sorterOut = new Timer();
+//                    sorterOut.schedule(new PennyslvaniaTeleop.MoveOut(), 0, 1000);
                 }
             }else{
                 robot.sorter.setPower(-0.1);
@@ -162,6 +164,10 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 
             //Moves intake arm in and out
             robot.bop.setPower(gamepad2.right_stick_y / 1.25);
+            if(robot.bop.getPower() < 0 && robot.bopLimit.red() > 200){
+//                intakeOut = new Timer();
+//                intakeOut.schedule(new PennyslvaniaTeleop.BopOut(), 0, 500);
+            }
 
             //Rotates the Intake Arm
             if(gamepad2.right_trigger >= 0.5){
@@ -174,9 +180,9 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                 robot.rotateMech.setPower(0);
             }
 
-            if(robot.drop.getPosition() != robot.BOTTOM_INTAKE && robot.drop.getPosition() != robot.TOP_INTAKE){
-                robot.intake.setPower(0);
-            }
+//            if(robot.drop.getPosition() != robot.BOTTOM_INTAKE && robot.drop.getPosition() != robot.TOP_INTAKE){
+//                robot.intake.setPower(0);
+//            }
 
             bulkData = expansionHub.getBulkInputData();
 
@@ -226,6 +232,12 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             sorterOut.cancel();
         }
 }
+    class BopOut extends TimerTask{
+        public void  run(){
+            robot.bop.setPower(-0.4);
+            intakeOut.cancel();
+        }
+    }
     void composeTelemetry() {
 
 
