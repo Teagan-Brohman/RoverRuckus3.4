@@ -108,15 +108,15 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 
 
             if(gamepad1.right_bumper) {
-                robot.sorter.setPower(1.0);
+                robot.sorter.setPower(0.9);
             } else if(gamepad1.left_bumper){
                 robot.sorter.setPower(-1.0);
                 if(robot.bopLimit.red() >= 200){
 //                    sorterOut = new Timer();
-//                    sorterOut.schedule(new PennyslvaniaTeleop.MoveOut(), 0, 1000);
+//                    sorterOut.schedule(new MoveOut(), 0, 1000);
                 }
             }else{
-                robot.sorter.setPower(0.1);
+                robot.sorter.setPower(0);
             }
 
             if(gamepad1.a){
@@ -140,14 +140,14 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //            if (gamepad1.b){
 //                robot.launcher.setPower(-1);
 //                stopMotor = new Timer();
-//                stopMotor.schedule(new PennyslvaniaTeleop.RemindTask(),1,5000);
+//                stopMotor.schedule(new RemindTask(),1,5000);
 //            }
 
             //GAMEPAD 2
             //Sets Servo Position to Top or Bottom
             if (gamepad2.dpad_up) {
                 robot.drop.setPosition(robot.TOP_INTAKE);
-            } else if(gamepad2.dpad_right) {
+            }else if(gamepad2.dpad_right) {
                 robot.drop.setPosition(robot.MIDDLE_INTAKE);
             }else if(gamepad2.dpad_down){
                 robot.drop.setPosition(robot.BOTTOM_INTAKE);
@@ -164,9 +164,8 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 
             //Moves intake arm in and out
             robot.bop.setPower(gamepad2.right_stick_y / 1.25);
-            if(robot.bop.getPower() < 0 && robot.bopLimit.red() > 200){
-//                intakeOut = new Timer();
-//                intakeOut.schedule(new PennyslvaniaTeleop.BopOut(), 0, 500);
+            if(robot.bopLimit.red() > 250){
+                robot.drop.setPosition(robot.TOP_INTAKE);
             }
 
             //Rotates the Intake Arm

@@ -36,8 +36,10 @@ public class RoverTeleopQualifier extends LinearOpMode{
     ExpansionHubEx expansionHub;
     Timer stopMotor;
     Timer currentReg;
+    Timer currentLim;
     ExpansionHubMotor left,right;
     RevBulkData bulkData;
+    Boolean limitFlag = false;
 
     public void runOpMode(){
         robot.init(hardwareMap);
@@ -85,6 +87,11 @@ public class RoverTeleopQualifier extends LinearOpMode{
         telemetry.update();
         waitForStart();
 
+        if(limitFlag = false) {
+            currentLim = new Timer();
+            currentLim.schedule(new CurrentLim(), 20000, 10);
+        }
+
         while(opModeIsActive()){
         if (xValue >= 0.2 || yValue >= 0.2 ) {
             if (right.getCurrentDraw() >= 3000 || left.getCurrentDraw() >= 3000) {
@@ -102,8 +109,14 @@ public class RoverTeleopQualifier extends LinearOpMode{
             yValue = gamepad1.left_stick_y;
             xValue = gamepad1.left_stick_x;
 
-            leftPower =  (yValue - xValue) / 2*currentDiv ;
-            rightPower = (yValue + xValue) / currentDiv;
+            if(limitFlag = false) {
+                leftPower = (yValue - xValue) / 2 * currentDiv;
+                rightPower = (yValue + xValue) / currentDiv;
+            }
+            else{
+                leftPower = (yValue - xValue);
+                rightPower = (yValue + xValue);
+            }
 
             robot.left1.setPower(Range.clip(leftPower, -1.0, 1.0));
             robot.right1.setPower(Range.clip(rightPower, -1.0, 1.0));
@@ -111,9 +124,11 @@ public class RoverTeleopQualifier extends LinearOpMode{
             //Move block intake in and out
             if(robot.bopLimit.red() >= 300){
                 robot.bop.setPower(Math.abs(gamepad1.right_stick_y) * -0.5);
+                robot.drop.setPosition(robot.TOP_INTAKE);
             }
             else{
                 robot.bop.setPower(gamepad1.right_stick_y * 0.5);
+
             }
 
 
@@ -157,10 +172,10 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
           //Ball Catching Controls
             if(gamepad1.right_bumper && robot.sorterLimit.red() <= 200){
-              robot.sorter.setPower(0.75);
+              robot.sorter.setPower(0.9);
             }
             else if(gamepad1.left_bumper){
-              robot.sorter.setPower(-0.75);
+              robot.sorter.setPower(-0.9);
             }
             else{
               robot.sorter.setPower(0);
@@ -217,9 +232,17 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
     class CurrentReg extends TimerTask{
         public void run(){
-            currentDiv = currentDiv + 7 ;
+            currentDiv = currentDiv + 7;
+            currentReg.cancel();
         }
 }
+
+    class CurrentLim extends TimerTask{
+        public void run(){
+            limitFlag = true;
+            currentLim.cancel();
+        }
+    }
     void composeTelemetry() {
 
 
