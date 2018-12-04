@@ -154,6 +154,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                 robot.drop.setPosition(robot.BOTTOM_INTAKE);
             }
 
+
             //Move intake in or out
             if(gamepad2.b){
                 robot.intake.setPower(-0.9);
@@ -165,7 +166,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 
             //Moves intake arm in and out
             robot.bop.setPower(gamepad2.right_stick_y / 1.25);
-            if(robot.bopLimit.red() > 250){
+            if(robot.sorterLimit.red() > 250){
                 robot.drop.setPosition(robot.TOP_INTAKE);
             }
 
