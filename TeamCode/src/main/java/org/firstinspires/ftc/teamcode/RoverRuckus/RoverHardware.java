@@ -85,7 +85,7 @@ public class RoverHardware {
     DigitalChannel d0, d1, d2, d3, d4, d5, d6, d7;
 
     public final double BOTTOM_INTAKE = 1;
-    public final double MIDDLE_INTAKE = 0.6;
+    public final double MIDDLE_INTAKE = 0.4;
     public final double TOP_INTAKE = 0.2;
     public final double DILBERT_DOWN = 1.0;
     public final double DILBERT_UP = 0.0;
