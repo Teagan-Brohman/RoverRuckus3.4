@@ -108,13 +108,14 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 
 
             if(gamepad1.right_bumper) {
-                robot.sorter.setPower(1.0);
+                robot.sorter.setPower(0.9);
             } else if(gamepad1.left_bumper){
                 robot.sorter.setPower(-1.0);
-                if(robot.bopLimit.red() >= 200){
+                robot.sorterFlip.setPosition(robot.SORTER_UP);
+               // if(robot.bopLimit.red() >= 200){
 //                    sorterOut = new Timer();
-//                    sorterOut.schedule(new PennyslvaniaTeleop.MoveOut(), 0, 1000);
-                }
+//                    sorterOut.schedule(new MoveOut(), 0, 1000);
+                //}
             }else{
                 robot.sorter.setPower(0);
             }
@@ -158,20 +159,6 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                 robot.drop.setPosition(DROP_CURRENT_POSITION);
             }
 
-//            if(robot.bopLimit.red() > 200 & robot.bopLimit.red() < 300){
-//                robot.rotateMech.setTargetPosition(0);
-//                if(robot.rotateMech.getCurrentPosition() > 10 && robot.rotateMech.getCurrentPosition() < -10) {
-//                    if (robot.rotateMech.getCurrentPosition() > 0) {
-//                        robot.rotateMech.setPower(0.2);
-//                    } else if (robot.rotateMech.getCurrentPosition() < 0) {
-//                        robot.rotateMech.setPower(-0.2);
-//                    }
-//                }else{robot.rotateMech.setPower(0);}
-//            }
-//            if(robot.bopLimit.red() > 300){
-//                robot.drop.setPosition(robot.TOP_INTAKE);
-//            }
-
             //Move intake in or out
             if(gamepad2.b){
                 robot.intake.setPower(-0.9);
@@ -183,9 +170,8 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 
             //Moves intake arm in and out
             robot.bop.setPower(gamepad2.right_stick_y / 1.25);
-            if(robot.bop.getPower() < 0 && robot.bopLimit.red() > 200){
-//                intakeOut = new Timer();
-//                intakeOut.schedule(new PennyslvaniaTeleop.BopOut(), 0, 500);
+            if(robot.sorterLimit.red() > 250){
+                robot.drop.setPosition(robot.TOP_INTAKE);
             }
 
             //Rotates the Intake Arm
@@ -234,7 +220,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //            telemetry.addData("GPIO current", expansionHub.getGpioBusCurrentDraw());
 //            telemetry.addData("Left current", left.getCurrentDraw());
 //            telemetry.addData("Right current", right.getCurrentDraw());
-            telemetry.addData("drop position", robot.drop.getPosition());
+//            telemetry.addData("drop position", robot.drop.getPosition());
             telemetry.addData("Sorter red", robot.sorterLimit.red());
             telemetry.update();
         }
