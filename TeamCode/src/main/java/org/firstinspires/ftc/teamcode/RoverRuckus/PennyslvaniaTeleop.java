@@ -111,10 +111,11 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                 robot.sorter.setPower(0.9);
             } else if(gamepad1.left_bumper){
                 robot.sorter.setPower(-1.0);
-                if(robot.bopLimit.red() >= 200){
+                robot.sorterFlip.setPosition(robot.SORTER_UP);
+               // if(robot.bopLimit.red() >= 200){
 //                    sorterOut = new Timer();
 //                    sorterOut.schedule(new MoveOut(), 0, 1000);
-                }
+                //}
             }else{
                 robot.sorter.setPower(0);
             }
