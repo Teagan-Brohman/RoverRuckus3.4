@@ -38,6 +38,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
     Timer intakeOut;
     ExpansionHubMotor left,right;
     RevBulkData bulkData;
+    boolean buttonFlag;
 
     public void runOpMode(){
         robot.init(hardwareMap);
@@ -86,14 +87,14 @@ public class PennyslvaniaTeleop extends LinearOpMode {
         robot.initServoPositions();
         waitForStart();
 
-        while(opModeIsActive()){
+        while(opModeIsActive()) {
 
             //GAMEPAD 1
             //Arcade Style Drive Motors
             yValue = gamepad1.left_stick_y;
             xValue = gamepad1.left_stick_x;
 
-            leftPower =  yValue - xValue;
+            leftPower = yValue - xValue;
             rightPower = yValue + xValue;
 
             robot.left1.setPower(Range.clip(leftPower, -1.0, 1.0));
@@ -105,36 +106,38 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 
             //Arm that shoots blocks and balls
 
+            if (gamepad1.right_stick_y >= 0.2 || gamepad1.right_stick_y <= -0.2){
+                buttonFlag = true;
+            }
 
 
-            if(gamepad1.right_bumper) {
+            if (gamepad1.right_bumper) {
                 robot.sorter.setPower(0.9);
-            } else if(gamepad1.left_bumper){
+            } else if (gamepad1.left_bumper) {
                 robot.sorter.setPower(-1.0);
                 robot.sorterFlip.setPosition(robot.SORTER_UP);
-               // if(robot.bopLimit.red() >= 200){
+                // if(robot.bopLimit.red() >= 200){
 //                    sorterOut = new Timer();
 //                    sorterOut.schedule(new MoveOut(), 0, 1000);
                 //}
-            }else{
+            } else {
                 robot.sorter.setPower(0);
             }
 
-            if(gamepad1.a){
+            if (gamepad1.a && robot.sorterLimit.red() < 120 && robot.sorterLimit.alpha() < 400) {
                 robot.sorterFlip.setPosition(robot.SORTER_DOWN);
-            }else if(gamepad1.b){
+            } else if (gamepad1.b) {
                 robot.sorterFlip.setPosition(robot.SORTER_UP);
             }
 
             //Hanging Mechanism
-            if (gamepad1.dpad_up){
+            if (gamepad1.dpad_up && robot.upperLimit.red() > 300) {
                 robot.hang.setPower(1);
-            } else if (gamepad1.dpad_down){
+            } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 100) {
                 robot.hang.setPower(-1);
-            } else{
+            } else {
                 robot.hang.setPower(0);
             }
-
 
 
 //            //Shoots blocks
@@ -151,27 +154,63 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             //Sets Servo Position to Top or Bottom
             if (gamepad2.dpad_up) {
                 robot.drop.setPosition(robot.TOP_INTAKE);
-            } else if(gamepad2.dpad_right) {
+            } else if (gamepad2.dpad_right) {
                 robot.drop.setPosition(robot.MIDDLE_INTAKE);
-            }else if(gamepad2.dpad_down){
+            } else if (gamepad2.dpad_down) {
                 robot.drop.setPosition(robot.BOTTOM_INTAKE);
-            } else{
-                robot.drop.setPosition(DROP_CURRENT_POSITION);
+            }
+//            else {
+//                robot.drop.setPosition(DROP_CURRENT_POSITION);
+//            }
+            else{
+                robot.drop.setPosition(robot.drop.getPosition() + .01);
+                robot.drop.setPosition(robot.drop.getPosition() - .01);
             }
 
             //Move intake in or out
-            if(gamepad2.b){
+            if (gamepad2.b) {
                 robot.intake.setPower(-0.9);
-            } else if(gamepad2.a){
+            } else if (gamepad2.a) {
                 robot.intake.setPower(0.9);
-            } else if(gamepad2.y){
+            } else if (gamepad2.y) {
                 robot.intake.setPower(0.0);
             }
 
             //Moves intake arm in and out
-            robot.bop.setPower(gamepad2.right_stick_y / 1.25);
-            if(robot.sorterLimit.red() > 250){
+//            robot.bop.setPower(gamepad2.right_stick_y / 1.25);
+
+            if(gamepad1.x){
+                robot.bop.setPower(-.9);
+                buttonFlag = false;
+            }
+
+            if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
+                if(robot.rotateMech.getCurrentPosition() < -10 && robot.rotateMech.getCurrentPosition() > 10) {
+                   if(robot.rotateMech.getCurrentPosition() < 0){
+                       robot.rotateMech.setTargetPosition(0);
+                       robot.rotateMech.setPower(0.1);
+                   }
+
+                    if(robot.rotateMech.getCurrentPosition() > 0){
+                        robot.rotateMech.setTargetPosition(0);
+                        robot.rotateMech.setPower(-0.1);
+                    }
+                }
+
+
+            if (robot.bopLimit.red() >= 170 && robot.bopLimit.alpha() < 400) {
+                    if(gamepad1.right_stick_y >= .1){
+                        robot.bop.setPower(gamepad1.right_stick_y * 0.95);
+                    }
+                    else{
+                        robot.bop.setPower(0);
+                    }
                 robot.drop.setPosition(robot.TOP_INTAKE);
+            }
+        }
+            else if (buttonFlag = true){
+                robot.bop.setPower(gamepad1.right_stick_y * 0.95);
+
             }
 
             //Rotates the Intake Arm
@@ -221,7 +260,10 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //            telemetry.addData("Left current", left.getCurrentDraw());
 //            telemetry.addData("Right current", right.getCurrentDraw());
 //            telemetry.addData("drop position", robot.drop.getPosition());
+            telemetry.addData("Button Flag", buttonFlag);
+            telemetry.addData("Bop Alpha", robot.bopLimit.alpha());
             telemetry.addData("Sorter red", robot.sorterLimit.red());
+            telemetry.addData("Bop red", robot.bopLimit.red());
             telemetry.update();
         }
     }

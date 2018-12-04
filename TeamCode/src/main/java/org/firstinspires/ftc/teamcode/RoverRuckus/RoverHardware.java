@@ -73,11 +73,11 @@ public class RoverHardware {
     Acceleration gravity;
 
     //Exapnsion Hubs
-    ExpansionHubEx expansionHub;
+    //ExpansionHubEx expansionHub;
     //ExpansionHubEx expansionHub3;
 
     //Expansion Hub Motors
-    ExpansionHubMotor left,right;
+    //ExpansionHubMotor left,right;
 
 
     RevBulkData bulkData;
@@ -101,13 +101,13 @@ public class RoverHardware {
 
         HwMap = hwm;
         //Expansion Hubs
-        expansionHub = HwMap.get(ExpansionHubEx.class, "Expansion Hub 2");
+        //expansionHub = HwMap.get(ExpansionHubEx.class, "Expansion Hub 2");
         //expansionHub3 = HwMap.get(ExpansionHubEx.class, "Expansion Hub 3");
 
 
         //Expansion Hub Motors
-        left = (ExpansionHubMotor) HwMap.dcMotor.get("left1");
-        right = (ExpansionHubMotor) HwMap.dcMotor.get("right1");
+        //left = (ExpansionHubMotor) HwMap.dcMotor.get("left1");
+        //right = (ExpansionHubMotor) HwMap.dcMotor.get("right1");
 
         //Drive Motors
         left1 = HwMap.dcMotor.get("left1");
