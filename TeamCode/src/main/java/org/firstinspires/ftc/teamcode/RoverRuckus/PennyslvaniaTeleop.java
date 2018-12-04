@@ -116,7 +116,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //                    sorterOut.schedule(new PennyslvaniaTeleop.MoveOut(), 0, 1000);
                 }
             }else{
-                robot.sorter.setPower(0.1);
+                robot.sorter.setPower(0);
             }
 
             if(gamepad1.a){
@@ -143,6 +143,9 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //                stopMotor.schedule(new PennyslvaniaTeleop.RemindTask(),1,5000);
 //            }
 
+            final double DROP_CURRENT_POSITION;
+            DROP_CURRENT_POSITION = robot.drop.getPosition();
+
             //GAMEPAD 2
             //Sets Servo Position to Top or Bottom
             if (gamepad2.dpad_up) {
@@ -151,7 +154,23 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                 robot.drop.setPosition(robot.MIDDLE_INTAKE);
             }else if(gamepad2.dpad_down){
                 robot.drop.setPosition(robot.BOTTOM_INTAKE);
+            } else{
+                robot.drop.setPosition(DROP_CURRENT_POSITION);
             }
+
+//            if(robot.bopLimit.red() > 200 & robot.bopLimit.red() < 300){
+//                robot.rotateMech.setTargetPosition(0);
+//                if(robot.rotateMech.getCurrentPosition() > 10 && robot.rotateMech.getCurrentPosition() < -10) {
+//                    if (robot.rotateMech.getCurrentPosition() > 0) {
+//                        robot.rotateMech.setPower(0.2);
+//                    } else if (robot.rotateMech.getCurrentPosition() < 0) {
+//                        robot.rotateMech.setPower(-0.2);
+//                    }
+//                }else{robot.rotateMech.setPower(0);}
+//            }
+//            if(robot.bopLimit.red() > 300){
+//                robot.drop.setPosition(robot.TOP_INTAKE);
+//            }
 
             //Move intake in or out
             if(gamepad2.b){
@@ -215,7 +234,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //            telemetry.addData("GPIO current", expansionHub.getGpioBusCurrentDraw());
 //            telemetry.addData("Left current", left.getCurrentDraw());
 //            telemetry.addData("Right current", right.getCurrentDraw());
-//            telemetry.addData("drop position", robot.drop.getPosition());
+            telemetry.addData("drop position", robot.drop.getPosition());
             telemetry.addData("Sorter red", robot.sorterLimit.red());
             telemetry.update();
         }
