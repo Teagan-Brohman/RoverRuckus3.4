@@ -334,15 +334,15 @@ public class PennyslvaniaTeleop extends LinearOpMode {
         }
     }
 
-    class positionTimer extends TimerTask{
-        public void run(){
-         currentTarget += 5;
-         if (currentTarget > setTarget){
-             positionSet.cancel();
-         }
-        }
-
-    }
+//    class positionTimer extends TimerTask{
+//        public void run(){
+//         currentTarget += 5;
+//         if (currentTarget > setTarget){
+//             positionSet.cancel();
+//         }
+//        }
+//
+//    }
 
     class RemindTask extends TimerTask {
         public void run(){
