@@ -153,8 +153,10 @@ public class RedIdleOneBlock extends LinearOpMode {
         robot.right1.setPower(0);
         sleep(500);
 
-        robot.dropper.setPosition(robot.BOTTOM_INTAKE);
-        sleep(500);
+        robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);
+        robot.drop.setPower(0.2);
+        while(robot.drop.isBusy()){}
+
 
         //Change the arm angle so it can hit the block
         robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -190,7 +192,9 @@ public class RedIdleOneBlock extends LinearOpMode {
         while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {
 
         }
-        robot.dropper.setPosition(robot.TOP_INTAKE);
+        robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);
+        robot.drop.setPower(-0.2);
+        while(robot.drop.isBusy()){}
 
         //turn right
         telemetry.update();

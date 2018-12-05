@@ -51,7 +51,6 @@ public class RoverHardware {
     public Servo marker;
     //Sorter Flipper
     public Servo sorterFlip;
-    public Servo dropper;
     //Intake Servo
     public CRServo intake;
 
@@ -85,9 +84,9 @@ public class RoverHardware {
     AnalogInput a0, a1, a2, a3;
     DigitalChannel d0, d1, d2, d3, d4, d5, d6, d7;
 
-    public final double BOTTOM_INTAKE = 0;
-    public final double MIDDLE_INTAKE = 400;
-    public final double TOP_INTAKE = 1000;
+    public final int BOTTOM_INTAKE = 0;
+    public final int MIDDLE_INTAKE = 96;
+    public final int TOP_INTAKE = 195;
     public final double DILBERT_DOWN = 1.0;
     public final double DILBERT_UP = 0.0;
     public final double SORTER_DOWN = 0.2;
@@ -129,7 +128,6 @@ public class RoverHardware {
         marker = HwMap.servo.get("marker");
         //sorterFlips
         sorterFlip = HwMap.servo.get("sorterFlip");
-        dropper = HwMap.servo.get("dropper");
         //Intake servo
         intake = HwMap.crservo.get("intake");
 
@@ -153,6 +151,7 @@ public class RoverHardware {
         bop.setDirection(DcMotorSimple.Direction.FORWARD);
         //launcher.setDirection(DcMotorSimple.Direction.FORWARD);
         rotateMech.setDirection(DcMotorSimple.Direction.FORWARD);
+        drop.setDirection(DcMotorSimple.Direction.FORWARD);
 
         left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -160,6 +159,7 @@ public class RoverHardware {
         bop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rotateMech.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        drop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 //
     public void initServoPositions() {

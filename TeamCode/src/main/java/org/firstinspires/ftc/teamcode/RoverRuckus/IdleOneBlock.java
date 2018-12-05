@@ -154,7 +154,7 @@ public class IdleOneBlock extends LinearOpMode {
         robot.right1.setPower(0);
         sleep(500);
 
-        robot.drop.setTargetPosition(0);
+        robot.drop.setTargetPosition(0  );
         sleep(500);
 
         //Change the arm angle so it can hit the block
