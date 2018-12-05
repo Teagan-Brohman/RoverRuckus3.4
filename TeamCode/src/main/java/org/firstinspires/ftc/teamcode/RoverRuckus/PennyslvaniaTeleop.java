@@ -32,14 +32,20 @@ public class PennyslvaniaTeleop extends LinearOpMode {
     public float xValue;
     public float yValue;
 
+    public int intakePosition = 0;
+
 
     ExpansionHubEx expansionHub;
     Timer stopMotor;
     Timer sorterOut;
     Timer intakeOut;
+    Timer positionSet;
     ExpansionHubMotor left,right;
     RevBulkData bulkData;
     boolean buttonFlag;
+    int currentTarget;
+    int setTarget;
+
 
     public void runOpMode(){
         robot.init(hardwareMap);
@@ -161,29 +167,35 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             //GAMEPAD 2
             //Sets Servo Position to Top or Bottom
             if (gamepad2.dpad_up) {
-                robot.drop.setTargetPosition(125); // Top
-                robot.drop.setPower(0.7);
-                if(robot.drop.getCurrentPosition() > 100 && robot.drop.getCurrentPosition() < 150){
-                    robot.drop.setTargetPosition(125);
+//                intakePosition = -32;
+                robot.drop.setTargetPosition(robot.TOP_INTAKE); // Top
+                robot.drop.setPower(0.2);
+                if(robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10){
+                    robot.drop.setTargetPosition(robot.TOP_INTAKE);
                     robot.drop.setPower(0.1);
             }
             } else if (gamepad2.dpad_right) {
-                robot.drop.setTargetPosition(83); // Middle
-                robot.drop.setPower(0.7);
-                if(robot.drop.getCurrentPosition() > 75 && robot.drop.getCurrentPosition() < 90) {
-                    robot.drop.setTargetPosition(83);
-                    robot.drop.setPower(0.5);
+//                intakePosition = -95;
+//                positionSet = new Timer();
+//                positionSet.schedule(new positionTimer, 0.5,0.5){
+//                }
+                robot.drop.setTargetPosition(robot.MIDDLE_INTAKE); // Middle
+                robot.drop.setPower(0.2);
+                if(robot.drop.getCurrentPosition() > -130 && robot.drop.getCurrentPosition() < -70) {
+                    robot.drop.setTargetPosition(-90);
+                    robot.drop.setPower(0.2);
                 }
-//                if(robot.drop.getCurrentPosition() > 96) {
-//                    robot.drop.setPower(-0.3);
-//                }
-//                else if(robot.drop.getCurrentPosition() < 96){
-//                    robot.drop.setPower(0.7);
-//                }
+                if(robot.drop.getCurrentPosition() > 96) {
+                    robot.drop.setPower(-0.3);
+                }
+                else if(robot.drop.getCurrentPosition() < 96){
+                    robot.drop.setPower(0.3);
+                }
             } else if (gamepad2.dpad_down) {
-                robot.drop.setTargetPosition(0);//Bottom
-                robot.drop.setPower(-0.5);
-                if(robot.drop.getCurrentPosition() > -5 && robot.drop.getCurrentPosition() < 10){
+//                intakePosition = -196;
+                robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);//Bottom
+                robot.drop.setPower(-0.2  );
+                if(robot.drop.getCurrentPosition() > -200 && robot.drop.getCurrentPosition() < -190){
                     robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
                     robot.drop.setPower(0.1);
                 }
@@ -192,6 +204,18 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                 }
 
             }
+
+//            robot.drop.setTargetPosition(intakePosition);
+//            if(intakePosition > robot.drop.getCurrentPosition()){
+//                robot.drop.setPower(-0.5);
+//            } else if(intakePosition < robot.drop.getCurrentPosition()){
+//                robot.drop.setPower(0.5);
+//            }
+//            else{
+//                robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
+//                robot.drop.setPower(0.5);
+//            }
+
 //            else {
 //                robot.drop.setPosition(DROP_CURRENT_POSITION);
 //            }
@@ -218,7 +242,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             }
 
             if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
-                if(robot.rotateMech.getCurrentPosition() < -10 && robot.rotateMech.getCurrentPosition() > 10) {
+                if(robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10) {
                    if(robot.rotateMech.getCurrentPosition() < 0){
                        robot.rotateMech.setTargetPosition(0);
                        robot.rotateMech.setPower(0.1);
@@ -238,7 +262,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                     else{
                         robot.bop.setPower(0);
                     }
-                robot.drop.setTargetPosition(135); // Top
+                robot.drop.setTargetPosition(robot.TOP_INTAKE); // Top
                 robot.drop.setPower(0.7);
                 if(robot.drop.getCurrentPosition() > 180 && robot.drop.getCurrentPosition() < 200){
                     robot.drop.setPower(0.1);
@@ -306,6 +330,17 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             telemetry.update();
         }
     }
+
+    class positionTimer extends TimerTask{
+        public void run(){
+         currentTarget += 5;
+         if (currentTarget > setTarget){
+             positionSet.cancel();
+         }
+        }
+
+    }
+
     class RemindTask extends TimerTask {
         public void run(){
             robot.drop.setPower(0.05);
@@ -324,6 +359,14 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             intakeOut.cancel();
         }
     }
+//    void motorPower(double startingPower, int targetPosition){
+//        robot.drop.setTargetPosition(targetPosition);
+//        robot.drop.setPower(startingPower);
+//        while(robot.drop.isBusy()){
+//            int currentPos = robot.drop.getCurrentPosition();
+//            robot.drop.setPower((Math.abs(targetPosition - currentPos) * startingPower));
+//        }
+    //}
     void composeTelemetry() {
 
 

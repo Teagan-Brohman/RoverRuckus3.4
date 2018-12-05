@@ -19,7 +19,7 @@ import java.util.Locale;
 
 @Autonomous(name = "BlueDepotOneBlock", group = "Autonomous")
 public class IdleOneBlock extends LinearOpMode {
-    public RoverHardware robot = new RoverHardware();
+    public RoverHardware robot = new RoverHardware(); //Create a new instance of the
 
     private GoldAlignDetector detector;
 
