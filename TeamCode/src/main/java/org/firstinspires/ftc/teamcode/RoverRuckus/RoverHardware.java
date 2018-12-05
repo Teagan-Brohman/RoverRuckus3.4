@@ -84,9 +84,9 @@ public class RoverHardware {
     AnalogInput a0, a1, a2, a3;
     DigitalChannel d0, d1, d2, d3, d4, d5, d6, d7;
 
-    public final int BOTTOM_INTAKE = 0;
-    public final int MIDDLE_INTAKE = 96;
-    public final int TOP_INTAKE = 195;
+    public final int BOTTOM_INTAKE = -195;
+    public final int MIDDLE_INTAKE = -96;
+    public final int TOP_INTAKE = 0;
     public final double DILBERT_DOWN = 1.0;
     public final double DILBERT_UP = 0.0;
     public final double SORTER_DOWN = 0.2;

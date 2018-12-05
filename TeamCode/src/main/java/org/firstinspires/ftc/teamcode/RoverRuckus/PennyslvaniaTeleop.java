@@ -141,7 +141,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             //Hanging Mechanism
             if (gamepad1.dpad_up && robot.upperLimit.red() > 300) {
                 robot.hang.setPower(1);
-            } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 100) {
+            } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 100){
                 robot.hang.setPower(-1);
             } else {
                 robot.hang.setPower(0);
@@ -161,19 +161,25 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             //GAMEPAD 2
             //Sets Servo Position to Top or Bottom
             if (gamepad2.dpad_up) {
-                robot.drop.setTargetPosition(195); // Top
+                robot.drop.setTargetPosition(125); // Top
                 robot.drop.setPower(0.7);
-                if(robot.drop.getCurrentPosition() > 180 && robot.drop.getCurrentPosition() < 200){
-                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
+                if(robot.drop.getCurrentPosition() > 100 && robot.drop.getCurrentPosition() < 150){
+                    robot.drop.setTargetPosition(125);
                     robot.drop.setPower(0.1);
             }
             } else if (gamepad2.dpad_right) {
-                robot.drop.setTargetPosition(96); // Middle
+                robot.drop.setTargetPosition(83); // Middle
                 robot.drop.setPower(0.7);
-                if(robot.drop.getCurrentPosition() > 85 && robot.drop.getCurrentPosition() < 115){
-                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
-                    robot.drop.setPower(0.7);
+                if(robot.drop.getCurrentPosition() > 75 && robot.drop.getCurrentPosition() < 90) {
+                    robot.drop.setTargetPosition(83);
+                    robot.drop.setPower(0.5);
                 }
+//                if(robot.drop.getCurrentPosition() > 96) {
+//                    robot.drop.setPower(-0.3);
+//                }
+//                else if(robot.drop.getCurrentPosition() < 96){
+//                    robot.drop.setPower(0.7);
+//                }
             } else if (gamepad2.dpad_down) {
                 robot.drop.setTargetPosition(0);//Bottom
                 robot.drop.setPower(-0.5);
@@ -225,14 +231,14 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                 }
 
 
-            if (robot.bopLimit.red() >= 170 && robot.bopLimit.alpha() < 400) {
+            if (robot.bopLimit.red() >= 155  && robot.bopLimit.alpha() < 400) {
                     if(gamepad2.right_stick_y <= -.1){
                         robot.bop.setPower(gamepad2.right_stick_y * 0.95);
                     }
                     else{
                         robot.bop.setPower(0);
                     }
-                robot.drop.setTargetPosition(195); // Top
+                robot.drop.setTargetPosition(135); // Top
                 robot.drop.setPower(0.7);
                 if(robot.drop.getCurrentPosition() > 180 && robot.drop.getCurrentPosition() < 200){
                     robot.drop.setPower(0.1);

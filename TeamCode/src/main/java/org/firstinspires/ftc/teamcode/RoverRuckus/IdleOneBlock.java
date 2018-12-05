@@ -154,8 +154,9 @@ public class IdleOneBlock extends LinearOpMode {
         robot.right1.setPower(0);
         sleep(500);
 
-        robot.drop.setTargetPosition(0  );
-        sleep(500);
+        robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);
+        robot.drop.setPower(-0.2);
+        while (robot.drop.isBusy()){}
 
         //Change the arm angle so it can hit the block
         robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
