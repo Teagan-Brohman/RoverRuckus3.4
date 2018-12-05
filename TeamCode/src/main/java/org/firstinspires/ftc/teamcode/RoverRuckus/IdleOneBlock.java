@@ -87,6 +87,7 @@ public class IdleOneBlock extends LinearOpMode {
         }
         waitForStart();
 
+        robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //Raise arm
         while (robot.upperLimit.red() > 300 && opModeIsActive()) {
             robot.hang.setPower(1);
@@ -153,7 +154,7 @@ public class IdleOneBlock extends LinearOpMode {
         robot.right1.setPower(0);
         sleep(500);
 
-        robot.drop.setPosition(robot.BOTTOM_INTAKE);
+        robot.drop.setTargetPosition(0);
         sleep(500);
 
         //Change the arm angle so it can hit the block
@@ -190,7 +191,7 @@ public class IdleOneBlock extends LinearOpMode {
         robot.bop.setTargetPosition(100);
         robot.bop.setPower(0.5);
         while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {}
-        robot.drop.setPosition(robot.TOP_INTAKE);
+        robot.drop.setTargetPosition(195);
 
         //turn right
         telemetry.update();

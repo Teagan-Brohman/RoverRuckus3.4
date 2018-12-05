@@ -124,7 +124,7 @@ public class RoverTeleopQualifier extends LinearOpMode{
             //Move block intake in and out
             if(robot.bopLimit.red() >= 300){
                 robot.bop.setPower(Math.abs(gamepad1.right_stick_y) * -0.5);
-                robot.drop.setPosition(robot.TOP_INTAKE);
+                //robot.drop.setPosition(robot.TOP_INTAKE);
             }
             else{
                 robot.bop.setPower(gamepad1.right_stick_y * 0.5);
@@ -152,11 +152,11 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
             //Sets Servo Position to Top
           if (gamepad1.y) {
-                robot.drop.setPosition(robot.TOP_INTAKE);
+                //robot.drop.setPosition(robot.TOP_INTAKE);
           }
             //Sets Servo Position to Bottom
           if(gamepad1.a){
-              robot.drop.setPosition(robot.BOTTOM_INTAKE);
+             // robot.drop.setPosition(robot.BOTTOM_INTAKE);
           }
 
           //Rotates the Bopper

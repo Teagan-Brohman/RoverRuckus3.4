@@ -46,11 +46,12 @@ public class RoverHardware {
     // Ball Catcher???
     public DcMotor sorter;
     //dropper
-    public Servo drop;
+    public DcMotor drop;
     //marker dropper
     public Servo marker;
     //Sorter Flipper
     public Servo sorterFlip;
+    public Servo dropper;
     //Intake Servo
     public CRServo intake;
 
@@ -84,9 +85,9 @@ public class RoverHardware {
     AnalogInput a0, a1, a2, a3;
     DigitalChannel d0, d1, d2, d3, d4, d5, d6, d7;
 
-    public final double BOTTOM_INTAKE = 1;
-    public final double MIDDLE_INTAKE = 0.4;
-    public final double TOP_INTAKE = 0.2;
+    public final double BOTTOM_INTAKE = 0;
+    public final double MIDDLE_INTAKE = 400;
+    public final double TOP_INTAKE = 1000;
     public final double DILBERT_DOWN = 1.0;
     public final double DILBERT_UP = 0.0;
     public final double SORTER_DOWN = 0.2;
@@ -123,11 +124,12 @@ public class RoverHardware {
         //Ball Catcher
         sorter = HwMap.dcMotor.get("sorter");
         //dropper
-        drop = HwMap.servo.get("drop");
+        drop = HwMap.dcMotor.get("drop");
         //marker dropper
         marker = HwMap.servo.get("marker");
         //sorterFlips
         sorterFlip = HwMap.servo.get("sorterFlip");
+        dropper = HwMap.servo.get("dropper");
         //Intake servo
         intake = HwMap.crservo.get("intake");
 
@@ -162,7 +164,7 @@ public class RoverHardware {
 //
     public void initServoPositions() {
         sorterFlip.setPosition(SORTER_UP);
-        drop.setPosition(TOP_INTAKE);
+        //drop.(TOP_INTAKE);
     }
 
     String formatAngle(AngleUnit angleUnit, double angle) {

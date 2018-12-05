@@ -178,14 +178,17 @@ public class CraterTwoBlocks extends LinearOpMode {
             robot.bop.setTargetPosition(-1450);
             robot.bop.setPower(-0.9);
             while (robot.bop.isBusy() && opModeIsActive()) {
-                robot.drop.setPosition(robot.BOTTOM_INTAKE);
+                robot.drop.setTargetPosition(0);
+                robot.drop.setTargetPosition(0);
+                robot.drop.setPower(-0.5);
             }
         } else {
             robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.bop.setTargetPosition(-1600);
             robot.bop.setPower(-0.9);
             while (robot.bop.isBusy() && opModeIsActive()) {
-                robot.drop.setPosition(robot.BOTTOM_INTAKE);
+                robot.drop.setTargetPosition(0);
+                robot.drop.setPower(-0.5);
             }
         }
 
@@ -195,9 +198,15 @@ public class CraterTwoBlocks extends LinearOpMode {
         robot.bop.setTargetPosition(300);
         robot.bop.setPower(0.8);
         while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {
-            robot.drop.setPosition(robot.TOP_INTAKE);
-        }
+            robot.drop.setTargetPosition(195);
+            robot.drop.setPower(0.7);
+            if(robot.drop.getCurrentPosition() > 180 && robot.drop.getCurrentPosition() < 200){
+                robot.drop.setPower(0.1);
+                robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
 
+            }
+        }
+        robot.drop.setPower(0);
 //        //turn right
         robot.angles.firstAngle = angleTurn;
 

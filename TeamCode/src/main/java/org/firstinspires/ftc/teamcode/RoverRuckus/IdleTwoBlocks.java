@@ -151,7 +151,7 @@ public class IdleTwoBlocks extends LinearOpMode {
         robot.right1.setPower(0);
         sleep(500);
 
-        robot.drop.setPosition(robot.BOTTOM_INTAKE);
+        robot.dropper.setPosition(robot.BOTTOM_INTAKE);
         sleep(500);
 
         //Change the arm angle so it can hit the block
@@ -184,7 +184,7 @@ public class IdleTwoBlocks extends LinearOpMode {
         robot.bop.setTargetPosition(750);
         robot.bop.setPower(0.4);
         while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {}
-        robot.drop.setPosition(robot.TOP_INTAKE);
+        robot.dropper.setPosition(robot.TOP_INTAKE);
 
         //turn right
         telemetry.update();
@@ -232,7 +232,7 @@ public class IdleTwoBlocks extends LinearOpMode {
         robot.bop.setTargetPosition(750);
         robot.bop.setPower(0.4);
         while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {}
-        robot.drop.setPosition(robot.TOP_INTAKE);
+        robot.dropper.setPosition(robot.TOP_INTAKE);
 
 
         //turn Left

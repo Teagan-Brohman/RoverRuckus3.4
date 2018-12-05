@@ -175,14 +175,14 @@ public class RedCraterOneBlock extends LinearOpMode {
             robot.bop.setTargetPosition(-1450);
             robot.bop.setPower(-0.9);
             while (robot.bop.isBusy() && opModeIsActive()) {
-                robot.drop.setPosition(robot.BOTTOM_INTAKE);
+                robot.dropper.setPosition(robot.BOTTOM_INTAKE);
             }
         } else{
             robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.bop.setTargetPosition(-1600);
             robot.bop.setPower(-0.9);
             while (robot.bop.isBusy() && opModeIsActive()) {
-                robot.drop.setPosition(robot.BOTTOM_INTAKE);
+                robot.dropper.setPosition(robot.BOTTOM_INTAKE);
             }
         }
 
@@ -192,7 +192,7 @@ public class RedCraterOneBlock extends LinearOpMode {
         robot.bop.setTargetPosition(300);
         robot.bop.setPower(0.8);
         while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {
-            robot.drop.setPosition(robot.TOP_INTAKE);
+            robot.dropper.setPosition(robot.TOP_INTAKE);
         }
 
 //        //turn right
@@ -319,7 +319,7 @@ public class RedCraterOneBlock extends LinearOpMode {
             robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.bop.setTargetPosition(-2400);
             robot.bop.setPower(-1);
-            robot.drop.setPosition(robot.TOP_INTAKE);
+            robot.dropper.setPosition(robot.TOP_INTAKE);
         }
 
         robot.left1.setPower(0);
