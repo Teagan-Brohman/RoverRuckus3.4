@@ -37,9 +37,14 @@ public class PennyslvaniaTeleop extends LinearOpMode {
     Timer stopMotor;
     Timer sorterOut;
     Timer intakeOut;
+    Timer currentReg;
+    Timer currentLim;
     ExpansionHubMotor left,right;
     RevBulkData bulkData;
     boolean buttonFlag;
+    Boolean limitFlag = false;
+    public int currentDiv = 1;
+
 
     public void runOpMode(){
         robot.init(hardwareMap);
@@ -94,6 +99,10 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 
 
         while(opModeIsActive()) {
+            if(limitFlag = false) {
+                currentLim = new Timer();
+                currentLim.schedule(new PennyslvaniaTeleop.CurrentLim(), 20000, 10);
+            }
 
 
             robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -266,7 +275,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //                robot.intake.setPower(0);
 //            }
 
-            bulkData = expansionHub.getBulkInputData();
+            //bulkData = expansionHub.getBulkInputData();
 
             //Telemetry Section
 //            telemetry.addData("Distance (cm)", //Checks what the distance sensor on the launcher sees
@@ -322,6 +331,19 @@ public class PennyslvaniaTeleop extends LinearOpMode {
         public void  run(){
             robot.bop.setPower(-0.4);
             intakeOut.cancel();
+        }
+    }
+    class CurrentReg extends TimerTask{
+        public void run(){
+            currentDiv = currentDiv + 7;
+            currentReg.cancel();
+        }
+    }
+
+    class CurrentLim extends TimerTask{
+        public void run(){
+            limitFlag = true;
+            currentLim.cancel();
         }
     }
     void composeTelemetry() {
