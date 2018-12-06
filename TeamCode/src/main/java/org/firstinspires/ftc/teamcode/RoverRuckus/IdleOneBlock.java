@@ -21,8 +21,10 @@ import java.util.Locale;
 public class IdleOneBlock extends LinearOpMode {
     public RoverHardware robot = new RoverHardware(); //Create a new instance of the
 
+    //Create detector gateway
     private GoldAlignDetector detector;
 
+    //Create Variables
     float angleTurn;
     int blue;
 
@@ -31,8 +33,8 @@ public class IdleOneBlock extends LinearOpMode {
         RevExtensions2.init();
 
         //Initialize OpenCV
-        detector = new GoldAlignDetector();
-        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
+        detector = new GoldAlignDetector(); //Create Detector
+        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); //Declare Camera View Display
         detector.useDefaults();
 
         // Optional Tuning
@@ -40,8 +42,8 @@ public class IdleOneBlock extends LinearOpMode {
         detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
         detector.downscale = 0.4; // How much to downscale the input frames
 
-        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
-        detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
+        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA;
+        detector.perfectAreaScorer.perfectArea = 10000;
         detector.maxAreaScorer.weight = 0.005;
 
         detector.ratioScorer.weight = 5;
@@ -51,19 +53,19 @@ public class IdleOneBlock extends LinearOpMode {
 
         //Initialize Gyro
         BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
-        parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters1.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES; //Declare units to work in
+        parameters1.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC; //Declare acceleration units
         parameters1.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
         parameters1.loggingEnabled = true;
         parameters1.loggingTag = "IMU";
         parameters1.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
+        robot.imu = hardwareMap.get(BNO055IMU.class, "imu");//hardware map
         robot.imu.initialize(parameters1);
 
-        composeTelemetry();
+        composeTelemetry();//create the heading, roll, and pitch
 
-        telemetry.addLine()
+        telemetry.addLine()//Telemetry for all 3 of our gyro measures
                 .addData("heading", new Func<String>() {
                     @Override
                     public String value() {
@@ -82,12 +84,12 @@ public class IdleOneBlock extends LinearOpMode {
                         return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
                     }
                 });
-        while(!opModeIsActive()){
+        while(!opModeIsActive()){//In the initializing phase we can look at the pitch heading and roll to setup
             telemetry.update();
         }
-        waitForStart();
+        waitForStart();//waits for the start button to be pressed
 
-        robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Set the intake motor to
         //Raise arm
         while (robot.upperLimit.red() > 300 && opModeIsActive()) {
             robot.hang.setPower(1);
