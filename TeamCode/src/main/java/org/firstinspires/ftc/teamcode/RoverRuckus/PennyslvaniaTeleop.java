@@ -257,35 +257,37 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                 buttonFlag = false;
             }
 
-//            if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
-//            if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
-//                if(robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10) {
-//                   if(robot.rotateMech.getCurrentPosition() < 0){
-//                       robot.rotateMech.setTargetPosition(0);
-//                       robot.rotateMech.setPower(0.1);
-//                   }
-//
-//                    if(robot.rotateMech.getCurrentPosition() > 0){
-//
-//                        robot.rotateMech.setPower(-0.1);
-//                    }
-//                }
+            if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
+                if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
+                    if (robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10) {
+                        if (robot.rotateMech.getCurrentPosition() < 0) {
+                            robot.rotateMech.setTargetPosition(0);
+                            robot.rotateMech.setPower(0.1);
+                        }
+
+                        if (robot.rotateMech.getCurrentPosition() > 0) {
+
+                            robot.rotateMech.setPower(-0.1);
+                        }
+                    }
+                }
+            }
 
 
-//            if (robot.bopLimit.red() >= 155  && robot.bopLimit.alpha() < 400) {
-//                    if(gamepad2.right_stick_y <= -.1){
-//                        robot.bop.setPower(gamepad2.right_stick_y * 0.95);
-//                    }
-//                    else{
-//                        robot.bop.setPower(0);
-//                    }
-//                robot.drop.setTargetPosition(robot.TOP_INTAKE); // Top
-//                robot.drop.setPower(0.7);
-//                if(robot.drop.getCurrentPosition() > 180 && robot.drop.getCurrentPosition() < 200){
-//                    robot.drop.setPower(0.1);
-//                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
-//                }
-//            }
+            if (robot.bopLimit.red() >= 155  && robot.bopLimit.alpha() < 400) {
+                    if(gamepad2.right_stick_y <= -.1){
+                        robot.bop.setPower(gamepad2.right_stick_y * 0.95);
+                    }
+                    else{
+                        robot.bop.setPower(0);
+                    }
+                robot.drop.setTargetPosition(robot.TOP_INTAKE); // Top
+                robot.drop.setPower(0.7);
+                if(robot.drop.getCurrentPosition() > 180 && robot.drop.getCurrentPosition() < 200){
+                    robot.drop.setPower(0.1);
+                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
+                }
+            }
             else if (buttonFlag == true){
                 robot.bop.setPower(gamepad2.right_stick_y * 0.95);
 
@@ -341,10 +343,10 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             telemetry.addData("Drop Commanded Position", robot.drop.getTargetPosition());
             telemetry.addData("Drop Power", robot.drop.getPower());
 //            telemetry.addData("Gamepad Right Y", gamepad1.right_stick_y);
-//            telemetry.addData("Button Flag", buttonFlag);
-//            telemetry.addData("Bop Alpha", robot.bopLimit.alpha());
-//            telemetry.addData("Sorter red", robot.sorterLimit.red());
-            //telemetry.addData("Bop red", robot.bopLimit.red());
+            telemetry.addData("Button Flag", buttonFlag);
+            telemetry.addData("Bop Alpha", robot.bopLimit.alpha());
+            telemetry.addData("Sorter red", robot.sorterLimit.red());
+            telemetry.addData("Bop red", robot.bopLimit.red());
             telemetry.update();
         }
     }
