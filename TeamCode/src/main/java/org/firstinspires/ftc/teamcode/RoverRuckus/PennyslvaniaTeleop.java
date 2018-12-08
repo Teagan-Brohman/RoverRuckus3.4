@@ -199,6 +199,10 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             }
             else if (gamepad2.dpad_left){
                     robot.drop.setPower(0);
+                    if(robot.drop.getCurrentPosition() < 20){
+                        robot.drop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                        robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    }
                 }
 
             if(robot.drop.getTargetPosition() == robot.MIDDLE_INTAKE) {
