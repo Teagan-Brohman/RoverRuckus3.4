@@ -185,7 +185,7 @@ public class CraterOneBlock extends LinearOpMode {
             robot.drop.setPower(-0.8);
             while(robot.drop.isBusy() && opModeIsActive()){
                 telemetry.addData("Drop Motor Power", robot.drop.getPower());
-                telemetry.addData("Drop Motor Position", robot.drop.getCurrentPosition( ));
+                telemetry.addData("Drop Motor Position", robot.drop.getCurrentPosition());
             }
             robot.intake.setPower(0.9);
 //

@@ -39,11 +39,17 @@ public class PennyslvaniaTeleop extends LinearOpMode {
     Timer intakeOut;
     Timer currentReg;
     Timer currentLim;
-    ExpansionHubMotor left,right;
+    Timer leftGamepad = new Timer();
+    public TimerTask dropper;
+    ExpansionHubMotor left,right,hardStop;
     RevBulkData bulkData;
     boolean buttonFlag;
-    Boolean limitFlag = false;
+    boolean limitFlag = false;
+    boolean middlePo;
+    boolean bottomPo;
+    boolean topPo = true;
     public int currentDiv = 1;
+    public int currentPosition = 0;
 
 
     public void runOpMode(){
@@ -55,7 +61,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
         expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 2");
         left = (ExpansionHubMotor) hardwareMap.dcMotor.get("left1");
         right = (ExpansionHubMotor) hardwareMap.dcMotor.get("right1");
-
+        hardStop = (ExpansionHubMotor) hardwareMap.dcMotor.get("drop");
         //Initialize Gyro
         BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
         parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -94,28 +100,55 @@ public class PennyslvaniaTeleop extends LinearOpMode {
         telemetry.update();
         robot.initServoPositions();
         robot.drop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.drop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
         waitForStart();
 
 
+
+
+
         while(opModeIsActive()) {
+
+
+
             if(limitFlag = false) {
                 currentLim = new Timer();
                 currentLim.schedule(new PennyslvaniaTeleop.CurrentLim(), 20000, 10);
             }
 
 
-            robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rotateMech.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             //GAMEPAD 1
             //Arcade Style Drive Motors
             yValue = gamepad1.left_stick_y;
             xValue = gamepad1.left_stick_x;
 
-            leftPower = yValue - xValue;
-            rightPower = yValue + xValue;
 
+            if(limitFlag == true) {
+                leftPower = yValue - xValue / (8 * currentDiv);
+                rightPower = yValue + xValue / (8 * currentDiv);
+            }
+            else{
+                leftPower = yValue - xValue;
+                rightPower = yValue + xValue;
+            }
             robot.left1.setPower(Range.clip(leftPower, -1.0, 1.0));
             robot.right1.setPower(Range.clip(rightPower, -1.0, 1.0));
+
+
+                if (Math.abs(xValue) >= (0.2) || Math.abs(yValue) >= (0.2)){
+                    if (right.getCurrentDraw() >= 3000 || left.getCurrentDraw() >= 3000) {
+                        currentReg = new Timer();
+                        currentReg.schedule(new CurrentReg(), 1);
+                    } else {
+                        currentDiv = 1;
+                    }
+                } else {
+                    currentDiv = 1;
+                }
+
 
             //Tank Drive (if driver prefers it
 //            robot.left1.setPower(gamepad1.left_stick_y);
@@ -170,18 +203,69 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             //GAMEPAD 2
             //Sets Servo Position to Top or Bottom
             if (gamepad2.dpad_up) {
-//                intakePosition = -32;
-                robot.drop.setTargetPosition(robot.TOP_INTAKE); // Top
-                robot.drop.setPower(0.4);
+
+                robot.drop.setPower(0.8);
+
+
+
+
+
+
+
+
+////                intakePosition = -32;
+//                if (middlePo == true){
+//                    currentPosition = robot.drop.getCurrentPosition() + 100;
+//                    //robot.drop.setTargetPosition(robot.drop.getCurrentPosition() + 100); // Middle
+//                    //robot.drop.setPower(0.8);
+//                }
+//                else if(bottomPo== true){
+//                    currentPosition = robot.drop.getCurrentPosition() + 200;
+////                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition() + 200);
+////                    robot.drop.setPower(0.7);
+//                }
+////                else{
+//////                    robot.drop.setPower(0.5);
+//////                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
+////                }
+//
+//                topPo = true;
+//                middlePo = false;
+//                bottomPo = false;
+
+
             } else if (gamepad2.dpad_right) {
+
+
+
+
+
+//                if (topPo == true){
+//                    currentPosition = robot.drop.getCurrentPosition() - 200;
+////                    currentPosition = robot.drop.getCurrentPosition() - 200;
+////                    robot.drop.setPower(0.8);
+//                }
+//                else if(bottomPo== true){
+//                    currentPosition = robot.drop.getCurrentPosition() + 100;
+//                    //robot.drop.setPower(0.6);
+//                }
+////                else{
+////                    robot.drop.setPower(0.5);
+////                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
+////                }
+
+//                topPo = false;
+//                middlePo = true;
+//                bottomPo = false;
+                //robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //                intakePosition = -95;
 //                positionSet = new Timer();
 //                positionSet.schedule(new positionTimer, 0.5,0.5){
 //                }
-                robot.drop.setTargetPosition(robot.MIDDLE_INTAKE); // Middle
-                robot.drop.setPower(0.8);
-
-//                if(robot.drop.getCurrentPosition() < -75 && robot.drop.getCurrentPosition() > -105) {
+//                robot.drop.setTargetPosition(robot.drop.getCurrentPosition() + robot.MIDDLE_INTAKE); // Middle
+//                robot.drop.setPower(0.8);
+//
+////                if(robot.drop.getCurrentPosition() < -75 && robot.drop.getCurrentPosition() > -105) {
 //                    robot.drop.setTargetPosition(-90);
 //                    robot.drop.setPower(0.8);
 //                }
@@ -193,33 +277,70 @@ public class PennyslvaniaTeleop extends LinearOpMode {
                 //
                 // }
             } else if (gamepad2.dpad_down) {
-//                intakePosition = -196;
-                robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);//Bottom
-                robot.drop.setPower(-0.4);
+
+                robot.drop.setPower(-0.6);
             }
+
+
+
+
+//                if (topPo == true){
+//                    currentPosition = robot.drop.getCurrentPosition() - 200;
+////                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition() - 200); // Middle
+////                    robot.drop.setPower(0.8);
+//                }
+//                else if(middlePo== true){
+//                    currentPosition = robot.drop.getCurrentPosition() - 100;
+////                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition() - 100);
+//                }
+////                else{
+////                    robot.drop.setPower(0.5);
+////                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
+////                }
+//
+//                topPo = false;
+//                middlePo = false;
+//                bottomPo = true;
+////                intakePosition = -196;
+
+
             else if (gamepad2.dpad_left){
-                    robot.drop.setPower(0);
-                    if(robot.drop.getCurrentPosition() < 20){
-                        robot.drop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                        robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    }
+                topPo = true;
+                middlePo = true;
+                bottomPo = true;
+
+
+//                dropper = new TimerTask(){
+//                    public void run(){
+//                        robot.drop.setPower(0);
+//                        robot.drop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                        robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    }
+//                };
+//
+//                        robot.drop.setTargetPosition(200);
+//                        robot.drop.setPower(-0.6);
+//                        leftGamepad.scheduleAtFixedRate(dropper, 2000, 500);
                 }
 
-            if(robot.drop.getTargetPosition() == robot.MIDDLE_INTAKE) {
-                if (robot.drop.getCurrentPosition() > -115 && robot.drop.getCurrentPosition() < -95) {
-                    robot.drop.setPower(0);
-                }
-            }
-            if(robot.drop.getTargetPosition() == robot.TOP_INTAKE) {
-                if (robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10) {
-                    robot.drop.setPower(0);
-                }
-            }
-            if(robot.drop.getTargetPosition() == robot.BOTTOM_INTAKE) {
-                if (robot.drop.getCurrentPosition() > -200 && robot.drop.getCurrentPosition() < -190) {
-                    robot.drop.setPower(0);
-                }
-            }
+//                robot.drop.setTargetPosition(currentPosition);
+//                robot.drop.setPower(0.8);
+
+//            if(robot.drop.getTargetPosition() == robot.MIDDLE_INTAKE) {
+//                if (robot.drop.getCurrentPosition() > -115 && robot.drop.getCurrentPosition() < -95) {
+//                    robot.drop.setPower(0);
+//                }
+////            }
+//            if(robot.drop.getTargetPosition() == robot.TOP_INTAKE) {
+//                if (/*robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10*/ robot.drop.getCurrentPosition() > currentPosition) {
+//                    robot.drop.setPower(0);
+//                }
+//            }
+//            if(robot.drop.getTargetPosition() == robot.BOTTOM_INTAKE) {
+//                if (/*robot.drop.getCurrentPosition() < -190 && robot.drop.getCurrentPosition() < -190*/ robot.drop.getCurrentPosition() < currentPosition - 200) {
+//                    robot.drop.setPower(0);
+//                }
+//            }
 //            if(robot.drop.getCurrentPosition() < 10 && robot.drop.getCurrentPosition() > -10){
 //                robot.drop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //                robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -243,6 +364,9 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //                robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
 //                robot.drop.setTargetPosition(robot.drop.getCurrentPosition() - .01);
 //            }
+            else if(hardStop.getCurrentDraw() >= 2000){
+                robot.drop.setPower(0);
+            }
 
             //Move intake in or out
             if (gamepad2.b) {
@@ -257,40 +381,42 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //            robot.bop.setPower(gamepad2.right_stick_y / 1.25);
 
             if(gamepad2.x){
-                robot.bop.setPower(.9);
+                robot.bop.setPower(.7);
                 buttonFlag = false;
             }
 
-            if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
-                if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
-                    if (robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10) {
-                        if (robot.rotateMech.getCurrentPosition() < 0) {
-                            robot.rotateMech.setTargetPosition(0);
-                            robot.rotateMech.setPower(0.1);
-                        }
-
-                        if (robot.rotateMech.getCurrentPosition() > 0) {
-
-                            robot.rotateMech.setPower(-0.1);
-                        }
-                    }
-                }
-            }
+//            if (robot.bopLimit.red() >= 90 && robot.bopLimit.alpha() < 350) {
+//                if (robot.bopLimit.red() >= 90 && robot.bopLimit.alpha() < 400) {
+//                    if (robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10) {
+//                        if (robot.rotateMech.getCurrentPosition() < 0) {
+//                            robot.rotateMech.setTargetPosition(0);
+//                            robot.rotateMech.setPower(0.1);
+//                        }
+//                        if (robot.rotateMech.getCurrentPosition() > 0) {
+//                            robot.rotateMech.setPower(-0.1);
+//                        }
+//                    }
+//                }
+//            }
 
 
-            if (robot.bopLimit.red() >= 155  && robot.bopLimit.alpha() < 400) {
+            if (robot.bopLimit.red() >= 90  && robot.bopLimit.alpha() < 400) {
                     if(gamepad2.right_stick_y <= -.1){
                         robot.bop.setPower(gamepad2.right_stick_y * 0.95);
                     }
                     else{
                         robot.bop.setPower(0);
                     }
-                robot.drop.setTargetPosition(robot.TOP_INTAKE); // Top
-                robot.drop.setPower(0.7);
-                if(robot.drop.getCurrentPosition() > 180 && robot.drop.getCurrentPosition() < 200){
-                    robot.drop.setPower(0.1);
-                    robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
+                //robot.drop.setTargetPosition(robot.TOP_INTAKE); // Top
+                if (hardStop.getCurrentDraw() <= 1200){
+                robot.drop.setPower(0.9);}
+                else{
+                        robot.drop.setPower(0);
                 }
+//                if(robot.drop.getCurrentPosition() > 180 && robot.drop.getCurrentPosition() < 200){
+////                    robot.drop.setPower(0.1);
+////                    //robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
+////                }
             }
             else if (buttonFlag == true){
                 robot.bop.setPower(gamepad2.right_stick_y * 0.95);
@@ -298,11 +424,11 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             }
 
             //Rotates the Intake Arm
-            if(gamepad2.right_trigger >= 0.5){
-                robot.rotateMech.setPower(-gamepad2.right_trigger * 0.5);
+            if(gamepad2.right_bumper){
+                robot.rotateMech.setPower(-0.9);
             }
-            else if (gamepad2.left_trigger >= 0.5){
-                robot.rotateMech.setPower(gamepad2.left_trigger * 0.5);
+            else if (gamepad2.left_bumper){
+                robot.rotateMech.setPower(0.9);
             }
             else{
                 robot.rotateMech.setPower(0);
@@ -335,14 +461,15 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //            telemetry.addData("right position", robot.right1.getCurrentPosition());
 //            telemetry.addData("left power", robot.left1.getPower());
 //            telemetry.addData("left position", robot.left1.getCurrentPosition());
-//            telemetry.addData("turret position", robot.rotateMech.getCurrentPosition());
-//            telemetry.addData("Turret Power", robot.rotateMech.getPower());
+            telemetry.addData("turret position", robot.rotateMech.getCurrentPosition());
+           telemetry.addData("Turret Power", robot.rotateMech.getPower());
             //telemetry.addData("heading", robot.angles.firstAngle);
 //            telemetry.addData("Total current", expansionHub.getTotalModuleCurrentDraw());
 //            telemetry.addData("I2C current", expansionHub.getI2cBusCurrentDraw());
 //            telemetry.addData("GPIO current", expansionHub.getGpioBusCurrentDraw());
-//            telemetry.addData("Left current", left.getCurrentDraw());
-//            telemetry.addData("Right current", right.getCurrentDraw());
+            telemetry.addData("Hard Current:", hardStop.getCurrentDraw());
+            telemetry.addData("Left current", left.getCurrentDraw());
+            telemetry.addData("Right current", right.getCurrentDraw());
             telemetry.addData("drop position", robot.drop.getCurrentPosition());
             telemetry.addData("Drop Commanded Position", robot.drop.getTargetPosition());
             telemetry.addData("Drop Power", robot.drop.getPower());
@@ -365,18 +492,18 @@ public class PennyslvaniaTeleop extends LinearOpMode {
 //
 //    }
 
-    class RemindTask extends TimerTask {
-        public void run(){
-            robot.drop.setPower(0.05);
-            stopMotor.cancel();
-        }
-    }
-    class MoveOut extends TimerTask{
-        public void run(){
-            robot.sorter.setPower(0.8);
-            sorterOut.cancel();
-        }
-}
+//    class RemindTask extends TimerTask {
+//        public void run(){
+//            robot.drop.setPower(0.05);
+//            stopMotor.cancel();
+//        }
+//    }
+//    class MoveOut extends TimerTask{
+//        public void run(){
+//            robot.sorter.setPower(0.8);
+//            sorterOut.cancel();
+//        }
+//}
     class BopOut extends TimerTask{
         public void  run(){
             robot.bop.setPower(-0.4);
@@ -393,9 +520,11 @@ public class PennyslvaniaTeleop extends LinearOpMode {
     class CurrentLim extends TimerTask{
         public void run(){
             limitFlag = true;
-            currentLim.cancel();
+            cancel();
         }
     }
+
+
     void composeTelemetry() {
 
 
