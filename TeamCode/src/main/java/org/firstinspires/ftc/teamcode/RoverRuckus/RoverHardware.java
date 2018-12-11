@@ -27,8 +27,7 @@ import java.util.Locale;
 
 public class RoverHardware {
 
-
-
+    //Create hardware in code
     HardwareMap HwMap;
 
     //Drive Motors
@@ -52,8 +51,7 @@ public class RoverHardware {
     //Sorter Flipper
     public Servo sorterFlip;
     //Intake Servo
-    public CRServo intake;
-
+    public DcMotor intake;
 
 
     //Create Sensors
@@ -72,13 +70,9 @@ public class RoverHardware {
     Orientation angles;
     Acceleration gravity;
 
-    //Exapnsion Hubs
-    //ExpansionHubEx expansionHub;
-    //ExpansionHubEx expansionHub3;
-
-    //Expansion Hub Motors
-    //ExpansionHubMotor left,right;
-
+    //Create Limit Switches
+    DigitalChannel topDrop;
+    DigitalChannel bottomDrop;
 
     RevBulkData bulkData;
     AnalogInput a0, a1, a2, a3;
@@ -99,23 +93,12 @@ public class RoverHardware {
 
     public void init(HardwareMap hwm) {
 
+        //Give mappings for each hardware device do the phone knows what goes to which port
         HwMap = hwm;
-        //Expansion Hubs
-        //expansionHub = HwMap.get(ExpansionHubEx.class, "Expansion Hub 2");
-        //expansionHub3 = HwMap.get(ExpansionHubEx.class, "Expansion Hub 3");
-
-
-        //Expansion Hub Motors
-        //left = (ExpansionHubMotor) HwMap.dcMotor.get("left1");
-        //right = (ExpansionHubMotor) HwMap.dcMotor.get("right1");
-
-        //Drive Motors
         left1 = HwMap.dcMotor.get("left1");
         right1 = HwMap.dcMotor.get("right1");
         //Hanging Motor
         hang = HwMap.dcMotor.get("hang");
-        //Launching Motor
-        //launcher = HwMap.dcMotor.get("launcher");
         //bopper
         bop = HwMap.dcMotor.get("bop");
         //Rotation Mechanism
@@ -129,7 +112,7 @@ public class RoverHardware {
         //sorterFlips
         sorterFlip = HwMap.servo.get("sorterFlip");
         //Intake servo
-        intake = HwMap.crservo.get("intake");
+        intake = HwMap.dcMotor.get("intake");
 
         //ColorSensors
         bottomLimit = HwMap.colorSensor.get("bottomLimit");
@@ -141,26 +124,28 @@ public class RoverHardware {
         //Gyro
         imu = HwMap.get(BNO055IMU.class, "imu");
 
-        //Range Sensors
-      // sensorRange = HwMap.get(DistanceSensor.class, "sensor_range");
+        //Limit Switches
+        topDrop = HwMap.get(DigitalChannel.class, "topDrop");
+        bottomDrop = HwMap.get(DigitalChannel.class, "bottomDrop");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
-        right1.setDirection(DcMotorSimple.Direction.REVERSE); //should be the other way
+        right1.setDirection(DcMotorSimple.Direction.REVERSE);
         hang.setDirection(DcMotorSimple.Direction.FORWARD);
         bop.setDirection(DcMotorSimple.Direction.FORWARD);
-        //launcher.setDirection(DcMotorSimple.Direction.FORWARD);
         rotateMech.setDirection(DcMotorSimple.Direction.FORWARD);
         drop.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
 
         left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         hang.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rotateMech.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         drop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
+
 //
     public void initServoPositions() {
         sorterFlip.setPosition(SORTER_UP);

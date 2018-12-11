@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,8 +23,7 @@ import org.openftc.revextensions2.RevExtensions2;
 import java.util.Locale;
 
 @TeleOp(name = "Qualifier Teleop", group = "TeleOp")
-@Disabled
-public class PennyslvaniaTeleop extends LinearOpMode {
+public class WisconsinQualifierTelop extends LinearOpMode {
 
     public RoverHardware robot = new RoverHardware();
 
@@ -101,7 +99,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
         while (opModeIsActive()) {
             if (limitFlag = false) {
                 currentLim = new Timer();
-                currentLim.schedule(new PennyslvaniaTeleop.CurrentLim(), 20000, 10);
+                currentLim.schedule(new WisconsinQualifierTelop.CurrentLim(), 20000, 10);
             }
 
 
@@ -272,16 +270,16 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             //TODO ;sdfjkdasljkf;;adslfkjsa;lkdfj;lasdkfj;lsfkj;
             if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
                 //if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
-                    if (!robot.topDrop.getState()/*robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10*/) {
-                        if (robot.rotateMech.getCurrentPosition() < 0) {
-                            robot.rotateMech.setTargetPosition(0);
-                            robot.rotateMech.setPower(0.1);
-                        }
-
-                        if (robot.rotateMech.getCurrentPosition() > 0) {
-                            robot.rotateMech.setPower(-0.1);
-                        }
+                if (!robot.topDrop.getState()/*robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10*/) {
+                    if (robot.rotateMech.getCurrentPosition() < 0) {
+                        robot.rotateMech.setTargetPosition(0);
+                        robot.rotateMech.setPower(0.1);
                     }
+
+                    if (robot.rotateMech.getCurrentPosition() > 0) {
+                        robot.rotateMech.setPower(-0.1);
+                    }
+                }
                 //}
             }
 
@@ -383,7 +381,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
             robot.sorter.setPower(0.8);
             sorterOut.cancel();
         }
-}
+    }
     class BopOut extends TimerTask{
         public void  run(){
             robot.bop.setPower(-0.4);
