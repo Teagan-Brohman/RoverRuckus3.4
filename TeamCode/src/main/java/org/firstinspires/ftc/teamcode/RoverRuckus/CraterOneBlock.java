@@ -16,6 +16,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Autonomous(name = "BlueCraterOneBlock", group = "Autonomous")
 //@Disabled
@@ -27,6 +29,7 @@ public class CraterOneBlock extends LinearOpMode {
     float angleTurn; //create a float variable used to store our current heading position while turning
     int blue; //create a integer variable used to store the amount of blue being registered from a color sensor
     int red; //create a integer variable used to store the amount of red being registered from a color sensor
+    Timer waitTimer;
 
     public void runOpMode() {//Starts running the code
         robot.init(hardwareMap); //register the hardware mappings from the hardware class with names given to motors servos, etc.
@@ -136,10 +139,10 @@ public class CraterOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > 30 && opModeIsActive() || robot.angles.firstAngle < 45 && opModeIsActive()) {
+            while (robot.angles.firstAngle > 30 && opModeIsActive() || robot.angles.firstAngle < 50 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
-                robot.left1.setPower(Math.abs((38 - angleTurn) / 55) * 0.5);
-                robot.right1.setPower(Math.abs((38 - angleTurn) / 55) * -0.5);
+                robot.left1.setPower(Math.abs((38 - angleTurn) / 45) * 0.6);
+                robot.right1.setPower(Math.abs((38 - angleTurn) / 45) * -0.6);
                 telemetry.addData("left1 power", robot.left1.getPower());
                 telemetry.addData("right1 power", robot.right1.getPower());
                 telemetry.addData("heading", robot.angles.firstAngle);
@@ -173,27 +176,48 @@ public class CraterOneBlock extends LinearOpMode {
 //            robot.drop.setPower(0);
 //            robot.drop.setTargetPosition(0);
 //            if(robot.angles.firstAngle < 25) {
+                robot.rotateMech.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                sleep(100);
                 robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.rotateMech.setTargetPosition(180);
-                robot.rotateMech.setPower(0.8);
-                while (robot.rotateMech.isBusy()){
-                }
+            robot.rotateMech.setTargetPosition(180);
+            robot.rotateMech.setPower(0.8);
+            while (robot.rotateMech.getCurrentPosition() < 170 && opModeIsActive()){
+                telemetry.addData("rotate mech position", robot.rotateMech.getCurrentPosition());
+                telemetry.update();
+            }
+            robot.rotateMech.setPower(0);
             //}
-//
+//r
+//            robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);
+//            robot.drop.setPower(-0.8);
+//            while(robot.drop.getCurrentPosition() <= 180 && opModeIsActive()){
+//                telemetry.addData("Drop Motor Power", robot.drop.getPower());
+//                telemetry.addData("Drop Motor Position", robot.drop.getCurrentPosition());
+//            }
+
             robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);
             robot.drop.setPower(-0.8);
-            while(robot.drop.isBusy() && opModeIsActive()){
+            while(robot.drop.getCurrentPosition() <= -150 && opModeIsActive()){
                 telemetry.addData("Drop Motor Power", robot.drop.getPower());
-                telemetry.addData("Drop Motor Position", robot.drop.getCurrentPosition());
+                telemetry.addData("Drop Motor Position", robot.drop.getCurrentPosition( ));
             }
+            sleep(300);
             robot.intake.setPower(0.9);
 //
-                robot.bop.setTargetPosition(-1400);
-                robot.bop.setPower(-0.6);
-                while (robot.bop.isBusy() && opModeIsActive()) {
-                    robot.intake.setPower(0.9);
-                }
+            robot.bop.setTargetPosition(-1800);
+            robot.bop.setPower(-0.6);
+            while (robot.bop.isBusy() && opModeIsActive()) {
+                robot.intake.setPower(0.9);
+            }
+
+//
+//                robot.bop.setTargetPosition(-1400);
+//                robot.bop.setPower(-0.6);
+//                while (robot.bop.isBusy() && opModeIsActive()) {
+//                    robot.intake.setPower(0.9);
+//                }
 
         }
         else{
@@ -224,7 +248,7 @@ public class CraterOneBlock extends LinearOpMode {
             robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);
             robot.drop.setPower(-0.8);
-            while(robot.drop.isBusy() && opModeIsActive()){
+            while(robot.drop.getCurrentPosition() <= 180 && opModeIsActive()){
                 telemetry.addData("Drop Motor Power", robot.drop.getPower());
                 telemetry.addData("Drop Motor Position", robot.drop.getCurrentPosition( ));
             }
@@ -266,8 +290,9 @@ public class CraterOneBlock extends LinearOpMode {
 
         robot.drop.setTargetPosition(robot.TOP_INTAKE);
         robot.drop.setPower(0.8);
-        sleep(1000);
 
+        waitTimer = new Timer();
+        waitTimer.schedule(new secondwait(), 3000,100);
 
 
 ////        //turn right
@@ -347,7 +372,7 @@ public class CraterOneBlock extends LinearOpMode {
         robot.right1.setTargetPosition(-6000);
         robot.left1.setPower(-0.9 * 1.1);
         robot.right1.setPower(-0.9);
-        while (robot.left1.isBusy()) {}
+        while (robot.left1.isBusy() && opModeIsActive()) {}
         robot.left1.setPower(-0.8);
         robot.right1.setPower(-0.8);
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -413,7 +438,7 @@ public class CraterOneBlock extends LinearOpMode {
         sleep(4000);
 
 
-        while (robot.left1.isBusy() || robot.right1.isBusy()) {
+        while (robot.left1.isBusy() || robot.right1.isBusy() && opModeIsActive()) {
 //            robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //            robot.bop.setTargetPosition(-2400);
 //            robot.bop.setPower(-1);
@@ -443,6 +468,15 @@ public class CraterOneBlock extends LinearOpMode {
 //                robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
 //            }
 //        }
+    }
+
+    class secondwait extends TimerTask {
+        public void run(){
+            robot.drop.setPower(0);
+            robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
+            robot.intake.setPower(0);
+            waitTimer.cancel();
+        }
     }
 
         void composeTelemetry () {

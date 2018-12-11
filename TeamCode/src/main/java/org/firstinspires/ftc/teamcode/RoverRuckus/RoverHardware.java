@@ -90,7 +90,7 @@ public class RoverHardware {
     public final double DILBERT_DOWN = 0.7;
     public final double DILBERT_UP = 0.0;
     public final double SORTER_DOWN = 0.2;
-    public final double SORTER_UP = 0.5;
+    public final double SORTER_UP = 0.45;
 
     public RoverHardware() {
         System.out.println("Created new RRHardwarePresets Object!");
