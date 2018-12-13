@@ -48,7 +48,7 @@ public class PennyslvaniaTeleop extends LinearOpMode {
     public int currentDiv = 1;
 
 
-    public void runOpMode() {
+    public void runOpMode(){
         robot.init(hardwareMap);
 
         RevExtensions2.init();
