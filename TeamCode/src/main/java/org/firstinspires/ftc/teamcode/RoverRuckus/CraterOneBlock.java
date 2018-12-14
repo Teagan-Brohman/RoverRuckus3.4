@@ -200,22 +200,22 @@ public class CraterOneBlock extends LinearOpMode {
 
             //Drive forward and slightly into the wall
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-7800);
-            robot.right1.setTargetPosition(-7800);
-            robot.left1.setPower(-0.9 * 1.1);
-            robot.right1.setPower(-0.9);
-            while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
-            robot.left1.setPower(-0.4);
-            robot.right1.setPower(-0.4);
-            robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
-            telemetry.update();
-        }
+        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.left1.setTargetPosition(-7800);
+        robot.right1.setTargetPosition(-7800);
+        robot.left1.setPower(-0.9 * 1.1);
+        robot.right1.setPower(-0.9);
+        while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
+        robot.left1.setPower(-0.4);
+        robot.right1.setPower(-0.4);
+        robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
+        telemetry.update();
+    }
         if (blockPosition == 2) {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
