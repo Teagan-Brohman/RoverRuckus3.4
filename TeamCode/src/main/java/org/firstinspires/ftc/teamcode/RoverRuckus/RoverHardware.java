@@ -149,7 +149,6 @@ public class RoverHardware {
 //
     public void initServoPositions() {
         sorterFlip.setPosition(SORTER_UP);
-        //drop.(TOP_INTAKE);
     }
 
     String formatAngle(AngleUnit angleUnit, double angle) {
