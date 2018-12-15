@@ -92,7 +92,7 @@ public class CraterOneBlock extends LinearOpMode {
         waitForStart();
 
 //        //Raise arm
-        while (robot.upperLimit.red() > 300 && opModeIsActive()) {
+        while (robot.upperLimit.red() > 250 && opModeIsActive()) {
             robot.hang.setPower(1);
         }
         robot.hang.setPower(0);

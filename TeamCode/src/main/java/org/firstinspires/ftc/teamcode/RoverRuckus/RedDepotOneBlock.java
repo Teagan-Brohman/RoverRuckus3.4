@@ -14,13 +14,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.openftc.revextensions2.RevExtensions2;
+import java.util.TimerTask;
+import java.util.Timer;
 
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
-@Autonomous(name = "BlueDepotOneBlock", group = "Autonomous")
-public class DepotOneBlock extends LinearOpMode {
+@Autonomous(name = "RedDepotOneBlock", group = "Autonomous")
+public class RedDepotOneBlock extends LinearOpMode {
     public RoverHardware robot = new RoverHardware(); //Create a new instance of the
 
     //Create detector gateway
@@ -722,6 +722,8 @@ public class DepotOneBlock extends LinearOpMode {
             dropMark.cancel();
         }
     }
+
+
 
     void composeTelemetry(){
 

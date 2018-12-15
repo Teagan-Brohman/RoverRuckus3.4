@@ -92,7 +92,7 @@ public class RedCraterOneBlock extends LinearOpMode {
         waitForStart();
 
 //        //Raise arm
-        while (robot.upperLimit.red() > 300 && opModeIsActive()) {
+        while (robot.upperLimit.red() > 250 && opModeIsActive()) {
             robot.hang.setPower(1);
         }
         robot.hang.setPower(0);
@@ -464,7 +464,7 @@ public class RedCraterOneBlock extends LinearOpMode {
         telemetry.update();
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while (robot.angles.firstAngle > 6 && opModeIsActive() || (robot.angles.firstAngle < -4 && robot.angles.firstAngle < 0) && opModeIsActive()) {
+        while (robot.angles.firstAngle < 10 && opModeIsActive()) {
             robot.left1.setPower(0.1);
             robot.right1.setPower(-0.9);
             telemetry.update();
