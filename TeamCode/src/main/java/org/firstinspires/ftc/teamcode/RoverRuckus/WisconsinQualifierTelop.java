@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.openftc.revextensions2.ExpansionHubEx;
 import org.openftc.revextensions2.ExpansionHubMotor;
 import org.openftc.revextensions2.RevBulkData;
@@ -288,6 +289,8 @@ public class WisconsinQualifierTelop extends LinearOpMode {
             telemetry.addData("bottomDrop", robot.bottomDrop.getState());
             telemetry.addData("dpad up", gamepad2.dpad_up);
             telemetry.addData("dpad up", gamepad2.dpad_down);
+            telemetry.addData("frontDetect Distance in Inches:", robot.frontDetect.getDistance(DistanceUnit.INCH));
+            telemetry.addData("backDetect Distance in Inches:", robot.backDetect.getDistance(DistanceUnit.INCH));
             telemetry.update();
         }
     }
