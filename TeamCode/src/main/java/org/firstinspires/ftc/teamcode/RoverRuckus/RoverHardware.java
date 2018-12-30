@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -17,6 +18,7 @@ import java.util.Timer;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.openftc.revextensions2.ExpansionHubEx;
 import org.openftc.revextensions2.ExpansionHubMotor;
@@ -25,7 +27,7 @@ import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
-public class RoverHardware {
+abstract public class RoverHardware extends LinearOpMode {
 
     //Create hardware in code
     HardwareMap HwMap;
@@ -56,7 +58,8 @@ public class RoverHardware {
 
     //Create Sensors
     //DistanceSensor senseOBJ;
-    public DistanceSensor sensorRange;
+    public DistanceSensor frontDetect;
+    public DistanceSensor backDetect;
 
     //Color Sensor 'Limit Switches'
     public ColorSensor bottomLimit;
@@ -85,6 +88,11 @@ public class RoverHardware {
     public final double DILBERT_UP = 0.0;
     public final double SORTER_DOWN = 0.2;
     public final double SORTER_UP = 0.45;
+
+    public boolean collisionFlag = false;
+
+    double savedMotorPowerRight;
+    double savedMotorPowerLeft;
 
     public RoverHardware() {
         System.out.println("Created new RRHardwarePresets Object!");
@@ -127,6 +135,10 @@ public class RoverHardware {
         //Limit Switches
         topDrop = HwMap.get(DigitalChannel.class, "topDrop");
         bottomDrop = HwMap.get(DigitalChannel.class, "bottomDrop");
+
+        //Distance Sensors
+        frontDetect = HwMap.get(DistanceSensor.class, "frontDetect");
+        backDetect = HwMap.get(DistanceSensor.class, "backDetect");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -214,5 +226,42 @@ public class RoverHardware {
             // Waiting for robot to arrive at destination.
         }
     }
+
+    public void preventCollision(int limitingInches, String input){
+        if(input == "frontDetect") {
+            while (frontDetect.getDistance(DistanceUnit.INCH) < limitingInches && opModeIsActive()) {
+                 this.left1.setPower(0);
+                 this.right1.setPower(0);
+            }
+            this.right1.setPower(savedMotorPowerRight);
+            this.left1.setPower(savedMotorPowerLeft);
+        } else if(input == "backDetect"){
+            while (backDetect.getDistance(DistanceUnit.INCH) < limitingInches && opModeIsActive()){
+                this.left1.setPower(0);
+                this.right1.setPower(0);
+            }
+            this.right1.setPower(savedMotorPowerRight);
+            this.left1.setPower(savedMotorPowerLeft);
+        }
+    }
+    public void searchingForCollision(int limitingInches, String input){
+        if(input == "frontDetect" && collisionFlag == false){
+            if(frontDetect.getDistance(DistanceUnit.INCH) < limitingInches){
+                savedMotorPowerRight = this.right1.getPower();
+                savedMotorPowerLeft = this.left1.getPower();
+                collisionFlag = true;
+                preventCollision(limitingInches, input);
+            }
+        }
+        else if(input == "backDetector" && collisionFlag == false){
+            if(backDetect.getDistance(DistanceUnit.INCH) < limitingInches){
+                savedMotorPowerRight = this.right1.getPower();
+                savedMotorPowerLeft = this.left1.getPower();
+                collisionFlag = true;
+                preventCollision(limitingInches, input);
+            }
+        }
+    }
+
 }
 
