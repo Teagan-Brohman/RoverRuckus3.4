@@ -21,8 +21,9 @@ import java.util.TimerTask;
 
 @Autonomous(name = "BlueCraterOneBlock", group = "Autonomous")
 //@Disabled
-public class CraterOneBlock extends LinearOpMode {
+public class CraterOneBlock extends BaseAuto {
     public RoverHardware robot = new RoverHardware(); //Initialize our Hardware referenced in our hardware class
+
 
     private GoldAlignDetector detector; //Initialize detector used to search and find the golden block
 
