@@ -110,8 +110,8 @@ public class DepotOneBlock extends LinearOpMode {
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.left1.setTargetPosition(900);
-        robot.right1.setTargetPosition(900);
+        robot.left1.setTargetPosition(450);//900
+        robot.right1.setTargetPosition(450);//900
         robot.left1.setPower(0.8);
         robot.right1.setPower(0.8);
         robot.bop.setTargetPosition(-4000);
@@ -204,8 +204,8 @@ public class DepotOneBlock extends LinearOpMode {
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(3600);
-            robot.right1.setTargetPosition(3600);
+            robot.left1.setTargetPosition(1800);//3600
+            robot.right1.setTargetPosition(1800);//3600
             robot.left1.setPower(0.8);
             robot.right1.setPower(0.8);
             while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -235,8 +235,8 @@ public class DepotOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(7800);
-            robot.right1.setTargetPosition(7800);
+            robot.left1.setTargetPosition(3900);//7800
+            robot.right1.setTargetPosition(3900);//7800
             robot.left1.setPower(0.9 * 1.1);
             robot.right1.setPower(0.9);
             while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
@@ -247,14 +247,14 @@ public class DepotOneBlock extends LinearOpMode {
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(2500);
-            robot.right1.setTargetPosition(2500);
+            robot.left1.setTargetPosition(1250);
+            robot.right1.setTargetPosition(1250);//2500
             robot.left1.setPower(0.9);
             robot.right1.setPower(0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {}
 
-            robot.left1.setTargetPosition(500);
-            robot.right1.setTargetPosition(500);
+            robot.left1.setTargetPosition(250);
+            robot.right1.setTargetPosition(250);//500
             robot.left1.setPower(-0.7);
             robot.right1.setPower(-0.7);
             while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -279,8 +279,8 @@ public class DepotOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(8400);
-            robot.right1.setTargetPosition(8400);
+            robot.left1.setTargetPosition(4200);//8400
+            robot.right1.setTargetPosition(4200);
             robot.left1.setPower(0.8 * 1.4);
             robot.right1.setPower(0.8);
 
@@ -297,14 +297,14 @@ public class DepotOneBlock extends LinearOpMode {
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(3000);
-            robot.right1.setTargetPosition(3000);
+            robot.left1.setTargetPosition(1500);//3000
+            robot.right1.setTargetPosition(1500);
             robot.left1.setPower(0.9);
             robot.right1.setPower(0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {}
 
-            robot.left1.setTargetPosition(500);
-            robot.right1.setTargetPosition(500);
+            robot.left1.setTargetPosition(250);//500
+            robot.right1.setTargetPosition(250);
             robot.left1.setPower(-0.7);
             robot.right1.setPower(-0.7);
             while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -329,8 +329,8 @@ public class DepotOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(8600);
-            robot.right1.setTargetPosition(8600);
+            robot.left1.setTargetPosition(4300);//8600
+            robot.right1.setTargetPosition(4300);
             robot.left1.setPower(0.8 * 1.6);
             robot.right1.setPower(0.8);
 
