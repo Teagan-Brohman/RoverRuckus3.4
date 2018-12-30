@@ -105,8 +105,8 @@ public class RedIdleOneBlock extends LinearOpMode {
 
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(900);
-        robot.right1.setTargetPosition(900);
+        robot.left1.setTargetPosition(450);//900
+        robot.right1.setTargetPosition(450);
         robot.left1.setPower(0.8);
         robot.right1.setPower(0.8);
         while (robot.left1.isBusy() && robot.right1.isBusy() && opModeIsActive()) {
@@ -283,8 +283,8 @@ public class RedIdleOneBlock extends LinearOpMode {
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(1200);
-        robot.right1.setTargetPosition(1200);
+        robot.left1.setTargetPosition(600);//1200
+        robot.right1.setTargetPosition(600);
         robot.left1.setPower(0.8);
         robot.right1.setPower(0.8);
 
@@ -318,8 +318,8 @@ public class RedIdleOneBlock extends LinearOpMode {
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(5900);
-        robot.right1.setTargetPosition(5900);
+        robot.left1.setTargetPosition(2950);//5900
+        robot.right1.setTargetPosition(2950);
         robot.left1.setPower(0.8);
         robot.right1.setPower(0.8);
         while (robot.left1.isBusy() && opModeIsActive() || robot.right1.isBusy() && opModeIsActive()) {
@@ -347,8 +347,8 @@ public class RedIdleOneBlock extends LinearOpMode {
 //
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(-1600);
-        robot.right1.setTargetPosition(-1600);
+        robot.left1.setTargetPosition(-800);//-1600
+        robot.right1.setTargetPosition(-800);
         robot.left1.setPower(-0.8 * 1.1);
         robot.right1.setPower(-0.8);
         while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -403,8 +403,8 @@ public class RedIdleOneBlock extends LinearOpMode {
         robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(-1000);
-        robot.right1.setTargetPosition(-1000);
+        robot.left1.setTargetPosition(-500);
+        robot.right1.setTargetPosition(-500);//-1000
         robot.left1.setPower(-0.9);
         robot.right1.setPower(-0.9);
 
@@ -413,8 +413,8 @@ public class RedIdleOneBlock extends LinearOpMode {
         robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(-9300);
-        robot.right1.setTargetPosition(-9300);
+        robot.left1.setTargetPosition(-4650);//-9300
+        robot.right1.setTargetPosition(-4650);
         robot.left1.setPower(-0.9 * 1.2);
         robot.right1.setPower(-0.9);
         while (robot.left1.isBusy() && opModeIsActive()) {}

@@ -103,8 +103,8 @@ public class RedCraterOneBlock extends LinearOpMode {
         robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(900);
-        robot.right1.setTargetPosition(900);
+        robot.left1.setTargetPosition(450);//900
+        robot.right1.setTargetPosition(450);
         robot.left1.setPower(0.8);
         robot.right1.setPower(0.8);
         while (robot.left1.isBusy() && robot.right1.isBusy() && opModeIsActive()) {
@@ -176,8 +176,8 @@ public class RedCraterOneBlock extends LinearOpMode {
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(3400);
-            robot.right1.setTargetPosition(3400);
+            robot.left1.setTargetPosition(1700);//3400
+            robot.right1.setTargetPosition(1700);
             robot.left1.setPower(0.8);
             robot.right1.setPower(0.8);
             while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -204,8 +204,8 @@ public class RedCraterOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-7800);
-            robot.right1.setTargetPosition(-7800);
+            robot.left1.setTargetPosition(-3900);//-7800
+            robot.right1.setTargetPosition(-3900);
             robot.left1.setPower(-0.9 * 1.1);
             robot.right1.setPower(-0.9);
             while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
@@ -221,8 +221,8 @@ public class RedCraterOneBlock extends LinearOpMode {
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(2500);
-            robot.right1.setTargetPosition(2500);
+            robot.left1.setTargetPosition(1250);//2500
+            robot.right1.setTargetPosition(1250);
             robot.left1.setPower(0.9);
             robot.right1.setPower(0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -252,8 +252,8 @@ public class RedCraterOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(5200);
-            robot.right1.setTargetPosition(5200);
+            robot.left1.setTargetPosition(2600);//5200
+            robot.right1.setTargetPosition(2600);
             robot.left1.setPower(0.9);
             robot.right1.setPower(0.9);
 
@@ -287,8 +287,8 @@ public class RedCraterOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-6000);
-            robot.right1.setTargetPosition(-6000);
+            robot.left1.setTargetPosition(-3000);//-6000
+            robot.right1.setTargetPosition(-3000);
             robot.left1.setPower(-0.9 * 1.1);
             robot.right1.setPower(-0.9);
             while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
@@ -362,8 +362,8 @@ public class RedCraterOneBlock extends LinearOpMode {
                 }
                 robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.left1.setTargetPosition(900);
-                robot.right1.setTargetPosition(900);
+                robot.left1.setTargetPosition(450);//900
+                robot.right1.setTargetPosition(450);
                 robot.left1.setPower(0.8);
                 robot.right1.setPower(0.8);
                 while (robot.left1.isBusy() && robot.right1.isBusy() && opModeIsActive()) {
@@ -397,8 +397,8 @@ public class RedCraterOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(6200);
-            robot.right1.setTargetPosition(6200);
+            robot.left1.setTargetPosition(3100);//6200
+            robot.right1.setTargetPosition(3100);
             robot.left1.setPower(0.9);
             robot.right1.setPower(0.9);
 
@@ -432,8 +432,8 @@ public class RedCraterOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-6000);
-            robot.right1.setTargetPosition(-6000);
+            robot.left1.setTargetPosition(-3000);//-6000
+            robot.right1.setTargetPosition(-3000);
             robot.left1.setPower(-0.9 * 1.1);
             robot.right1.setPower(-0.9);
             while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
