@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import java.util.Locale;
 
+@Autonomous(name = "Collision Test", group = "Autonomous")
 public class CollisionTest extends BaseAuto {
     public RoverHardware robot = new RoverHardware();
 
@@ -39,7 +41,7 @@ public class CollisionTest extends BaseAuto {
         robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.left1.setPower(0.4);
         robot.right1.setPower(0.4);
-        while(robot.angles.thirdAngle < 2){
+        while(robot.angles.thirdAngle < 2    ){
             searchingForCollision(6, "frontDetect");
         }
     }
