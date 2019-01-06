@@ -87,7 +87,7 @@ public class SecondRobotTeleop extends LinearOpMode {
                 });
         telemetry.update();
         robot.initServoPositions();
-        robot.drop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //robot.drop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
 
 
@@ -110,7 +110,7 @@ public class SecondRobotTeleop extends LinearOpMode {
             robot.left1.setPower(Range.clip(leftPower, -1.0, 1.0));
             robot.right1.setPower(Range.clip(rightPower, -1.0, 1.0));
 
-            //Tank Drive (if driver prefers it)
+            //Tank Drive (if driver prefers it
 //            robot.left1.setPower(gamepad1.left_stick_y);
 //            robot.right1.setPower(gamepad1.right_stick_y);
 
@@ -159,23 +159,23 @@ public class SecondRobotTeleop extends LinearOpMode {
 
             //GAMEPAD 2
             //Sets Servo Position to Top or Bottom
-            if (gamepad2.dpad_up) {
-                robot.drop.setPower(0.7);
-                if(robot.intake.isBusy()){
-                    robot.intake.setPower(0);
-                }
-            }
-            else if (gamepad2.dpad_down) {
-                robot.drop.setPower(-0.65);
-            }else{
-                robot.drop.setPower(0);
-            }
-            if (!robot.bottomDrop.getState() && !gamepad2.dpad_up) {
-                robot.drop.setPower(0);
-            }
-            if (!robot.topDrop.getState() && !gamepad2.dpad_down) {
-                robot.drop.setPower(0);
-            }
+//            if (gamepad2.dpad_up) {
+//                robot.drop.setPower(0.7);
+//                if(robot.intake.isBusy()){
+//                    robot.intake.setPower(0);
+//                }
+//            }
+//            else if (gamepad2.dpad_down) {
+//                robot.drop.setPower(-0.65);
+//            }else{
+//                robot.drop.setPower(0);
+//            }
+//            if (!robot.bottomDrop.getState() && !gamepad2.dpad_up) {
+//                robot.drop.setPower(0);
+//            }
+//            if (!robot.topDrop.getState() && !gamepad2.dpad_down) {
+//                robot.drop.setPower(0);
+//            }
 
             //Move intake in or out
             if (gamepad2.b) {
@@ -189,12 +189,11 @@ public class SecondRobotTeleop extends LinearOpMode {
             //Moves intake arm in and out
 //            robot.bop.setPower(gamepad2.right_stick_y / 1.25);
 
-            if (gamepad2.x) {
-                robot.bop.setPower(.9);
-                buttonFlag = false;
-            }
+//            if (gamepad2.x) {
+//                robot.bop.setPower(.9);
+//                buttonFlag = false;
+//            }
 
-            //TODO ;sdfjkdasljkf;;adslfkjsa;lkdfj;lasdkfj;lsfkj;
 //            if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
 //                //if (robot.bopLimit.red() >= 150 && robot.bopLimit.alpha() < 400) {
 //                if (!robot.topDrop.getState()/*robot.drop.getCurrentPosition() > -20 && robot.drop.getCurrentPosition() < 10*/) {
@@ -210,12 +209,13 @@ public class SecondRobotTeleop extends LinearOpMode {
 //                //}
 //            }
 
-            //TODO ;lskdajf;alsjf;asldfkjsda;lfkjsda;lfkj;slfkj;alsdjf;lasdfj;lasdjf;lsadjkf
             if (robot.bopLimit.red() >= 110 && robot.bopLimit.alpha() < 300) {
                 if (gamepad2.right_stick_y <= -.1) {
-                    robot.bop.setPower(gamepad2.right_stick_y * 0.95);
+                    robot.leftBop.setPower(gamepad2.right_stick_y * 0.95);
+                    robot.rightBop.setPower(gamepad2.right_stick_y * 0.95);
                 } else {
-                    robot.bop.setPower(0);
+                    robot.leftBop.setPower(0);
+                    robot.rightBop.setPower(0);
                 }
 //                if(robot.topDrop.getState()) {
 ////                    //robot.drop.setTargetPosition(robot.TOP_INTAKE); // Top
@@ -225,7 +225,8 @@ public class SecondRobotTeleop extends LinearOpMode {
 //                    robot.drop.setPower(0);
 //                }
             } else if (buttonFlag == true) {
-                robot.bop.setPower(gamepad2.right_stick_y * 0.95);
+                robot.leftBop.setPower(gamepad2.right_stick_y * 0.95);
+                robot.rightBop.setPower(gamepad2.right_stick_y * 0.95);
             }
 
             //Rotates the Intake Arm
@@ -274,7 +275,7 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("Right current", right.getCurrentDraw());
 //            telemetry.addData("drop position", robot.drop.getCurrentPosition());
 //            telemetry.addData("Drop Commanded Position", robot.drop.getTargetPosition());
-            telemetry.addData("Drop Power", robot.drop.getPower());
+//            telemetry.addData("Drop Power", robot.drop.getPower());
 ////            telemetry.addData("Gamepad Right Y", gamepad1.right_stick_y);
 //            telemetry.addData("Button Flag", buttonFlag);
 //            telemetry.addData("Bop Alpha", robot.bopLimit.alpha());
@@ -300,12 +301,12 @@ public class SecondRobotTeleop extends LinearOpMode {
 //
 //    }
 
-    class RemindTask extends TimerTask {
-        public void run(){
-            robot.drop.setPower(0.05);
-            stopMotor.cancel();
-        }
-    }
+//    class RemindTask extends TimerTask {
+//        public void run(){
+//            robot.drop.setPower(0.05);
+//            stopMotor.cancel();
+//        }
+//    }
     class MoveOut extends TimerTask{
         public void run(){
             robot.sorter.setPower(0.8);
@@ -314,7 +315,8 @@ public class SecondRobotTeleop extends LinearOpMode {
     }
     class BopOut extends TimerTask{
         public void  run(){
-            robot.bop.setPower(-0.4);
+            robot.leftBop.setPower(-0.4);
+            robot.rightBop.setPower(-0.4);
             intakeOut.cancel();
         }
     }

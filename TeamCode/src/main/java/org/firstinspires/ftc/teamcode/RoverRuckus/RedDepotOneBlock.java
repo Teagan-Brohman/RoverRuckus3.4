@@ -20,7 +20,7 @@ import java.util.Timer;
 import java.util.Locale;
 
 @Autonomous(name = "RedDepotOneBlock", group = "Autonomous")
-public class RedIdleOneBlock extends LinearOpMode {
+public class RedDepotOneBlock extends LinearOpMode {
     public RoverHardware robot = new RoverHardware(); //Create a new instance of the
 
     //Create detector gateway
@@ -163,17 +163,25 @@ public class RedIdleOneBlock extends LinearOpMode {
         telemetry.addData("heading", robot.angles.firstAngle);
         telemetry.update();
         if (robot.angles.firstAngle < 10 && robot.angles.firstAngle > -10) {
-            robot.bop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.bop.setTargetPosition(-600);
-            robot.bop.setPower(-0.6);
-            while (robot.bop.isBusy() && opModeIsActive()) {
-                telemetry.addData("encoder", robot.bop.getCurrentPosition());
-                telemetry.addData("power", robot.bop.getPower());
-                telemetry.addData("mode", robot.bop.getMode());
+            robot.leftBop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.rightBop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.leftBop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rightBop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.leftBop.setTargetPosition(-600);
+            robot.rightBop.setTargetPosition(-600);
+            robot.leftBop.setPower(-0.6);
+            robot.rightBop.setPower(-0.6);
+            while (robot.leftBop.isBusy() && robot.rightBop.isBusy() && opModeIsActive()) {
+                telemetry.addData("encoder L", robot.leftBop.getCurrentPosition());
+                telemetry.addData("power L", robot.leftBop.getPower());
+                telemetry.addData("mode L", robot.leftBop.getMode());
+                telemetry.addData("encoder R", robot.rightBop.getCurrentPosition());
+                telemetry.addData("power R", robot.rightBop.getPower());
+                telemetry.addData("mode R", robot.rightBop.getPower());
                 telemetry.update();
             }
-            robot.bop.setPower(0);
+            robot.leftBop.setPower(0);
+            robot.rightBop.setPower(0);
             //}
             //Change the arm angle so it can hit the block
             //if (robot.angles.firstAngle > 2) {
@@ -187,35 +195,45 @@ public class RedIdleOneBlock extends LinearOpMode {
 //            }
             //}
 //
-            robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);
-            robot.drop.setPower(-0.8);
-            while(robot.drop.getCurrentPosition() <= -180 && opModeIsActive()){
-                telemetry.addData("Drop Motor Power", robot.drop.getPower());
-                telemetry.addData("Drop Motor Position", robot.drop.getCurrentPosition( ));
-            }
-            sleep(300);
+//            robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);
+//            robot.drop.setPower(-0.8);
+//            while(robot.drop.getCurrentPosition() <= -180 && opModeIsActive()){
+//                telemetry.addData("Drop Motor Power", robot.drop.getPower());
+//                telemetry.addData("Drop Motor Position", robot.drop.getCurrentPosition( ));
+//            }
+//            sleep(300);
             robot.intake.setPower(0.9);
 //
-            robot.bop.setTargetPosition(-1800);
-            robot.bop.setPower(-0.6);
-            while (robot.bop.isBusy() && opModeIsActive()) {
+            robot.leftBop.setTargetPosition(-1800);
+            robot.rightBop.setTargetPosition(-1800);
+            robot.leftBop.setPower(-0.6);
+            robot.rightBop.setPower(-0.6);
+            while (robot.leftBop.isBusy() && robot.rightBop.isBusy() && opModeIsActive()) {
                 robot.intake.setPower(0.9);
             }
 
         }
         else{
-            robot.bop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.bop.setTargetPosition(-600);
-            robot.bop.setPower(-0.8);
-            while (robot.bop.getCurrentPosition() < -580 && opModeIsActive()) {
-                telemetry.addData("encoder", robot.bop.getCurrentPosition());
-                telemetry.addData("power", robot.bop.getPower());
-                telemetry.addData("mode", robot.bop.getMode());
+            robot.leftBop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.rightBop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.leftBop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rightBop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.leftBop.setTargetPosition(-600);
+            robot.rightBop.setTargetPosition(-600);
+            robot.leftBop.setPower(-0.8);
+            robot.rightBop.setPower(-0.8);
+            while (robot.leftBop.getCurrentPosition() < -580 && robot.rightBop.getCurrentPosition() < -580 && opModeIsActive()) {
+                telemetry.addData("encoder L", robot.leftBop.getCurrentPosition());
+                telemetry.addData("power L", robot.leftBop.getPower());
+                telemetry.addData("mode L", robot.leftBop.getMode());
+                telemetry.addData("encoder R", robot.rightBop.getCurrentPosition());
+                telemetry.addData("power R", robot.rightBop.getPower());
+                telemetry.addData("mode R", robot.rightBop.getPower());
                 telemetry.update();
             }
-            robot.bop.setPower(0);
+            robot.leftBop.setPower(0);
+            robot.rightBop.setPower(0);
             telemetry.update();
             //}
             //Change the arm angle so it can hit the block
@@ -231,26 +249,30 @@ public class RedIdleOneBlock extends LinearOpMode {
                 }
             }
 //
-            robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);
-            robot.drop.setPower(-0.8);
-            while(robot.drop.getCurrentPosition() <= -150 && opModeIsActive() ){
-                telemetry.addData("Drop Motor Power", robot.drop.getPower());
-                telemetry.addData("Drop Motor Position", robot.drop.getCurrentPosition( ));
-                telemetry.update();
-            }
+//            robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            robot.drop.setTargetPosition(robot.BOTTOM_INTAKE);
+//            robot.drop.setPower(-0.8);
+//            while(robot.drop.getCurrentPosition() <= -150 && opModeIsActive() ){
+//                telemetry.addData("Drop Motor Power", robot.drop.getPower());
+//                telemetry.addData("Drop Motor Position", robot.drop.getCurrentPosition( ));
+//                telemetry.update();
+//            }
             robot.intake.setPower(0.9);
 //
             if(robot.angles.firstAngle < 40) {
-                robot.bop.setTargetPosition(-1750);
-                robot.bop.setPower(-0.8);
-                while (robot.bop.isBusy() && opModeIsActive()) {
+                robot.leftBop.setTargetPosition(-1750);
+                robot.rightBop.setTargetPosition(1750);
+                robot.leftBop.setPower(-0.8);
+                robot.rightBop.setPower(-0.8);
+                while (robot.leftBop.isBusy() && robot.rightBop.isBusy() && opModeIsActive()) {
                     robot.intake.setPower(0.9);
                 }
             } else{
-                robot.bop.setTargetPosition(-2000);
-                robot.bop.setPower(-0.8);
-                while (robot.bop.isBusy() && opModeIsActive()) {
+                robot.leftBop.setTargetPosition(-2000);
+                robot.rightBop.setTargetPosition(-2000);
+                robot.leftBop.setPower(-0.8);
+                robot.rightBop.setPower(-0.8);
+                while (robot.leftBop.isBusy() && robot.rightBop.isBusy() && opModeIsActive()) {
                     robot.intake.setPower(0.9);
                 }
             }
@@ -264,20 +286,22 @@ public class RedIdleOneBlock extends LinearOpMode {
 //        while (robot.bop.isBusy() && opModeIsActive()){
 //            robot.intake.setPower(0.9);
 //        }
-        robot.bop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.bop.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.leftBop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightBop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftBop.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightBop.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         while (robot.bopLimit.red() <= 130 && robot.bopLimit.alpha() < 300 && opModeIsActive()){
-            robot.bop.setPower(0.7);
+            robot.leftBop.setPower(0.7);
+            robot.rightBop.setPower(0.7);
             robot.rotateMech.setPower(-0.2);
             robot.rotateMech.setTargetPosition(0);
         }
-        robot.bop.setPower(0);
+        robot.leftBop.setPower(0);
+        robot.rightBop.setPower(0);
         robot.rotateMech.setPower(0);
 
-        robot.drop.setTargetPosition(robot.TOP_INTAKE);
-        robot.drop.setPower(0.8);
-
-
+//        robot.drop.setTargetPosition(robot.TOP_INTAKE);
+//        robot.drop.setPower(0.8);
 
         robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -290,8 +314,8 @@ public class RedIdleOneBlock extends LinearOpMode {
 
 //        robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
 //        robot.drop.setPower(0);
-        waitTimer = new Timer();
-        waitTimer.schedule(new secondwait(), 3000,100);
+//        waitTimer = new Timer();
+//        waitTimer.schedule(new secondwait(), 3000,100);
 
         while(robot.left1.getCurrentPosition() < 500 && opModeIsActive()){
 
@@ -420,14 +444,14 @@ public class RedIdleOneBlock extends LinearOpMode {
         while (robot.left1.isBusy() && opModeIsActive()) {}
     }
 
-    class secondwait extends TimerTask{
-        public void run(){
-            robot.drop.setPower(0);
-            robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
-            robot.intake.setPower(0);
-            waitTimer.cancel();
-        }
-    }
+//    class secondwait extends TimerTask{
+//        public void run(){
+//            robot.drop.setPower(0);
+//            robot.drop.setTargetPosition(robot.drop.getCurrentPosition());
+//            robot.intake.setPower(0);
+//            waitTimer.cancel();
+//        }
+//    }
 
 
 

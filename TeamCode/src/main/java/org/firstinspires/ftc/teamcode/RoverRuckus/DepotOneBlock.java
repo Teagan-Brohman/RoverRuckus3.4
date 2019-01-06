@@ -104,18 +104,22 @@ public class DepotOneBlock extends LinearOpMode {
         //Drive forward slightly
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.bop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftBop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightBop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.leftBop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightBop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         robot.left1.setTargetPosition(450);//900
         robot.right1.setTargetPosition(450);//900
         robot.left1.setPower(0.8);
         robot.right1.setPower(0.8);
-        robot.bop.setTargetPosition(-4000);
-        robot.bop.setPower(-0.9);
+        robot.leftBop.setTargetPosition(-4000);
+        robot.rightBop.setTargetPosition(-4000);
+        robot.leftBop.setPower(-0.9);
+        robot.rightBop.setPower(-0.9);
         while (robot.left1.isBusy() && robot.right1.isBusy() && opModeIsActive()) {
             telemetry.addData("right power", robot.right1.getPower());
             telemetry.addData("right position", robot.right1.getCurrentPosition());
@@ -125,23 +129,24 @@ public class DepotOneBlock extends LinearOpMode {
         }
         robot.left1.setPower(0);
         robot.right1.setPower(0);
-        while(robot.bop.getCurrentPosition() > -3600){
-            if(robot.bop.getCurrentPosition() > -3000 && robot.bottomDrop.getState()){
-                robot.drop.setPower(-0.85);
-            }
-            else{
-                robot.drop.setPower(0);
-            }
+        while(robot.leftBop.getCurrentPosition() > -3600 && robot.rightBop.getCurrentPosition() > -3600){
+//            if(robot.bop.getCurrentPosition() > -3000 && robot.bottomDrop.getState()){
+//                robot.drop.setPower(-0.85);
+//            }
+//            else{
+//                robot.drop.setPower(0);
+//            }
 
         }
-        robot.bop.setPower(0);
+        robot.leftBop.setPower(0);
+        robot.rightBop.setPower(0);
         robot.intake.setPower(0.7);
-        while(robot.bottomDrop.getState()) {
-            robot.drop.setPower(-0.65);
-            telemetry.addData("bottomDrop", robot.bottomDrop.getState());
-            telemetry.update();
-        }
-        robot.drop.setPower(0);
+//        while(robot.bottomDrop.getState()) {
+//            robot.drop.setPower(-0.65);
+//            telemetry.addData("bottomDrop", robot.bottomDrop.getState());
+//            telemetry.update();
+//        }
+        //robot.drop.setPower(0);
         dropMark = new Timer();
         armOut = new armOut();
         dropMark.schedule(armOut, 500,10000);
@@ -226,7 +231,7 @@ public class DepotOneBlock extends LinearOpMode {
                 telemetry.update();
             }
             robot.left1.setPower(0);
-            robot.drop.setPower(0);
+            //robot.drop.setPower(0);
             robot.right1.setPower(0);
 
 //            //Drive forward and slightly into the wall
@@ -694,25 +699,30 @@ public class DepotOneBlock extends LinearOpMode {
         boolean flag1 = false;
         public void run(){
 
-            robot.bop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.bop.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.bop.setPower(0.55);
+            robot.leftBop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.rightBop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.leftBop.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rightBop.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.leftBop.setPower(0.55);
+            robot.rightBop.setPower(0.55);
 
             while (flag1 == false){
                 if (robot.bopLimit.red() >= 110 && robot.bopLimit.alpha() < 300 && opModeIsActive()) {
-                    robot.bop.setPower(0);
-                    robot.bop.setTargetPosition(robot.bop.getCurrentPosition());
+                    robot.leftBop.setPower(0);
+                    robot.rightBop.setPower(0);
+                    robot.leftBop.setTargetPosition(robot.leftBop.getCurrentPosition());
+                    robot.rightBop.setTargetPosition(robot.rightBop.getCurrentPosition());
                     robot.rotateMech.setPower(0);
                     flag1 = true;
                 }
                 if(!robot.topDrop.getState()){
-                    robot.drop.setPower(0);
+                    //robot.drop.setPower(0);
                     robot.intake.setPower(0);
                 }
-                else{
-                    robot.drop.setPower(0.65);
-
-                }
+//                else{
+//                    robot.drop.setPower(0.65);
+//
+//                }
                 telemetry.addData("Waiting for Flag","");
                 telemetry.update();
             }
