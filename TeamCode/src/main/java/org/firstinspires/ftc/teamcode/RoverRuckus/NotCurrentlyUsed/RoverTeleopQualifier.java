@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.RoverRuckus;
+package org.firstinspires.ftc.teamcode.RoverRuckus.NotCurrentlyUsed;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
+import org.firstinspires.ftc.teamcode.RoverRuckus.RoverHardware;
 import org.openftc.revextensions2.ExpansionHubEx;
 import org.openftc.revextensions2.ExpansionHubMotor;
 import org.openftc.revextensions2.RevBulkData;
@@ -24,7 +25,7 @@ import java.util.Locale;
 @TeleOp(name = "TeleOpTester", group = "Teleop")
 public class RoverTeleopQualifier extends LinearOpMode{
 
-    public RoverHardware robot = new RoverHardware();
+    public RoverHardware2 robot = new RoverHardware2();
 
     public float leftPower;
     public float rightPower;
@@ -123,11 +124,13 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
             //Move block intake in and out
             if(robot.bopLimit.red() >= 300){
-                robot.bop.setPower(Math.abs(gamepad1.right_stick_y) * -0.5);
+                robot.leftBop.setPower(Math.abs(gamepad1.right_stick_y) * -0.5);
+                robot.rightBop.setPower(Math.abs(gamepad1.right_stick_y * -0.5));
                 //robot.drop.setPosition(robot.TOP_INTAKE);
             }
             else{
-                robot.bop.setPower(gamepad1.right_stick_y * 0.5);
+                robot.leftBop.setPower(gamepad1.right_stick_y * 0.5);
+                robot.rightBop.setPower(gamepad1.right_stick_y * 0.5);
 
             }
 

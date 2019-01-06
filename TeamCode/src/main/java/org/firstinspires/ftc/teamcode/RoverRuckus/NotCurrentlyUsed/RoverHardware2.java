@@ -1,10 +1,7 @@
-package org.firstinspires.ftc.teamcode.RoverRuckus;
+package org.firstinspires.ftc.teamcode.RoverRuckus.NotCurrentlyUsed;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -12,22 +9,15 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import java.util.TimerTask;
-import java.util.Timer;
-
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.openftc.revextensions2.ExpansionHubEx;
-import org.openftc.revextensions2.ExpansionHubMotor;
 import org.openftc.revextensions2.RevBulkData;
-import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
-public class RoverHardware{
+public class RoverHardware2 {
 
     //Create hardware in code
     HardwareMap HwMap;
@@ -95,7 +85,7 @@ public class RoverHardware{
     double savedMotorPowerRight;
     double savedMotorPowerLeft;
 
-    public RoverHardware() {
+    public RoverHardware2() {
         System.out.println("Created new RRHardwarePresets Object!");
     }
 
