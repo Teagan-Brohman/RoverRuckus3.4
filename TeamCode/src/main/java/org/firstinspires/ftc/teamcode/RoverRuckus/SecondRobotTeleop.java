@@ -2,20 +2,14 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
-import java.util.TimerTask;
-import java.util.Timer;
-
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.openftc.revextensions2.ExpansionHubEx;
 import org.openftc.revextensions2.ExpansionHubMotor;
@@ -23,11 +17,10 @@ import org.openftc.revextensions2.RevBulkData;
 import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
-@TeleOp(name = "Qualifier Teleop", group = "TeleOp")
-@Disabled
-public class WisconsinQualifierTelop extends LinearOpMode {
-
+public class SecondRobotTeleop extends LinearOpMode {
     public RoverHardware robot = new RoverHardware();
 
     public float leftPower;
@@ -101,7 +94,7 @@ public class WisconsinQualifierTelop extends LinearOpMode {
         while (opModeIsActive()) {
             if (limitFlag = false) {
                 currentLim = new Timer();
-                currentLim.schedule(new WisconsinQualifierTelop.CurrentLim(), 20000, 10);
+                currentLim.schedule(new SecondRobotTeleop.CurrentLim(), 20000, 10);
             }
 
 
@@ -117,7 +110,7 @@ public class WisconsinQualifierTelop extends LinearOpMode {
             robot.left1.setPower(Range.clip(leftPower, -1.0, 1.0));
             robot.right1.setPower(Range.clip(rightPower, -1.0, 1.0));
 
-            //Tank Drive (if driver prefers it
+            //Tank Drive (if driver prefers it)
 //            robot.left1.setPower(gamepad1.left_stick_y);
 //            robot.right1.setPower(gamepad1.right_stick_y);
 
@@ -398,5 +391,4 @@ public class WisconsinQualifierTelop extends LinearOpMode {
                     }
                 });
     }
-
 }
