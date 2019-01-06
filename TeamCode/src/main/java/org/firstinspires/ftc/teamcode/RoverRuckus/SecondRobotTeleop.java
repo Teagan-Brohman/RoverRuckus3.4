@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
@@ -20,6 +21,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@TeleOp(name = "Teleop", group = "Teleop")
 public class SecondRobotTeleop extends LinearOpMode {
     public RoverHardware robot = new RoverHardware();
 
