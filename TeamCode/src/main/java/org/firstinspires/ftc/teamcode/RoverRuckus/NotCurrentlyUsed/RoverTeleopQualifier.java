@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RoverRuckus.NotCurrentlyUsed;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
@@ -23,6 +24,7 @@ import org.openftc.revextensions2.RevExtensions2;
 import java.util.Locale;
 
 @TeleOp(name = "TeleOpTester", group = "Teleop")
+@Disabled
 public class RoverTeleopQualifier extends LinearOpMode{
 
     public RoverHardware2 robot = new RoverHardware2();
