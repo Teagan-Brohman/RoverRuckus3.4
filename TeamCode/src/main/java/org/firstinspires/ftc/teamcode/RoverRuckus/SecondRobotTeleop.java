@@ -283,12 +283,12 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("Bop Alpha", robot.bopLimit.alpha());
 //            telemetry.addData("Sorter red", robot.sorterLimit.red());
 //            telemetry.addData("Bop red", robot.bopLimit.red());
-            telemetry.addData("topDrop", robot.topDrop.getState());
-            telemetry.addData("bottomDrop", robot.bottomDrop.getState());
-            telemetry.addData("dpad up", gamepad2.dpad_up);
-            telemetry.addData("dpad up", gamepad2.dpad_down);
-            telemetry.addData("frontDetect Distance in Inches:", robot.frontDetect.getDistance(DistanceUnit.INCH));
-            telemetry.addData("backDetect Distance in Inches:", robot.backDetect.getDistance(DistanceUnit.INCH));
+//            telemetry.addData("topDrop", robot.topDrop.getState());
+//            telemetry.addData("bottomDrop", robot.bottomDrop.getState());
+//            telemetry.addData("dpad up", gamepad2.dpad_up);
+//            telemetry.addData("dpad up", gamepad2.dpad_down);
+//            telemetry.addData("frontDetect Distance in Inches:", robot.frontDetect.getDistance(DistanceUnit.INCH));
+//            telemetry.addData("backDetect Distance in Inches:", robot.backDetect.getDistance(DistanceUnit.INCH));
             telemetry.update();
         }
     }

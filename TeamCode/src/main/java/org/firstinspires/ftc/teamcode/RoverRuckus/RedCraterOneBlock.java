@@ -92,7 +92,7 @@ public class RedCraterOneBlock extends LinearOpMode {
         waitForStart();
 
 //        //Raise arm
-        while (robot.upperLimit.red() > 250 && opModeIsActive()) {
+        while (robot.upperLimit.red() > 200 && opModeIsActive()) {
             robot.hang.setPower(1);
         }
         robot.hang.setPower(0);
