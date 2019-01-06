@@ -44,8 +44,10 @@ public class RoverHardware{
     public DcMotor bop;
     //Rotation Mechanism
     public DcMotor rotateMech;
-    // Ball Catcher???
-    public DcMotor sorter;
+    // Ball Sorter
+    public DcMotor leftSorter;
+    public DcMotor rightSorter;
+
     //dropper
     public DcMotor drop;
     //marker dropper
@@ -111,8 +113,9 @@ public class RoverHardware{
         bop = HwMap.dcMotor.get("bop");
         //Rotation Mechanism
         rotateMech = HwMap.dcMotor.get("rotate");
-        //Ball Catcher
-        sorter = HwMap.dcMotor.get("sorter");
+        //Sorter
+        leftSorter = HwMap.dcMotor.get("leftSorter");
+        rightSorter = HwMap.dcMotor.get("rightSorter");
         //dropper
         drop = HwMap.dcMotor.get("drop");
         //marker dropper
@@ -148,6 +151,8 @@ public class RoverHardware{
         rotateMech.setDirection(DcMotorSimple.Direction.FORWARD);
         drop.setDirection(DcMotorSimple.Direction.FORWARD);
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftSorter.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightSorter.setDirection(DcMotorSimple.Direction.FORWARD);
 
         left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -156,6 +161,8 @@ public class RoverHardware{
         rotateMech.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         drop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftSorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightSorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
 //
