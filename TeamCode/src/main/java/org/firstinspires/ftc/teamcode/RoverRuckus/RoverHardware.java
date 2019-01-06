@@ -139,8 +139,8 @@ public class RoverHardware{
         bottomDrop = HwMap.get(DigitalChannel.class, "bottomDrop");
 
         //Distance Sensors
-        frontDetect = HwMap.get(DistanceSensor.class, "frontDetect");
-        backDetect = HwMap.get(DistanceSensor.class, "backDetect");
+//        frontDetect = HwMap.get(DistanceSensor.class, "frontDetect");
+//        backDetect = HwMap.get(DistanceSensor.class, "backDetect");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);

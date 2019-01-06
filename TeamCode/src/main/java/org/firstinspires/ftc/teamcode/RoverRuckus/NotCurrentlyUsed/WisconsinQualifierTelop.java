@@ -149,7 +149,7 @@ public class WisconsinQualifierTelop extends LinearOpMode {
             }
 
             //Hanging Mechanism
-            if (gamepad1.dpad_up && robot.upperLimit.red() > 300) {
+            if (gamepad1.dpad_up && robot.upperLimit.red() > 250) {
                 robot.hang.setPower(1);
             } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 100) {
                 robot.hang.setPower(-1);
@@ -262,10 +262,12 @@ public class WisconsinQualifierTelop extends LinearOpMode {
 //            telemetry.addData("Left Power", leftPower);
 //            telemetry.addData("Right Power", rightPower);
 //            telemetry.addData("Gamepad Tigger", gamepad1.right_trigger);
-//            telemetry.addData("upper red", robot.upperLimit.red());
-//            telemetry.addData("upper blue", robot.upperLimit.blue());
-//            telemetry.addData("bottom red", robot.bottomLimit.red());
-//            telemetry.addData("bottom blue", robot.bottomLimit.blue());
+            telemetry.addData("upper red", robot.upperLimit.red());
+            telemetry.addData("upper blue", robot.upperLimit.blue());
+            telemetry.addData("bottom red", robot.bottomLimit.red());
+            telemetry.addData("bottom blue", robot.bottomLimit.blue());
+            telemetry.addData("bottom alpha", robot.bottomLimit.alpha());
+            telemetry.addData("top alpha", robot.upperLimit.alpha());
 //            telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
 //            telemetry.addData("power", "  left=" + leftPower + "  right=" + rightPower);
 //            telemetry.addData("Arm power", robot.bop.getPower());
