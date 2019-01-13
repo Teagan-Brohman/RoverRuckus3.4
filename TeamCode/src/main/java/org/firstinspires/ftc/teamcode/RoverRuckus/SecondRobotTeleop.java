@@ -40,7 +40,8 @@ public class SecondRobotTeleop extends LinearOpMode {
     ExpansionHubMotor left, right;
     RevBulkData bulkData;
     boolean buttonFlag;
-    Boolean limitFlag = false;
+    boolean limitFlag = false;
+    boolean sorterFlag;
     public int currentDiv = 1;
 
 
@@ -124,8 +125,10 @@ public class SecondRobotTeleop extends LinearOpMode {
 
 
             if (gamepad1.right_bumper) {
+                sorterFlag = false;
                 robot.sorter.setPower(0.9);
             } else if (gamepad1.left_bumper) {
+                sorterFlag = false;
                 robot.sorter.setPower(-1.0);
                 robot.sorterFlip.setPosition(robot.SORTER_UP);
                 // if(robot.bopLimit.red() >= 200){
@@ -149,6 +152,25 @@ public class SecondRobotTeleop extends LinearOpMode {
                 robot.hang.setPower(1);
             } else {
                 robot.hang.setPower(0);
+            }
+
+            if(gamepad1.x){
+                sorterFlag = true;
+                robot.drop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.drop.setPower(0.9);
+                robot.drop.setTargetPosition(1000);
+                robot.sorterFlip.setPosition(robot.SORTER_DOWN);
+                sleep(300);
+                robot.sorterFlip.setPosition(robot.SORTER_UP);
+                robot.drop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.drop.setPower(-0.8);
+                if(robot.outputLimit.blue() > 300 &&robot.outputLimit.alpha() < 400 && sorterFlag == true){
+                    robot.drop.setPower(-0.3);
+                }
+                if(robot.outputLimit.red() > 300 && robot.outputLimit.alpha() < 400 && sorterFlag == true){
+                    robot.drop.setPower(0);
+                }
             }
 
 
@@ -212,8 +234,18 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            }
 
             if(gamepad2.x){
-                robot.leftBop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.rightBop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.leftBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.rightBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.leftBop.setPower(-0.8);
+                robot.rightBop.setPower(-0.8);
+                if (robot.bopLimit.blue() > 200 && robot.bopLimit.alpha() < 400){
+                    robot.leftBop.setPower(-0.3);
+                    robot.rightBop.setPower(-0.3);
+                }
+                if (robot.bopLimit.red() > 200 && robot.bopLimit.alpha() < 400){
+                    robot.leftBop.setPower(0);
+                    robot.rightBop.setPower(0);
+                }
             }
 
             if (robot.bopLimit.red() >= 110 && robot.bopLimit.alpha() < 300) {
