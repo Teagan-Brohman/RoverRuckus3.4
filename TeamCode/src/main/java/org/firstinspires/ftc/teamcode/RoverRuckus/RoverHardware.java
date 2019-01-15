@@ -48,11 +48,13 @@ public class RoverHardware{
     // Ball Catcher???
     public DcMotor sorter;
     //dropper
-    public DcMotor drop;
+    //public DcMotor drop;
     //marker dropper
     public Servo marker;
     //Sorter Flipper
     public Servo sorterFlip;
+
+    public Servo door;
     //Intake Servo
     public DcMotor intake;
 
@@ -67,8 +69,8 @@ public class RoverHardware{
     public ColorSensor upperLimit;
     public ColorSensor cornerSensor;
     public ColorSensor bopLimit;
-    public ColorSensor sorterLimit;
-     public ColorSensor outputLimit;
+    //public ColorSensor sorterLimit;
+     //public ColorSensor outputLimit;
 
 
     //Create Gyro
@@ -118,21 +120,22 @@ public class RoverHardware{
         //Ball Catcher
         sorter = HwMap.dcMotor.get("sorter");
         //dropper
-        drop = HwMap.dcMotor.get("drop");
+        //drop = HwMap.dcMotor.get("drop");
         //marker dropper
         marker = HwMap.servo.get("marker");
         //sorterFlips
         sorterFlip = HwMap.servo.get("sorterFlip");
         //Intake servo
         intake = HwMap.dcMotor.get("intake");
+        door = HwMap.servo.get("door");
 
         //ColorSensors
         bottomLimit = HwMap.colorSensor.get("bottomLimit");
         upperLimit = HwMap.colorSensor.get("upperLimit");
         cornerSensor = HwMap.colorSensor.get("cornerSensor");
         bopLimit = HwMap.colorSensor.get("bopLimit");
-        sorterLimit = HwMap.colorSensor.get("sorterLimit");
-        outputLimit = HwMap.colorSensor.get("outputLimit");
+        //sorterLimit = HwMap.colorSensor.get("sorterLimit");
+        //outputLimit = HwMap.colorSensor.get("outputLimit");
 
         //Gyro
         imu = HwMap.get(BNO055IMU.class, "imu");

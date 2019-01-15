@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Func;
@@ -44,11 +45,14 @@ public class SecondRobotTeleop extends LinearOpMode {
     boolean sorterFlag;
     public int currentDiv = 1;
 
+    DistanceSensor lidar;
 
     public void runOpMode() {
         robot.init(hardwareMap);
 
         RevExtensions2.init();
+
+        lidar = hardwareMap.get(DistanceSensor.class, "lidar");
 
 
         expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 2");
@@ -118,7 +122,6 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            robot.right1.setPower(gamepad1.right_stick_y);
 
             //Arm that shoots blocks and balls
-
             if (Math.abs(gamepad2.right_stick_y) >= 0.2 /*|| gamepad1.right_stick_y <= -0.5*/) {
                 buttonFlag = true;
             }
@@ -139,11 +142,11 @@ public class SecondRobotTeleop extends LinearOpMode {
                 robot.sorter.setPower(0);
             }
 
-            if (gamepad1.a && robot.sorterLimit.red() < 100 && robot.sorterLimit.alpha() < 300) {
-                robot.sorterFlip.setPosition(robot.SORTER_DOWN);
-            } else if (gamepad1.b) {
-                robot.sorterFlip.setPosition(robot.SORTER_UP);
-            }
+//            if (gamepad1.a && robot.sorterLimit.red() < 100 && robot.sorterLimit.alpha() < 300) {
+//                robot.sorterFlip.setPosition(robot.SORTER_DOWN);
+//            } else if (gamepad1.b) {
+//                robot.sorterFlip.setPosition(robot.SORTER_UP);
+//            }
 
             //Hanging Mechanism
             if (gamepad1.dpad_up && robot.upperLimit.red() < 300) {
@@ -154,24 +157,24 @@ public class SecondRobotTeleop extends LinearOpMode {
                 robot.hang.setPower(0);
             }
 
-            if(gamepad1.x){
-                sorterFlag = true;
-                robot.drop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.drop.setPower(0.9);
-                robot.drop.setTargetPosition(1000);
-                robot.sorterFlip.setPosition(robot.SORTER_DOWN);
-                sleep(300);
-                robot.sorterFlip.setPosition(robot.SORTER_UP);
-                robot.drop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                robot.drop.setPower(-0.8);
-                if(robot.outputLimit.blue() > 300 &&robot.outputLimit.alpha() < 400 && sorterFlag == true){
-                    robot.drop.setPower(-0.3);
-                }
-                if(robot.outputLimit.red() > 300 && robot.outputLimit.alpha() < 400 && sorterFlag == true){
-                    robot.drop.setPower(0);
-                }
-            }
+//            if(gamepad1.x){
+//                sorterFlag = true;
+//                robot.drop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                robot.drop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                robot.drop.setPower(0.9);
+//                robot.drop.setTargetPosition(1000);
+//                robot.sorterFlip.setPosition(robot.SORTER_DOWN);
+//                sleep(300);
+//                robot.sorterFlip.setPosition(robot.SORTER_UP);
+//                robot.drop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                robot.drop.setPower(-0.8);
+//                if(robot.outputLimit.blue() > 300 &&robot.outputLimit.alpha() < 400 && sorterFlag == true){
+//                    robot.drop.setPower(-0.3);
+//                }
+//                if(robot.outputLimit.red() > 300 && robot.outputLimit.alpha() < 400 && sorterFlag == true){
+//                    robot.drop.setPower(0);
+//                }
+//            }
 
 
 //            //Shoots blocks
@@ -233,13 +236,18 @@ public class SecondRobotTeleop extends LinearOpMode {
 //                //}
 //            }
 
+            if(gamepad2.right_bumper){
+                robot.door.setPosition(0.7);
+            } else{
+                robot.door.setPosition(0.42);
+            }
+
             if(gamepad2.x){
                 robot.leftBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.rightBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.leftBop.setPower(-0.8);
                 robot.rightBop.setPower(-0.8);
                 if (robot.bopLimit.blue() > 200 && robot.bopLimit.alpha() < 400){
-                    robot.leftBop.setPower(-0.3);
                     robot.rightBop.setPower(-0.3);
                 }
                 if (robot.bopLimit.red() > 200 && robot.bopLimit.alpha() < 400){
@@ -248,13 +256,29 @@ public class SecondRobotTeleop extends LinearOpMode {
                 }
             }
 
-            if (robot.bopLimit.red() >= 110 && robot.bopLimit.alpha() < 300) {
-                if (gamepad2.right_stick_y <= -.1) {
+//            if (robot.bopLimit.red() >= 110 && robot.bopLimit.alpha() < 300) {
+//                if (gamepad2.right_stick_y <= -.1) {
+//                    robot.leftBop.setPower(gamepad2.right_stick_y * 0.95);
+//                    robot.rightBop.setPower(gamepad2.right_stick_y * 0.95);
+//                }
+//            }
+            if(lidar.getDistance(DistanceUnit.CM) > 30){
+                robot.leftBop.setPower(gamepad2.right_stick_y * 0.95);
+                robot.rightBop.setPower(gamepad2.right_stick_y * 0.95);
+            } else if (lidar.getDistance(DistanceUnit.CM) <= 25) {
+                if (gamepad2.right_stick_y >= -.1) {
+                    robot.leftBop.setPower(gamepad2.right_stick_y * 0.4);
+                    robot.rightBop.setPower(gamepad2.right_stick_y * 0.4);
+                } else{
                     robot.leftBop.setPower(gamepad2.right_stick_y * 0.95);
                     robot.rightBop.setPower(gamepad2.right_stick_y * 0.95);
-                } else {
+                }
+            } else if(lidar.getDistance(DistanceUnit.CM) < 15){
                     robot.leftBop.setPower(0);
                     robot.rightBop.setPower(0);
+            }else {
+                robot.leftBop.setPower(gamepad2.right_stick_y * 0.95);
+                robot.rightBop.setPower(gamepad2.right_stick_y * 0.95);
                 }
 //                if(robot.topDrop.getState()) {
 ////                    //robot.drop.setTargetPosition(robot.TOP_INTAKE); // Top
@@ -263,10 +287,8 @@ public class SecondRobotTeleop extends LinearOpMode {
 //                else {
 //                    robot.drop.setPower(0);
 //                }
-            } else if (buttonFlag == true) {
-                robot.leftBop.setPower(gamepad2.right_stick_y * 0.95);
-                robot.rightBop.setPower(gamepad2.right_stick_y * 0.95);
-            }
+//                robot.leftBop.setPower(gamepad2.right_stick_y * 0.95);
+//                robot.rightBop.setPower(gamepad2.right_stick_y * 0.95);
 
             //Rotates the Intake Arm
             if (gamepad2.right_trigger >= 0.5) {
@@ -290,11 +312,14 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("Left Power", leftPower);
 //            telemetry.addData("Right Power", rightPower);
 //            telemetry.addData("Gamepad Tigger", gamepad1.right_trigger);
-            telemetry.addData("upper red", robot.upperLimit.red());
-            telemetry.addData("upper blue", robot.upperLimit.blue());
-            telemetry.addData("bottom red", robot.bottomLimit.red());
-            telemetry.addData("bottom blue", robot.bottomLimit.blue());
-//            telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
+//            telemetry.addData("upper red", robot.upperLimit.red());
+//            telemetry.addData("upper blue", robot.upperLimit.blue());
+//            telemetry.addData("bottom red", robot.bottomLimit.red());
+//            telemetry.addData("bottom blue", robot.bottomLimit.blue());
+
+            telemetry.addData("range", String.format("%.01f cm", lidar.getDistance(DistanceUnit.CM)));
+
+            //            telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
 //            telemetry.addData("power", "  left=" + leftPower + "  right=" + rightPower);
 //            telemetry.addData("Arm power", robot.bop.getPower());
 //            telemetry.addData("Arm position", robot.bop.getCurrentPosition());
@@ -322,8 +347,8 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("Bop red", robot.bopLimit.red());
 //            telemetry.addData("topDrop", robot.topDrop.getState());
 //            telemetry.addData("bottomDrop", robot.bottomDrop.getState());
-            telemetry.addData("dpad up", gamepad1.dpad_up);
-            telemetry.addData("dpad down", gamepad1.dpad_down);
+//            telemetry.addData("dpad up", gamepad1.dpad_up);
+//            telemetry.addData("dpad down", gamepad1.dpad_down);
 //            telemetry.addData("frontDetect Distance in Inches:", robot.frontDetect.getDistance(DistanceUnit.INCH));
 //            telemetry.addData("backDetect Distance in Inches:", robot.backDetect.getDistance(DistanceUnit.INCH));
             telemetry.update();
