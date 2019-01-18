@@ -97,6 +97,8 @@ public class DepotOneBlock extends LinearOpMode {
         //Raise arm
         while (robot.upperLimit.red() > 200 && opModeIsActive()) {
             robot.hang.setPower(1);
+            telemetry.addData("RedUpper",robot.upperLimit);
+            telemetry.update();
         }
         robot.hang.setPower(0);
         sleep(200);
