@@ -133,7 +133,7 @@ public class RoverHardware{
         bottomLimit = HwMap.colorSensor.get("bottomLimit");
         upperLimit = HwMap.colorSensor.get("upperLimit");
         cornerSensor = HwMap.colorSensor.get("cornerSensor");
-        bopLimit = HwMap.colorSensor.get("bopLimit");
+        //bopLimit = HwMap.colorSensor.get("bopLimit");
         //sorterLimit = HwMap.colorSensor.get("sorterLimit");
         //outputLimit = HwMap.colorSensor.get("outputLimit");
 
