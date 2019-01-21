@@ -310,8 +310,8 @@ public class CraterOneBlock extends BaseAuto {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2600);//5200
-            robot.right1.setTargetPosition(-2600);//5200
+            robot.left1.setTargetPosition(-2800);//5200
+            robot.right1.setTargetPosition(-2800);//5200
             robot.left1.setPower(-0.9);
             robot.right1.setPower(-0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {
@@ -324,8 +324,7 @@ public class CraterOneBlock extends BaseAuto {
             robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             timer = 0;
-            while (robot.angles.firstAngle < -66 && opModeIsActive() && timer < 400) {
-                timer += 2;
+            while (robot.angles.firstAngle < -66 && opModeIsActive()) {
                 robot.left1.setPower(Math.abs((-50 - robot.angles.firstAngle) / -20) * -0.4);
                 robot.right1.setPower(Math.abs((-50 - robot.angles.firstAngle) / -20) * 0.4);
                 telemetry.addData("left1 power", robot.left1.getPower());
@@ -337,7 +336,7 @@ public class CraterOneBlock extends BaseAuto {
             }
             robot.left1.setPower(0);
             robot.right1.setPower(0);
-////
+
             // Drive forward and slightly into the wall
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -394,11 +393,11 @@ public class CraterOneBlock extends BaseAuto {
 
                 robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                while (robot.angles.firstAngle > -77 && opModeIsActive()) {
+                while (robot.angles.firstAngle > -82 && opModeIsActive()) {
                     angleTurn = robot.angles.firstAngle;
                     //This is a right turn to 78 degrees
-                    robot.left1.setPower(((-70 - angleTurn) / -40) * 0.4);
-                    robot.right1.setPower(((-70 - angleTurn) / -40) * -0.4);
+                    robot.left1.setPower(((-80 - angleTurn) / -40) * 0.4);
+                    robot.right1.setPower(((-80 - angleTurn) / -40) * -0.4);
                     telemetry.addData("left1 power", robot.left1.getPower());
                     telemetry.addData("right1 power", robot.right1.getPower());
                     telemetry.addData("heading", robot.angles.firstAngle);
@@ -424,7 +423,7 @@ public class CraterOneBlock extends BaseAuto {
                 robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 timer = 0;
-                while (robot.angles.firstAngle < -80 && opModeIsActive() && timer < 800) {
+                while (robot.angles.firstAngle < -80 && opModeIsActive()) {
                     robot.left1.setPower(Math.abs((-50 - robot.angles.firstAngle) / -40) * -0.4);
                     robot.right1.setPower(Math.abs((-50 - robot.angles.firstAngle) / -40) * 0.4);
                     telemetry.addData("left1 power", robot.left1.getPower());
@@ -432,7 +431,6 @@ public class CraterOneBlock extends BaseAuto {
                     telemetry.addData("heading", robot.angles.firstAngle);
                     telemetry.addData("angle var:", angleTurn);
                     telemetry.addData("Timer", timer);
-                    timer += 2;
                     telemetry.update();
                 }
                 robot.left1.setPower(0);
@@ -444,8 +442,8 @@ public class CraterOneBlock extends BaseAuto {
 
                 robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.left1.setTargetPosition(-800);//-6000
-                robot.right1.setTargetPosition(-800);//-6000
+                robot.left1.setTargetPosition(-1200);//-6000
+                robot.right1.setTargetPosition(-1200);//-6000
                 robot.left1.setPower(-0.9 * 1.1);
                 robot.right1.setPower(-0.9);
                 while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
