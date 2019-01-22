@@ -351,6 +351,7 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("dpad down", gamepad1.dpad_down);
 //            telemetry.addData("frontDetect Distance in Inches:", robot.frontDetect.getDistance(DistanceUnit.INCH));
 //            telemetry.addData("backDetect Distance in Inches:", robot.backDetect.getDistance(DistanceUnit.INCH));
+            telemetry.addData("wallDetect Distance in CM", robot.wallDetect.getDistance(DistanceUnit.CM));
             telemetry.update();
         }
     }

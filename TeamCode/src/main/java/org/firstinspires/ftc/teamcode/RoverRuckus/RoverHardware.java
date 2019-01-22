@@ -63,6 +63,7 @@ public class RoverHardware{
     //DistanceSensor senseOBJ;
     public DistanceSensor frontDetect;
     public DistanceSensor backDetect;
+    public DistanceSensor wallDetect;
 
     //Color Sensor 'Limit Switches'
     public ColorSensor bottomLimit;
@@ -147,6 +148,7 @@ public class RoverHardware{
         //Distance Sensors
 //        frontDetect = HwMap.get(DistanceSensor.class, "frontDetect");
 //        backDetect = HwMap.get(DistanceSensor.class, "backDetect");
+        wallDetect = HwMap.get(DistanceSensor.class, "wallDetect");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
