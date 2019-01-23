@@ -43,6 +43,7 @@ public class SecondRobotTeleop extends LinearOpMode {
     boolean buttonFlag;
     boolean limitFlag = false;
     boolean sorterFlag;
+    boolean rotateFlag;
     public int currentDiv = 1;
 
     DistanceSensor lidar;
@@ -94,6 +95,9 @@ public class SecondRobotTeleop extends LinearOpMode {
                 });
         telemetry.update();
         robot.initServoPositions();
+        robot.rotateMech.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rotateMech.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         //robot.drop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
 
@@ -105,7 +109,7 @@ public class SecondRobotTeleop extends LinearOpMode {
             }
 
 
-            robot.rotateMech.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
             //GAMEPAD 1
             //Arcade Style Drive Motors
             yValue = gamepad1.left_stick_y;
@@ -250,20 +254,35 @@ public class SecondRobotTeleop extends LinearOpMode {
                     robot.door.setPosition(0.42);
                 }
 
-//            if(gamepad2.x){
-//                robot.leftBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                robot.rightBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                robot.leftBop.setPower(-0.8);
-//                robot.rightBop.setPower(-0.8);
-//                if (robot.bopLimit.blue() > 200 && robot.bopLimit.alpha() < 400){
-//                    robot.rightBop.setPower(-0.3);
-//                }
-//                if (robot.bopLimit.red() > 200 && robot.bopLimit.alpha() < 400){
-//                    robot.leftBop.setPower(0);
-//                    robot.rightBop.setPower(0);
-//                }
-//            }
+            if(gamepad2.x){
+               robot.rotateMech.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+               robot.rotateMech.setTargetPosition(0);
+               rotateFlag = true;
+               if(robot.rotateMech.getCurrentPosition() < -5 && rotateFlag == true){
+                   robot.rotateMech.setPower(0.3);
+                   if (gamepad2.right_trigger >= 0.5) {
+                       rotateFlag = false;
+                   } else if (gamepad2.left_trigger >= 0.5) {
+                       rotateFlag = false;
+                   }
+               } else if (robot.rotateMech.getCurrentPosition() > 5 && rotateFlag == true){
+                   robot.rotateMech.setPower(-0.3);
+                   if (gamepad2.right_trigger >= 0.5) {
+                       rotateFlag = false;
+                   } else if (gamepad2.left_trigger >= 0.5) {
+                       rotateFlag = false;
+                   }
+               }
 
+            }
+
+            if(rotateFlag == true){
+               if (robot.rotateMech.getCurrentPosition() < 5 && robot.rotateMech.getCurrentPosition() > -5){
+                   robot.rotateMech.setPower(0);
+                   robot.rotateMech.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                   rotateFlag = false;
+               }
+            }
 //            if (robot.bopLimit.red() >= 110 && robot.bopLimit.alpha() < 300) {
 //                if (gamepad2.right_stick_y <= -.1) {
 //                    robot.leftBop.setPower(gamepad2.right_stick_y * 0.95);
@@ -301,8 +320,10 @@ public class SecondRobotTeleop extends LinearOpMode {
                 //Rotates the Intake Arm
                 if (gamepad2.right_trigger >= 0.5) {
                     robot.rotateMech.setPower(-gamepad2.right_trigger * 0.5);
+                    rotateFlag = false;
                 } else if (gamepad2.left_trigger >= 0.5) {
                     robot.rotateMech.setPower(gamepad2.left_trigger * 0.5);
+                    rotateFlag = false;
                 } else {
                     robot.rotateMech.setPower(0);
                 }
@@ -325,8 +346,8 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("bottom red", robot.bottomLimit.red());
 //            telemetry.addData("bottom blue", robot.bottomLimit.blue());
 
-                telemetry.addData("range", String.format("%.01f cm", lidar.getDistance(DistanceUnit.CM)));
-                telemetry.addData("sorter range", String.format("%.01f cm", robot.sorterLidar.getDistance(DistanceUnit.CM)));
+                //telemetry.addData("range", String.format("%.01f cm", lidar.getDistance(DistanceUnit.CM)));
+                //telemetry.addData("sorter range", String.format("%.01f cm", robot.sorterLidar.getDistance(DistanceUnit.CM)));
                 //            telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
 //            telemetry.addData("power", "  left=" + leftPower + "  right=" + rightPower);
 //            telemetry.addData("Arm power", robot.bop.getPower());
@@ -337,8 +358,8 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("right position", robot.right1.getCurrentPosition());
 //            telemetry.addData("left power", robot.left1.getPower());
 //            telemetry.addData("left position", robot.left1.getCurrentPosition());
-//            telemetry.addData("turret position", robot.rotateMech.getCurrentPosition());
-//            telemetry.addData("Turret Power", robot.rotateMech.getPower());
+            telemetry.addData("turret position", robot.rotateMech.getCurrentPosition());
+            telemetry.addData("Turret Power", robot.rotateMech.getPower());
                 //telemetry.addData("heading", robot.angles.firstAngle);
 //            telemetry.addData("Total current", expansionHub.getTotalModuleCurrentDraw());
 //            telemetry.addData("I2C current", expansionHub.getI2cBusCurrentDraw());
@@ -360,7 +381,7 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("frontDetect Distance in Inches:", robot.frontDetect.getDistance(DistanceUnit.INCH));
 //            telemetry.addData("backDetect Distance in Inches:", robot.backDetect.getDistance(DistanceUnit.INCH));
             telemetry.addData("position", robot.sorterFlip.getPosition());
-                telemetry.addData("wallDetect Distance in CM", robot.wallDetect.getDistance(DistanceUnit.CM));
+                //telemetry.addData("wallDetect Distance in CM", robot.wallDetect.getDistance(DistanceUnit.CM));
                 telemetry.update();
             }
         }
