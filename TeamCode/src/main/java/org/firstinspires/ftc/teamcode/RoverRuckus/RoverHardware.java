@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -63,8 +64,9 @@ public class RoverHardware{
     //DistanceSensor senseOBJ;
     public DistanceSensor frontDetect;
     public DistanceSensor backDetect;
-    public DistanceSensor wallDetect;
+    public ModernRoboticsI2cRangeSensor wallDetect;
 
+    public DistanceSensor sorterLidar;
     //Color Sensor 'Limit Switches'
     public ColorSensor bottomLimit;
     public ColorSensor upperLimit;
@@ -92,8 +94,11 @@ public class RoverHardware{
     public final int TOP_INTAKE = 0;
     public final double DILBERT_DOWN = 0.7;
     public final double DILBERT_UP = 0.0;
-    public final double SORTER_DOWN = 0.2;
-    public final double SORTER_UP = 0.45;
+    public final double SORTER_DOWN = 0;
+    public final double SORTER_UP = 1;
+    public final double DOOR_UP = .7;
+    public final double DOOR_DOWN = .42;
+
 
     public boolean collisionFlag = false;
 
@@ -148,7 +153,8 @@ public class RoverHardware{
         //Distance Sensors
 //        frontDetect = HwMap.get(DistanceSensor.class, "frontDetect");
 //        backDetect = HwMap.get(DistanceSensor.class, "backDetect");
-        wallDetect = HwMap.get(DistanceSensor.class, "wallDetect");
+        sorterLidar = HwMap.get(DistanceSensor.class, "sorterLidar");
+        wallDetect = HwMap.get(ModernRoboticsI2cRangeSensor.class, "wallDetect");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -173,6 +179,8 @@ public class RoverHardware{
 //
     public void initServoPositions() {
         sorterFlip.setPosition(SORTER_UP);
+        door.setPosition(DOOR_DOWN);
+
     }
 
     String formatAngle(AngleUnit angleUnit, double angle) {
