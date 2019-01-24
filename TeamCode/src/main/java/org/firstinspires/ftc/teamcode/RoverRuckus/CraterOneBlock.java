@@ -104,21 +104,6 @@ public class CraterOneBlock extends BaseAuto {
 //        robot.hang.setPower(0);
 //        sleep(200);
 
-
-        double Xpos = detector.getXPosition();
-        telemetry.addData("XPos", Xpos);
-        telemetry.update();
-        //Block is located in the middle spot
-        if(Xpos < 400 && Xpos > 10){
-            blockPosition = 2;//Block is located in the middle.
-        }
-        else if(Xpos > 400){
-            blockPosition = 3;//Block is located in the right spot
-        }
-        else{
-            blockPosition = 1;//block is left
-        }
-
         telemetry.addData("BlockPosition", blockPosition);
         telemetry.update();
 
@@ -141,6 +126,20 @@ public class CraterOneBlock extends BaseAuto {
             if (opModeIsActive() == false){
                 break;
             }
+        }
+
+        double Xpos = detector.getXPosition();
+        telemetry.addData("XPos", Xpos);
+        telemetry.update();
+        //Block is located in the middle spot
+        if(Xpos < 400 && Xpos > 10){
+            blockPosition = 2;//Block is located in the middle.
+        }
+        else if(Xpos > 400){
+            blockPosition = 3;//Block is located in the right spot
+        }
+        else{
+            blockPosition = 1;//block is left
         }
 
 

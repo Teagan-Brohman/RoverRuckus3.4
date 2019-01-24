@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -90,10 +91,10 @@ public class RoverHardware{
     public final int BOTTOM_INTAKE = -195;
     public final int MIDDLE_INTAKE = -96;
     public final int TOP_INTAKE = 0;
-    public final double DILBERT_DOWN = 0.7;
-    public final double DILBERT_UP = 0.0;
+    public final double DILBERT_DOWN = 0.2;
+    public final double DILBERT_UP = 0.7;
     public final double SORTER_DOWN = 0.2;
-    public final double SORTER_UP = 0.45;
+    public final double SORTER_UP = 0.75;
 
     public boolean collisionFlag = false;
 
@@ -148,7 +149,7 @@ public class RoverHardware{
         //Distance Sensors
 //        frontDetect = HwMap.get(DistanceSensor.class, "frontDetect");
 //        backDetect = HwMap.get(DistanceSensor.class, "backDetect");
-        wallDetect = HwMap.get(DistanceSensor.class, "wallDetect");
+        wallDetect = HwMap.get(DistanceSensor.class, "wall");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -171,7 +172,7 @@ public class RoverHardware{
     }
 
 //
-    public void initServoPositions() {
+    public void initServoPositions(){
         sorterFlip.setPosition(SORTER_UP);
     }
 

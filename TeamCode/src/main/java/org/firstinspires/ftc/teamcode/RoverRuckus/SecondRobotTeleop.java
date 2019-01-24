@@ -54,7 +54,6 @@ public class SecondRobotTeleop extends LinearOpMode {
 
         lidar = hardwareMap.get(DistanceSensor.class, "lidar");
 
-
         expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 2");
         left = (ExpansionHubMotor) hardwareMap.dcMotor.get("left1");
         right = (ExpansionHubMotor) hardwareMap.dcMotor.get("right1");
@@ -204,6 +203,9 @@ public class SecondRobotTeleop extends LinearOpMode {
 //                robot.drop.setPower(0);
 //            }
 
+            if(gamepad2.dpad_up){robot.marker.setPosition(robot.DILBERT_UP);}
+            if(gamepad2.dpad_down){robot.marker.setPosition(robot.DILBERT_DOWN);}
+
             //Move intake in or out
             if (gamepad2.b) {
                 robot.intake.setPower(0.9);
@@ -316,9 +318,7 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("upper blue", robot.upperLimit.blue());
 //            telemetry.addData("bottom red", robot.bottomLimit.red());
 //            telemetry.addData("bottom blue", robot.bottomLimit.blue());
-
-            telemetry.addData("range", String.format("%.01f cm", lidar.getDistance(DistanceUnit.CM)));
-
+//            telemetry.addData("range", String.format("%.01f cm", lidar.getDistance(DistanceUnit.CM)));
             //            telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
 //            telemetry.addData("power", "  left=" + leftPower + "  right=" + rightPower);
 //            telemetry.addData("Arm power", robot.bop.getPower());
