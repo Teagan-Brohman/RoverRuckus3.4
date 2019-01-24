@@ -64,8 +64,9 @@ public class RoverHardware{
     //DistanceSensor senseOBJ;
     public DistanceSensor frontDetect;
     public DistanceSensor backDetect;
-    public DistanceSensor wallDetect;
+    public ModernRoboticsI2cRangeSensor wallDetect;
 
+    public DistanceSensor sorterLidar;
     //Color Sensor 'Limit Switches'
     public ColorSensor bottomLimit;
     public ColorSensor upperLimit;
@@ -91,10 +92,13 @@ public class RoverHardware{
     public final int BOTTOM_INTAKE = -195;
     public final int MIDDLE_INTAKE = -96;
     public final int TOP_INTAKE = 0;
-    public final double DILBERT_DOWN = 0.2;
+    public final double DILBERT_DOWN = 0.25;
     public final double DILBERT_UP = 0.7;
-    public final double SORTER_DOWN = 0.2;
-    public final double SORTER_UP = 0.75;
+    public final double SORTER_DOWN = 0;
+    public final double SORTER_UP = 1;
+    public final double DOOR_UP = .7;
+    public final double DOOR_DOWN = .75;
+
 
     public boolean collisionFlag = false;
 
@@ -149,7 +153,8 @@ public class RoverHardware{
         //Distance Sensors
 //        frontDetect = HwMap.get(DistanceSensor.class, "frontDetect");
 //        backDetect = HwMap.get(DistanceSensor.class, "backDetect");
-        wallDetect = HwMap.get(DistanceSensor.class, "wall");
+        sorterLidar = HwMap.get(DistanceSensor.class, "sorterLidar");
+        wallDetect = HwMap.get(ModernRoboticsI2cRangeSensor.class, "wallDetect");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -172,8 +177,10 @@ public class RoverHardware{
     }
 
 //
-    public void initServoPositions(){
+    public void initServoPositions() {
         sorterFlip.setPosition(SORTER_UP);
+        door.setPosition(DOOR_DOWN);
+
     }
 
     String formatAngle(AngleUnit angleUnit, double angle) {
