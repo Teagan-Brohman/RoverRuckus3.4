@@ -92,12 +92,12 @@ public class RoverHardware{
     public final int BOTTOM_INTAKE = -195;
     public final int MIDDLE_INTAKE = -96;
     public final int TOP_INTAKE = 0;
-    public final double DILBERT_DOWN = 0.7;
-    public final double DILBERT_UP = 0.0;
+    public final double DILBERT_DOWN = 0.25;
+    public final double DILBERT_UP = 0.7;
     public final double SORTER_DOWN = 0;
     public final double SORTER_UP = 1;
     public final double DOOR_UP = .7;
-    public final double DOOR_DOWN = .42;
+    public final double DOOR_DOWN = .75;
 
 
     public boolean collisionFlag = false;
