@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode.RoverRuckus;
+package org.firstinspires.ftc.teamcode.RoverRuckus.NotCurrentlyUsed;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -18,8 +19,9 @@ import org.firstinspires.ftc.teamcode.RoverRuckus.RoverHardware;
 import java.util.Locale;
 
 @Autonomous(name = "Collision Test", group = "Autonomous")
+@Disabled
 public class CollisionTest extends BaseAuto {
-    public RoverHardware robot = new RoverHardware();
+    public RoverHardware2 robot = new RoverHardware2();
 
     public void runOpMode(){
         robot.init(hardwareMap);

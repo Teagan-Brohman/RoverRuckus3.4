@@ -73,28 +73,6 @@ public class SecondRobotTeleop extends LinearOpMode {
         robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
         robot.imu.initialize(parameters1);
 
-        composeTelemetry();
-
-        telemetry.addLine()
-                .addData("heading", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
-                    }
-                })
-                .addData("roll", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);
-                    }
-                })
-                .addData("pitch", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
-                    }
-                });
-        telemetry.update();
         robot.initServoPositions();
         robot.rotateMech.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rotateMech.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -395,9 +373,9 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("Left Power", leftPower);
 //            telemetry.addData("Right Power", rightPower);
 //            telemetry.addData("Gamepad Tigger", gamepad1.right_trigger);
-            telemetry.addData("upper red", robot.upperLimit.red());
-            telemetry.addData("upper blue", robot.upperLimit.blue());
-            telemetry.addData("upper Alpha", robot.upperLimit.alpha());
+//            telemetry.addData("upper red", robot.upperLimit.red());
+//            telemetry.addData("upper blue", robot.upperLimit.blue());
+//            telemetry.addData("upper Alpha", robot.upperLimit.alpha());
 //            telemetry.addData("bottom red", robot.bottomLimit.red());
 //            telemetry.addData("bottom blue", robot.bottomLimit.blue());
 
@@ -484,65 +462,5 @@ public class SecondRobotTeleop extends LinearOpMode {
                 limitFlag = true;
                 currentLim.cancel();
             }
-        }
-        void composeTelemetry () {
-
-
-            telemetry.addAction(new Runnable() {
-                @Override
-                public void run() {
-                    robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                    robot.gravity = robot.imu.getGravity();
-                }
-            });
-            telemetry.addLine()
-                    .addData("status", new Func<String>() {
-                        @Override
-                        public String value() {
-                            return robot.imu.getSystemStatus().toShortString();
-                        }
-                    })
-                    .addData("calib", new Func<String>() {
-                        @Override
-                        public String value() {
-                            return robot.imu.getCalibrationStatus().toString();
-                        }
-                    });
-            telemetry.addLine()
-                    .addData("heading", new Func<String>() {
-                        @Override
-                        public String value() {
-                            return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
-                        }
-                    })
-                    .addData("roll", new Func<String>() {
-                        @Override
-                        public String value() {
-                            return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);
-                        }
-                    })
-                    .addData("pitch", new Func<String>() {
-                        @Override
-                        public String value() {
-                            return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
-                        }
-                    });
-
-            telemetry.addLine()
-                    .addData("grvty", new Func<String>() {
-                        @Override
-                        public String value() {
-                            return robot.gravity.toString();
-                        }
-                    })
-                    .addData("mag", new Func<String>() {
-                        @Override
-                        public String value() {
-                            return String.format(Locale.getDefault(), "%.3f",
-                                    Math.sqrt(robot.gravity.xAccel * robot.gravity.xAccel
-                                            + robot.gravity.yAccel * robot.gravity.yAccel
-                                            + robot.gravity.zAccel * robot.gravity.zAccel));
-                        }
-                    });
         }
     }

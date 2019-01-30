@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.RoverRuckus.NotCurrentlyUsed;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.RoverRuckus.RoverHardware;
 
 @TeleOp(name = "test", group = "TeleOp")
+@Disabled
 public class encodertest extends LinearOpMode {
     RoverHardware robot = new RoverHardware();
 

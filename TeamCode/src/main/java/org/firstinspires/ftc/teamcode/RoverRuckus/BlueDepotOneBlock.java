@@ -98,12 +98,17 @@ public class BlueDepotOneBlock extends LinearOpMode {
         }
         waitForStart();
 
-//        //Raise arm
-//        while (robot.upperLimit.red() > 250 && opModeIsActive()) {
-//            robot.hang.setPower(1);
-//        }
-//        robot.hang.setPower(0);
-//        sleep(200);
+        robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.hang.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //Raise arm
+        while (robot.upperLimit.red() > 150 && opModeIsActive()) {
+            robot.hang.setPower(-1);
+            telemetry.addData("Red Color", robot.upperLimit.red());
+            telemetry.update();
+        }
+        robot.hang.setPower(0);
+        sleep(200);
 
         telemetry.addData("BlockPosition", blockPosition);
         telemetry.update();
@@ -295,6 +300,20 @@ public class BlueDepotOneBlock extends LinearOpMode {
             robot.left1.setPower(0);
         }
         if (blockPosition == 2) {
+            float currentAngle = robot.angles.firstAngle;
+            telemetry.addData("heading", robot.angles.firstAngle);
+            telemetry.update();
+            while (robot.angles.firstAngle > (currentAngle - 1) && opModeIsActive()) {
+                angleTurn = robot.angles.firstAngle;
+                robot.left1.setPower(((-55 - angleTurn) / -10) * 0.04);
+                robot.right1.setPower(((-55 - angleTurn) / -10) * -0.04);
+                telemetry.addData("left1 power", robot.left1.getPower());
+                telemetry.addData("right1 power", robot.right1.getPower());
+                telemetry.addData("heading", robot.angles.firstAngle);
+                telemetry.addData("angle var:", angleTurn);
+                telemetry.update();
+            }
+
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -486,15 +505,25 @@ public class BlueDepotOneBlock extends LinearOpMode {
         robot.marker.setPosition(robot.DILBERT_DOWN);
         sleep(1000);
 
+        robot.marker.setPosition(robot.DILBERT_UP);
+
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(5000);
-        robot.right1.setTargetPosition(5000);
-        robot.left1.setPower(0.9 * 1.01);
-        robot.right1.setPower(0.9);
+        robot.left1.setTargetPosition(4400);
+        robot.right1.setTargetPosition(4400);
+        robot.left1.setPower(0.9);
+        robot.right1.setPower(0.9 * 1.05);
         while (robot.left1.isBusy() && opModeIsActive()) {}
+
+        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.hang.setTargetPosition(-7900);
+        robot.hang.setPower(1);
+        while(robot.hang.isBusy()){
+            telemetry.addData("hanger position", robot.hang.getCurrentPosition());
+            telemetry.update();
+        }
     }
 
     void composeTelemetry(){
