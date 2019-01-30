@@ -98,7 +98,7 @@ public class SecondRobotTeleop extends LinearOpMode {
         robot.initServoPositions();
         robot.rotateMech.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rotateMech.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        robot.hang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //robot.drop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
 
@@ -110,11 +110,26 @@ public class SecondRobotTeleop extends LinearOpMode {
             }
 
 
+            yValue = gamepad1.right_stick_y;
+            xValue = -gamepad1.right_stick_x;
+
 
             //GAMEPAD 1
             //Arcade Style Drive Motors
-            yValue = gamepad1.left_stick_y;
-            xValue = -gamepad1.left_stick_x;
+//            if(Math.abs(gamepad1.right_stick_y) > 0.2|| Math.abs(gamepad1.right_stick_x) > 0.2){
+//                yValue = gamepad1.right_stick_y;
+//                xValue = -gamepad1.right_stick_x;
+//            }
+//
+//            else if(Math.abs(gamepad1.left_stick_y) > 0.2|| Math.abs(gamepad1.left_stick_x) > 0.2) {
+//                yValue = gamepad1.left_stick_y;
+//                xValue = -gamepad1.left_stick_x;
+//            }
+//            else{
+//                yValue = 0;
+//                xValue = 0;
+//            }
+
 
             leftPower = yValue - xValue;
             rightPower = yValue + xValue;
@@ -163,7 +178,7 @@ public class SecondRobotTeleop extends LinearOpMode {
             }
 
             //Hanging Mechanism
-            if (gamepad1.dpad_up && robot.upperLimit.red() < 300) {
+            if (gamepad1.dpad_up && robot.upperLimit.red() < 300 && robot.upperLimit.alpha() > 500 ) {
                 robot.hang.setPower(-1);
             } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 100) {
                 robot.hang.setPower(1);
@@ -301,6 +316,11 @@ public class SecondRobotTeleop extends LinearOpMode {
                     }
                 }
             }
+            if(gamepad2.dpad_up){
+                robot.rotateMech.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.rotateMech.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+
 //            if (robot.bopLimit.red() >= 110 && robot.bopLimit.alpha() < 300) {
 //                if (gamepad2.right_stick_y <= -.1) {
 //                    robot.leftBop.setPower(gamepad2.right_stick_y * 0.95);
@@ -313,8 +333,8 @@ public class SecondRobotTeleop extends LinearOpMode {
 
                 } else if (lidar.getDistance(DistanceUnit.CM) <= 25) {
                     if (gamepad2.left_stick_y >= -.1) {
-                        robot.leftBop.setPower(gamepad2.left_stick_y * 0.4);
-                        robot.rightBop.setPower(gamepad2.left_stick_y * 0.4);
+                        robot.leftBop.setPower(gamepad2.left_stick_y * 0.6);
+                        robot.rightBop.setPower(gamepad2.left_stick_y * 0.6);
                     } else {
                         robot.leftBop.setPower(gamepad2.left_stick_y * 0.95);
                         robot.rightBop.setPower(gamepad2.left_stick_y * 0.95);
@@ -327,17 +347,17 @@ public class SecondRobotTeleop extends LinearOpMode {
                     robot.rightBop.setPower(gamepad2.left_stick_y * 0.95);
                 }
 
-                if(gamepad2.left_stick_y < -0.5){
-                        if (gamepad2.a) {
-                            robot.intake.setPower(0.9);
-                        } else if (gamepad2.b) {
-                            robot.intake.setPower(-0.9);
-                        } else{
-                            robot.intake.setPower(0.0);
-                        }
-
-
-                    }
+//                if(gamepad2.left_stick_y > 0.5){
+//                        if (gamepad2.a) {
+//                            robot.intake.setPower(0.9);
+//                        } else if (gamepad2.b) {
+//                            robot.intake.setPower(-0.9);
+//                        } else{
+//                            robot.intake.setPower(0.0);
+//                        }
+//
+//
+//                    }
 //                if(robot.topDrop.getState()) {
 ////                    //robot.drop.setTargetPosition(robot.TOP_INTAKE); // Top
 ////                    robot.drop.setPower(0.7);
@@ -375,8 +395,9 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            telemetry.addData("Left Power", leftPower);
 //            telemetry.addData("Right Power", rightPower);
 //            telemetry.addData("Gamepad Tigger", gamepad1.right_trigger);
-//            telemetry.addData("upper red", robot.upperLimit.red());
-//            telemetry.addData("upper blue", robot.upperLimit.blue());
+            telemetry.addData("upper red", robot.upperLimit.red());
+            telemetry.addData("upper blue", robot.upperLimit.blue());
+            telemetry.addData("upper Alpha", robot.upperLimit.alpha());
 //            telemetry.addData("bottom red", robot.bottomLimit.red());
 //            telemetry.addData("bottom blue", robot.bottomLimit.blue());
 

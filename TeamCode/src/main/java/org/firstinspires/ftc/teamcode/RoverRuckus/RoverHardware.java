@@ -94,7 +94,7 @@ public class RoverHardware{
     public final int TOP_INTAKE = 0;
     public final double DILBERT_DOWN = 0.25;
     public final double DILBERT_UP = 0.7;
-    public final double SORTER_DOWN = 0.385;
+    public final double SORTER_DOWN = 0.38;
     public final double SORTER_UP = 1;
     public final double DOOR_UP = .7;
     public final double DOOR_DOWN = .75;
@@ -154,7 +154,7 @@ public class RoverHardware{
 //        frontDetect = HwMap.get(DistanceSensor.class, "frontDetect");
 //        backDetect = HwMap.get(DistanceSensor.class, "backDetect");
         sorterLidar = HwMap.get(DistanceSensor.class, "sorterLidar");
-        wallDetect = HwMap.get(ModernRoboticsI2cRangeSensor.class, "wallDetect");
+   //     wallDetect = HwMap.get(ModernRoboticsI2cRangeSensor.class, "wallDetect");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
