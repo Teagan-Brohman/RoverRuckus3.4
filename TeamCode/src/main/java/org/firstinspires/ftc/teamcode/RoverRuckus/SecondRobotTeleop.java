@@ -159,7 +159,7 @@ public class SecondRobotTeleop extends LinearOpMode {
                 } else if (robot.sorterLidar.getDistance(DistanceUnit.CM) <= 70 && robot.sorterLidar.getDistance(DistanceUnit.CM) > 20) {
                     robot.sorter.setPower(-0.75);
                 } else if (robot.sorterLidar.getDistance(DistanceUnit.CM) <= 20 && robot.sorterLidar.getDistance(DistanceUnit.CM) > 4) {
-                    robot.sorter.setPower(-0.5);
+                    robot.sorter.setPower(-0.6);
                 } else if (robot.sorterLidar.getDistance(DistanceUnit.CM) < 2.5) {
                     robot.sorter.setPower(0);
                 } else {
@@ -333,8 +333,8 @@ public class SecondRobotTeleop extends LinearOpMode {
 
                 } else if (lidar.getDistance(DistanceUnit.CM) <= 25) {
                     if (gamepad2.left_stick_y >= -.1) {
-                        robot.leftBop.setPower(gamepad2.left_stick_y * 0.6);
-                        robot.rightBop.setPower(gamepad2.left_stick_y * 0.6);
+                        robot.leftBop.setPower(gamepad2.left_stick_y * 0.7);
+                        robot.rightBop.setPower(gamepad2.left_stick_y * 0.7);
                     } else {
                         robot.leftBop.setPower(gamepad2.left_stick_y * 0.95);
                         robot.rightBop.setPower(gamepad2.left_stick_y * 0.95);
@@ -371,11 +371,11 @@ public class SecondRobotTeleop extends LinearOpMode {
                 //Rotates the Intake Arm
                 if (gamepad2.left_trigger >= 0.5) {
                     robot.rotateMech.setTargetPosition(-10);
-                    robot.rotateMech.setPower(-gamepad2.left_trigger * 0.5);
+                    robot.rotateMech.setPower(-gamepad2.left_trigger * 0.7);
                     rotateFlag = false;
                 } else if (gamepad2.right_trigger >= 0.5) {
                 robot.rotateMech.setTargetPosition(770);
-                    robot.rotateMech.setPower(gamepad2.right_trigger * 0.5);
+                    robot.rotateMech.setPower(gamepad2.right_trigger * 0.7);
                     rotateFlag = false;
                 } else {
                 robot.rotateMech.setTargetPosition(0);
