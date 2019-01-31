@@ -305,11 +305,12 @@ public class SecondRobotTeleop extends LinearOpMode {
 //                    robot.rightBop.setPower(gamepad2.right_stick_y * 0.95);
 //                }
 //            }
+            if(gamepad2.left_stick_y > 0.2) {
                 if (lidar.getDistance(DistanceUnit.CM) > 30) {
                     robot.leftBop.setPower(gamepad2.left_stick_y * 0.95);
                     robot.rightBop.setPower(gamepad2.left_stick_y * 0.95);
 
-                } else if (lidar.getDistance(DistanceUnit.CM) <= 25) {
+                } else if (lidar.getDistance(DistanceUnit.CM) <= 25 && lidar.getDistance(DistanceUnit.CM) > 7) {
                     if (gamepad2.left_stick_y >= -.1) {
                         robot.leftBop.setPower(gamepad2.left_stick_y * 0.7);
                         robot.rightBop.setPower(gamepad2.left_stick_y * 0.7);
@@ -317,14 +318,19 @@ public class SecondRobotTeleop extends LinearOpMode {
                         robot.leftBop.setPower(gamepad2.left_stick_y * 0.95);
                         robot.rightBop.setPower(gamepad2.left_stick_y * 0.95);
                     }
-                } else if (lidar.getDistance(DistanceUnit.CM) < 15) {
+                } else if (lidar.getDistance(DistanceUnit.CM) < 7) {
                     robot.leftBop.setPower(0);
                     robot.rightBop.setPower(0);
                 } else {
                     robot.leftBop.setPower(gamepad2.left_stick_y * 0.95);
                     robot.rightBop.setPower(gamepad2.left_stick_y * 0.95);
                 }
-
+            }
+            else
+            {
+                robot.leftBop.setPower(gamepad2.left_stick_y * 0.95);
+                robot.rightBop.setPower(gamepad2.left_stick_y * 0.95);
+            }
 //                if(gamepad2.left_stick_y > 0.5){
 //                        if (gamepad2.a) {
 //                            robot.intake.setPower(0.9);
@@ -402,7 +408,7 @@ public class SecondRobotTeleop extends LinearOpMode {
 ////            telemetry.addData("drop position", robot.drop.getCurrentPosition());
 ////            telemetry.addData("Drop Commanded Position", robot.drop.getTargetPosition());
 ////            telemetry.addData("Drop Power", robot.drop.getPower());
-//////            telemetry.addData("Gamepad Right Y", gamepad1.right_stick_y);
+           telemetry.addData("Gamepad Right Y", gamepad2.left_stick_y);
 ////            telemetry.addData("Button Flag", buttonFlag);
 ////            telemetry.addData("Bop Alpha", robot.bopLimit.alpha());
 ////            telemetry.addData("Sorter red", robot.sorterLimit.red());
@@ -414,8 +420,8 @@ public class SecondRobotTeleop extends LinearOpMode {
 ////            telemetry.addData("frontDetect Distance in Inches:", robot.frontDetect.getDistance(DistanceUnit.INCH));
 ////            telemetry.addData("backDetect Distance in Inches:", robot.backDetect.getDistance(DistanceUnit.INCH));
 //            //telemetry.addData("position", robot.sorterFlip.getPosition());
-//            telemetry.addData("intake lidar", lidar.getDistance(DistanceUnit.CM));
-//                //telemetry.addData("wallDetect Distance in CM", robot.wallDetect.getDistance(DistanceUnit.CM));
+           telemetry.addData("intake lidar", lidar.getDistance(DistanceUnit.CM));
+                //telemetry.addData("wallDetect Distance in CM", robot.wallDetect.getDistance(DistanceUnit.CM));
 //            telemetry.addData("rotateFlag State", rotateFlag);
                 telemetry.update();
             }
