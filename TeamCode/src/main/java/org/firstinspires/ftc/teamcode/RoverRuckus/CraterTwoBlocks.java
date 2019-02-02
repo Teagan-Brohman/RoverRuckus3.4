@@ -478,8 +478,7 @@ public class CraterTwoBlocks extends LinearOpMode {
             robot.right1.setTargetPosition(-2500);//5200
             robot.left1.setPower(-0.99);
             robot.right1.setPower(-0.99);
-            while (robot.left1.isBusy() && opModeIsActive()) {
-            }
+            while (robot.left1.isBusy() && opModeIsActive()) { }
             robot.right1.setPower(0);
             robot.left1.setPower(0);
 

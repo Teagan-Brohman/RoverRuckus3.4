@@ -247,8 +247,8 @@ public class BlueDepotOneBlock extends LinearOpMode {
             while (robot.angles.firstAngle < 68.2 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
-                robot.left1.setPower(((66.2 - angleTurn) / 35) * -0.45);
-                robot.right1.setPower(((66.2 - angleTurn) / 35) * 0.45);
+                robot.left1.setPower(((69.2 - angleTurn) / 35) * -0.45);
+                robot.right1.setPower(((69.2 - angleTurn) / 35) * 0.45);
                 telemetry.addData("left1 power", robot.left1.getPower());
                 telemetry.addData("right1 power", robot.right1.getPower());
                 telemetry.addData("heading", robot.angles.firstAngle);
@@ -261,8 +261,8 @@ public class BlueDepotOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(2200);//5200
-            robot.right1.setTargetPosition(2200);//5200
+            robot.left1.setTargetPosition(2600);//5200
+            robot.right1.setTargetPosition(2600);//5200
             robot.left1.setPower(0.9);
             robot.right1.setPower(0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {
@@ -322,13 +322,13 @@ public class BlueDepotOneBlock extends LinearOpMode {
             robot.right1.setTargetPosition(1450);//2500
             robot.left1.setPower(0.9);
             robot.right1.setPower(0.9);
-            while (robot.left1.isBusy() && opModeIsActive()) {
+            while (robot.right1.isBusy() && opModeIsActive()) {
                 telemetry.addData("left1", robot.left1.getCurrentPosition());
                 telemetry.update();
             }
 
-            robot.left1.setTargetPosition(400);
-            robot.right1.setTargetPosition(400);
+            robot.left1.setTargetPosition(500);
+            robot.right1.setTargetPosition(500);
             robot.left1.setPower(-0.6);
             robot.right1.setPower(-0.6);
             while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -438,7 +438,7 @@ public class BlueDepotOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > -100 && opModeIsActive()) {
+            while (robot.angles.firstAngle > -95 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
                 robot.left1.setPower(((-95 - angleTurn) / -45) * 0.36);
@@ -455,8 +455,8 @@ public class BlueDepotOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2600);//5200
-            robot.right1.setTargetPosition(-2600);//5200
+            robot.left1.setTargetPosition(-2300);//5200
+            robot.right1.setTargetPosition(-2300);//5200
             robot.left1.setPower(-0.9);
             robot.right1.setPower(-0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -513,8 +513,8 @@ public class BlueDepotOneBlock extends LinearOpMode {
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.left1.setTargetPosition(4400);
         robot.right1.setTargetPosition(4400);
-        robot.left1.setPower(0.9);
-        robot.right1.setPower(0.9 * 1.05);
+        robot.left1.setPower(0.9 * 1.05);
+        robot.right1.setPower(0.9);
         while (robot.left1.isBusy() && opModeIsActive()) {}
 
         robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);

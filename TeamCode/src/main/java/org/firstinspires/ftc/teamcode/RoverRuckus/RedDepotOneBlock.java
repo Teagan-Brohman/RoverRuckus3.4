@@ -455,8 +455,8 @@ public class RedDepotOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2600);//5200
-            robot.right1.setTargetPosition(-2600);//5200
+            robot.left1.setTargetPosition(-2400);//5200
+            robot.right1.setTargetPosition(-2400);//5200
             robot.left1.setPower(-0.9);
             robot.right1.setPower(-0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -513,8 +513,8 @@ public class RedDepotOneBlock extends LinearOpMode {
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.left1.setTargetPosition(4400);
         robot.right1.setTargetPosition(4400);
-        robot.left1.setPower(0.9);
-        robot.right1.setPower(0.9 * 1.05);
+        robot.left1.setPower(0.9 * 1.05);
+        robot.right1.setPower(0.9);
         while (robot.left1.isBusy() && opModeIsActive()) {}
 
         robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
