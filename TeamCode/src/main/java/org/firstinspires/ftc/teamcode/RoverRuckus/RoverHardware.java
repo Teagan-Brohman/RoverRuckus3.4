@@ -179,7 +179,8 @@ public class RoverHardware{
 //
     public void initServoPositions() {
         sorterFlip.setPosition(SORTER_UP);
-        door.setPosition(DOOR_DOWN);
+        door.setPosition(DOOR_UP);
+        marker.setPosition(DILBERT_UP);
 
     }
 
