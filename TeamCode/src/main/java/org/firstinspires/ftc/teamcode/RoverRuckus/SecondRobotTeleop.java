@@ -92,6 +92,13 @@ public class SecondRobotTeleop extends LinearOpMode {
             xValue = -gamepad1.right_stick_x;
 
 
+
+            if( lidar.getDistance(DistanceUnit.CM) > 800){
+                telemetry.addData("Is LIDAR mad/broken: Yes","");
+            }
+            else{
+                telemetry.addData("Is LIDAR mad/broken: No","");
+            }
             //GAMEPAD 1
             //Arcade Style Drive Motors
 //            if(Math.abs(gamepad1.right_stick_y) > 0.2|| Math.abs(gamepad1.right_stick_x) > 0.2){
@@ -434,7 +441,7 @@ public class SecondRobotTeleop extends LinearOpMode {
 ////            telemetry.addData("frontDetect Distance in Inches:", robot.frontDetect.getDistance(DistanceUnit.INCH));
 ////            telemetry.addData("backDetect Distance in Inches:", robot.backDetect.getDistance(DistanceUnit.INCH));
 //            //telemetry.addData("position", robot.sorterFlip.getPosition());
-           telemetry.addData("intake lidar", lidar.getDistance(DistanceUnit.CM));
+//           telemetry.addData("intake lidar", lidar.getDistance(DistanceUnit.CM));
            telemetry.addData("rotateMech", robot.rotateMech.getCurrentPosition());
 
                 //telemetry.addData("wallDetect Distance in CM", robot.wallDetect.getDistance(DistanceUnit.CM));

@@ -23,7 +23,6 @@ import java.util.Locale;
 public class RedDepotOneBlock extends LinearOpMode {
     public RoverHardware robot = new RoverHardware(); //Initialize our Hardware referenced in our hardware class
 
-
     private GoldAlignDetector detector; //Initialize detector used to search and find the golden block
 
     float angleTurn; //create a float variable used to store our current heading position while turning
@@ -57,7 +56,7 @@ public class RedDepotOneBlock extends LinearOpMode {
         detector.ratioScorer.weight = 5;
         detector.ratioScorer.perfectRatio = 1.0;
 
-        detector.enable();
+        //detector.enable();
 
         //Initialize Gyro
         BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
@@ -93,15 +92,22 @@ public class RedDepotOneBlock extends LinearOpMode {
                     }
                 });
         while (!opModeIsActive()) {
-            telemetry.addData("DetectorXPos", detector.getXPosition());
+            // telemetry.addData("DetectorXPos", detector.getXPosition());
             telemetry.update();
+//            if(detector.getXPosition() < 50){
+//                blockPosition = 1;
+//            }
         }
         waitForStart();
+
+        detector.enable();
 
         robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.hang.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-//        //Raise arm
+        robot.marker.setPosition(robot.DILBERT_UP );
+
+        //Raise arm
         while (robot.upperLimit.red() > 150 && opModeIsActive()) {
             robot.hang.setPower(-1);
             telemetry.addData("Red Color", robot.upperLimit.red());
@@ -131,20 +137,31 @@ public class RedDepotOneBlock extends LinearOpMode {
             }
         }
 
+        detector.enable();
+
+        telemetry.addData("detectorPosition", detector.getXPosition());
+        telemetry.update();
+
         double Xpos = detector.getXPosition();
         telemetry.addData("XPos", Xpos);
         telemetry.update();
-        //Block is located in the middle spot
-        if (Xpos < 400 && Xpos > 160) {
-            blockPosition = 2;//Block is located in the middle.
-        } else if (Xpos > 400) {
-            blockPosition = 3;//Block is located in the right spot
-        } else if(Xpos == 0) {
-            blockPosition = 1;//block is left
+
+        if(detector.getXPosition() < 50 && Xpos < 50){
+            blockPosition = 1;
+        }
+        else if(detector.getAligned() == true || detector.getAligned() == false) {
+            //Block is located in the middle spot
+            if (Xpos < 400 && Xpos > 160) {
+                blockPosition = 2;//Block is located in the middle.
+            } else if (Xpos > 400) {
+                blockPosition = 3;//Block is located in the right spot
+            }
         }
 
+        telemetry.addData("blockPosition", blockPosition);
+        telemetry.update();
 
-        if (detector.getAligned() == true && Xpos != 0|| detector.getAligned() == false && Xpos != 0) {
+        if (detector.getAligned() == true && Xpos >= 100|| detector.getAligned() == false && Xpos >= 100) {
             //Hunt for the Block
             if (blockPosition == 2){
                 robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -198,23 +215,19 @@ public class RedDepotOneBlock extends LinearOpMode {
                     }
                 }
             }
-        } else {
-            detector.disable();
-
-            telemetry.addData("Status:", "no Block Seen");
+        } else if (blockPosition == 1){
+            robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            telemetry.addData("status", "entered block1");
             telemetry.update();
-
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle < 28 && opModeIsActive()) {
-                angleTurn = robot.angles.firstAngle;
-                robot.left1.setPower(Math.abs((30 - robot.angles.firstAngle) / 40) * -0.6);
-                robot.right1.setPower(Math.abs((30 - robot.angles.firstAngle) / 40) * 0.6);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
+            while (detector.getXPosition() < 235 && opModeIsActive() || detector.getXPosition() > 345 && opModeIsActive()) {
+                telemetry.addData("Status", "searching for angle");
+                telemetry.addData("xpos", detector.getXPosition());
+                telemetry.addData("IsAligned", detector.getAligned());
+                telemetry.addData("status", "entered loop");
                 telemetry.update();
+                robot.left1.setPower(-.4);
+                robot.right1.setPower(.4);
             }
         }
         robot.left1.setPower(0);
@@ -261,8 +274,8 @@ public class RedDepotOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(2200);//5200
-            robot.right1.setTargetPosition(2200);//5200
+            robot.left1.setTargetPosition(2600);//5200
+            robot.right1.setTargetPosition(2600);//5200
             robot.left1.setPower(0.9);
             robot.right1.setPower(0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {
@@ -275,8 +288,8 @@ public class RedDepotOneBlock extends LinearOpMode {
             while (robot.angles.firstAngle < 142 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
-                robot.left1.setPower(((142 - angleTurn) / 43) * -0.3);
-                robot.right1.setPower(((142 - angleTurn) / 43) * 0.3);
+                robot.left1.setPower(((144 - angleTurn) / 40) * -0.3);
+                robot.right1.setPower(((144 - angleTurn) / 40) * 0.3);
                 telemetry.addData("left1 power", robot.left1.getPower());
                 telemetry.addData("right1 power", robot.right1.getPower());
                 telemetry.addData("heading", robot.angles.firstAngle);
@@ -290,8 +303,8 @@ public class RedDepotOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2000);//5200
-            robot.right1.setTargetPosition(-2000);//5200
+            robot.left1.setTargetPosition(-1800);//5200
+            robot.right1.setTargetPosition(-1800);//5200
             robot.left1.setPower(-0.9);
             robot.right1.setPower(-0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {
@@ -305,8 +318,8 @@ public class RedDepotOneBlock extends LinearOpMode {
             telemetry.update();
             while (robot.angles.firstAngle > (currentAngle - 1) && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
-                robot.left1.setPower(((-55 - angleTurn) / -10) * 0.04);
-                robot.right1.setPower(((-55 - angleTurn) / -10) * -0.04);
+                robot.left1.setPower(((-55 - angleTurn) / -8) * 0.05);
+                robot.right1.setPower(((-55 - angleTurn) / -8) * -0.05);
                 telemetry.addData("left1 power", robot.left1.getPower());
                 telemetry.addData("right1 power", robot.right1.getPower());
                 telemetry.addData("heading", robot.angles.firstAngle);
@@ -438,11 +451,11 @@ public class RedDepotOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > -100 && opModeIsActive()) {
+            while (robot.angles.firstAngle > -95 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
-                robot.left1.setPower(((-95 - angleTurn) / -45) * 0.36);
-                robot.right1.setPower(((-95 - angleTurn) / -45) * -0.36);
+                robot.left1.setPower(((-95 - angleTurn) / -35 ) * 0.36);
+                robot.right1.setPower(((-95 - angleTurn) / -35) * -0.36);
                 telemetry.addData("left1 power", robot.left1.getPower());
                 telemetry.addData("right1 power", robot.right1.getPower());
                 telemetry.addData("heading", robot.angles.firstAngle);
@@ -455,8 +468,8 @@ public class RedDepotOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2400);//5200
-            robot.right1.setTargetPosition(-2400);//5200
+            robot.left1.setTargetPosition(-2450);//5200
+            robot.right1.setTargetPosition(-2450);//5200
             robot.left1.setPower(-0.9);
             robot.right1.setPower(-0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -465,11 +478,11 @@ public class RedDepotOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > -175 && opModeIsActive() && robot.angles.firstAngle < 0) {
+            while (robot.angles.firstAngle < 0 && opModeIsActive()){
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
-                robot.left1.setPower(((-180 - angleTurn) / -43) * 0.3);
-                robot.right1.setPower(((-180 - angleTurn) / -43) * -0.3);
+                robot.left1.setPower(Math.abs((0 - angleTurn) / 150) * 0.25);
+                robot.right1.setPower(Math.abs((0 - angleTurn) / 150) * -0.25);
                 telemetry.addData("left1 power", robot.left1.getPower());
                 telemetry.addData("right1 power", robot.right1.getPower());
                 telemetry.addData("heading", robot.angles.firstAngle);
@@ -493,7 +506,7 @@ public class RedDepotOneBlock extends LinearOpMode {
         robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
-        while(robot.cornerSensor.red() <= 70 && opModeIsActive()){
+        while(robot.cornerSensor.red() <= 65 && opModeIsActive()){
             robot.left1.setPower(-0.3);
             robot.right1.setPower(-0.3);
             telemetry.addData("Color Sensor RED", robot.cornerSensor.red());

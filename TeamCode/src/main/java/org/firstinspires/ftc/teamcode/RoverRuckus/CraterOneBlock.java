@@ -24,7 +24,6 @@ import java.util.TimerTask;
 public class CraterOneBlock extends BaseAuto {
     public RoverHardware robot = new RoverHardware(); //Initialize our Hardware referenced in our hardware class
 
-
     private GoldAlignDetector detector; //Initialize detector used to search and find the golden block
 
     float angleTurn; //create a float variable used to store our current heading position while turning
@@ -33,6 +32,8 @@ public class CraterOneBlock extends BaseAuto {
     Timer waitTimer;
     int blockPosition;
     int timer;
+
+    double POWER = 1.15;
 
     public void runOpMode() {//Starts running the code
         robot.init(hardwareMap); //register the hardware mappings from the hardware class with names given to motors servos, etc.
@@ -56,7 +57,7 @@ public class CraterOneBlock extends BaseAuto {
         detector.ratioScorer.weight = 5;
         detector.ratioScorer.perfectRatio = 1.0;
 
-        detector.enable();
+        //detector.enable();
 
         //Initialize Gyro
         BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
@@ -91,16 +92,23 @@ public class CraterOneBlock extends BaseAuto {
                         return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
                     }
                 });
-        while(!opModeIsActive()){
-            telemetry.addData("DetectorXPos", detector.getXPosition());
+        while (!opModeIsActive()) {
+            // telemetry.addData("DetectorXPos", detector.getXPosition());
             telemetry.update();
+//            if(detector.getXPosition() < 50){
+//                blockPosition = 1;
+//            }
         }
         waitForStart();
+
+        detector.enable();
 
         robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.hang.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-//        //Raise arm
+        robot.marker.setPosition(robot.DILBERT_UP );
+
+        //Raise arm
         while (robot.upperLimit.red() > 150 && opModeIsActive()) {
             robot.hang.setPower(-1);
             telemetry.addData("Red Color", robot.upperLimit.red());
@@ -119,36 +127,42 @@ public class CraterOneBlock extends BaseAuto {
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.left1.setTargetPosition(450);//900
         robot.right1.setTargetPosition(450);//900
-        robot.left1.setPower(0.8);
-        robot.right1.setPower(0.8);
+        robot.left1.setPower(0.4);
+        robot.right1.setPower(0.4);
         while (robot.left1.isBusy() && robot.right1.isBusy() && opModeIsActive()) {
-            telemetry.addData("right power", robot.right1.getPower());
-            telemetry.addData("right position", robot.right1.getCurrentPosition());
-            telemetry.addData("left power", robot.left1.getPower());
-            telemetry.addData("left position", robot.left1.getCurrentPosition());
+            telemetry.addData("XPos", detector.getXPosition());
             telemetry.update();
 
-            if (opModeIsActive() == false){
+            if (opModeIsActive() == false) {
                 break;
             }
         }
 
+        detector.enable();
+
+        telemetry.addData("detectorPosition", detector.getXPosition());
+        telemetry.update();
+
         double Xpos = detector.getXPosition();
         telemetry.addData("XPos", Xpos);
         telemetry.update();
-        //Block is located in the middle spot
-        if(Xpos < 400 && Xpos > 10){
-            blockPosition = 2;//Block is located in the middle.
+
+        if(detector.getXPosition() < 50 && Xpos < 50){
+            blockPosition = 1;
         }
-        else if(Xpos > 400){
-            blockPosition = 3;//Block is located in the right spot
-        }
-        else{
-            blockPosition = 1;//block is left
+        else if(detector.getAligned() == true || detector.getAligned() == false) {
+            //Block is located in the middle spot
+            if (Xpos < 400 && Xpos > 160) {
+                blockPosition = 2;//Block is located in the middle.
+            } else if (Xpos > 400) {
+                blockPosition = 3;//Block is located in the right spot
+            }
         }
 
+        telemetry.addData("blockPosition", blockPosition);
+        telemetry.update();
 
-        if (detector.getAligned() == true && Xpos != 0|| detector.getAligned() == false && Xpos != 0) {
+        if (detector.getAligned() == true && Xpos >= 100|| detector.getAligned() == false && Xpos >= 100) {
             //Hunt for the Block
             if (blockPosition == 2){
                 robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -202,23 +216,19 @@ public class CraterOneBlock extends BaseAuto {
                     }
                 }
             }
-        }else {
-            detector.disable();
-
-            telemetry.addData("Status:", "no Block Seen");
+        } else if (blockPosition == 1){
+            robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            telemetry.addData("status", "entered block1");
             telemetry.update();
-
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle < 28 && opModeIsActive()) {
-                angleTurn = robot.angles.firstAngle;
-                robot.left1.setPower(Math.abs((30 - robot.angles.firstAngle) / 40) * -0.6);
-                robot.right1.setPower(Math.abs((30 - robot.angles.firstAngle) / 40) * 0.6);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
+            while (detector.getXPosition() < 235 && opModeIsActive() || detector.getXPosition() > 345 && opModeIsActive()) {
+                telemetry.addData("Status", "searching for angle");
+                telemetry.addData("xpos", detector.getXPosition());
+                telemetry.addData("IsAligned", detector.getAligned());
+                telemetry.addData("status", "entered loop");
                 telemetry.update();
+                robot.left1.setPower(-.4);
+                robot.right1.setPower(.4);
             }
         }
         robot.left1.setPower(0);
@@ -313,14 +323,13 @@ public class CraterOneBlock extends BaseAuto {
             telemetry.update();
     }
         if (blockPosition == 2) {
-
             float currentAngle = robot.angles.firstAngle;
             telemetry.addData("heading", robot.angles.firstAngle);
             telemetry.update();
             while (robot.angles.firstAngle > (currentAngle - 1) && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
-                robot.left1.setPower(((-55 - angleTurn) / -10) * 0.04);
-                robot.right1.setPower(((-55 - angleTurn) / -10) * -0.04);
+                robot.left1.setPower(((-55 - angleTurn) / -8) * 0.05);
+                robot.right1.setPower(((-55 - angleTurn) / -8) * -0.05);
                 telemetry.addData("left1 power", robot.left1.getPower());
                 telemetry.addData("right1 power", robot.right1.getPower());
                 telemetry.addData("heading", robot.angles.firstAngle);
@@ -458,8 +467,8 @@ public class CraterOneBlock extends BaseAuto {
                 while (robot.angles.firstAngle > -94 && opModeIsActive()) {
                     angleTurn = robot.angles.firstAngle;
                     //This is a right turn to 78 degrees
-                    robot.left1.setPower(((-90 - angleTurn) / -45) * 0.3);
-                    robot.right1.setPower(((-90 - angleTurn) / -45) * -0.3);
+                    robot.left1.setPower(((-95 - angleTurn) / -40) * 0.3);
+                    robot.right1.setPower(((-95 - angleTurn) / -40) * -0.3);
                     telemetry.addData("left1 power", robot.left1.getPower());
                     telemetry.addData("right1 power", robot.right1.getPower());
                     telemetry.addData("heading", robot.angles.firstAngle);
@@ -472,8 +481,8 @@ public class CraterOneBlock extends BaseAuto {
                 robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.left1.setTargetPosition(-2500);//5200
-                robot.right1.setTargetPosition(-2500);//5200
+                robot.left1.setTargetPosition(-2700);//5200
+                robot.right1.setTargetPosition(-2700);//5200
                 robot.left1.setPower(-0.9);
                 robot.right1.setPower(-0.9);
                 while (robot.left1.isBusy() && opModeIsActive()) {
@@ -509,7 +518,8 @@ public class CraterOneBlock extends BaseAuto {
                 robot.right1.setTargetPosition(-2000);//-6000
                 robot.left1.setPower(-0.9 * 1.1);
                 robot.right1.setPower(-0.9);
-                while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
+                while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {
+                }
                 robot.left1.setPower(-0.4);
                 robot.right1.setPower(-0.4);
                 robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -518,24 +528,10 @@ public class CraterOneBlock extends BaseAuto {
                 telemetry.update();
             }
 
-        telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
-            while(robot.cornerSensor.blue() <= 45 &&opModeIsActive()){
-                blue = robot.cornerSensor.blue();
-                robot.left1.setPower(-0.3 * 1.03);
-                robot.right1.setPower(-0.3);
-                telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
-                telemetry.addData("Alpha", robot.cornerSensor.alpha());
-                telemetry.addData("BLUE", blue);
-                telemetry.addData("Searching", "");
-                telemetry.update();
-            }
-            robot.left1.setPower(0);
-            robot.right1.setPower(0);
-
         robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
-        while(robot.cornerSensor.blue() <= 26 && opModeIsActive()){
+        while(robot.cornerSensor.blue() <= 33  && opModeIsActive()){
             robot.left1.setPower(-0.3);
             robot.right1.setPower(-0.3);
             telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
@@ -556,7 +552,7 @@ public class CraterOneBlock extends BaseAuto {
         robot.left1.setTargetPosition(4400);
         robot.right1.setTargetPosition(4400);
         robot.left1.setPower(0.9);
-        robot.right1.setPower(0.9 * 1.05);
+        robot.right1.setPower(0.9 * 1.08 );
         while (robot.left1.isBusy() && opModeIsActive()) {}
 
         robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
