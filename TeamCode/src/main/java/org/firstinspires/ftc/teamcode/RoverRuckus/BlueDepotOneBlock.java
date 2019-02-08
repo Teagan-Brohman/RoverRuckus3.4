@@ -380,7 +380,7 @@ public class BlueDepotOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle < 142 && opModeIsActive()) {
+            while (robot.angles.firstAngle < 136 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
                 robot.left1.setPower(((142 - angleTurn) / 43) * -0.3);
@@ -468,8 +468,8 @@ public class BlueDepotOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2375);//5200
-            robot.right1.setTargetPosition(-2375);//5200
+            robot.left1.setTargetPosition(-2500);//5200
+            robot.right1.setTargetPosition(-2500);//5200
             robot.left1.setPower(-0.9);
             robot.right1.setPower(-0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {}
