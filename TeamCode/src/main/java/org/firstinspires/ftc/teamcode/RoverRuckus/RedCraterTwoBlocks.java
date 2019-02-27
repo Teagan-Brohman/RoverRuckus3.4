@@ -531,7 +531,7 @@ public class RedCraterTwoBlocks extends LinearOpMode {
         }
 
         telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
-        while (robot.cornerSensor.red() <= 42 && opModeIsActive()) {
+        while (robot.cornerSensor.red() <= 40 && opModeIsActive()) {
             red = robot.cornerSensor.red();
             robot.left1.setPower(-0.3 * 1.03);
             robot.right1.setPower(-0.3);

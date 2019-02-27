@@ -151,9 +151,9 @@ public class BlueDepotOneBlock extends LinearOpMode {
         }
         else if(detector.getAligned() == true || detector.getAligned() == false) {
             //Block is located in the middle spot
-            if (Xpos < 400 && Xpos > 160) {
+            if (Xpos < 400 && Xpos > 160){
                 blockPosition = 2;//Block is located in the middle.
-            } else if (Xpos > 400) {
+            } else if (Xpos > 400){
                 blockPosition = 3;//Block is located in the right spot
             }
         }
