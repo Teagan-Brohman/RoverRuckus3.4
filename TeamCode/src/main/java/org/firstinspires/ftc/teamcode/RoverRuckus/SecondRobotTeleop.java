@@ -251,9 +251,9 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            }
 
                 if (gamepad2.right_bumper) {
-                    robot.door.setPosition(0.6);
+                    robot.door.setPosition(0.9);
                 } else {
-                    robot.door.setPosition(0.45);
+                    robot.door.setPosition(0.55);
                 }
 
             if(gamepad2.x){
