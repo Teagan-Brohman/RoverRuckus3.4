@@ -258,29 +258,28 @@ public class SecondRobotTeleop extends LinearOpMode {
             if (gamepad2.right_bumper) {
                 robot.door.setPosition(robot.DOOR_DOWN);
             }
-//            else if(robot.sorterLidar.getDistance(DistanceUnit.CM) < 4.5 && lidar.getDistance(DistanceUnit.CM) < 8){
-//                if(DoorFlag == true) {
-//                    DoorFlag = false;
-//                    TimerTask DoorRelease = new TimerTask() {
-//                        @Override
-//                        public void run() {
-//                            robot.door.setPosition(robot.DOOR_DOWN);
-//                            sleep(600);
-//                            robot.door.setPosition(robot.DOOR_UP);
-//                            cancel();
-//                        }
-//                    };
-//                    Timer Door_Drop = new Timer("Door");
-//                    Door_Drop.schedule(DoorRelease, 0);
-//
-//                }
-//
-//
-//                }
-//             else if(lidar.getDistance(DistanceUnit.CM) > 8) {
-//                DoorFlag = true;
-//                robot.door.setPosition(robot.DOOR_UP);
-//            }
+            else if(robot.sorterLidar.getDistance(DistanceUnit.CM) < 4.5 && lidar.getDistance(DistanceUnit.CM) < 8){
+                if(DoorFlag == true) {
+                    TimerTask DoorRelease = new TimerTask() {
+                        @Override
+                        public void run() {
+                            robot.door.setPosition(robot.DOOR_DOWN);
+                            sleep(600);
+                            robot.door.setPosition(robot.DOOR_UP);
+                            DoorFlag = false;
+                            cancel();
+                        }
+                    };
+                    Timer Door_Drop = new Timer("Door");
+                    Door_Drop.schedule(DoorRelease, 0);
+
+                }
+                if( DoorFlag == false && lidar.getDistance(DistanceUnit.CM) > 8) {
+                    DoorFlag = true;
+                    robot.door.setPosition(robot.DOOR_UP);
+                }
+
+                }
             else{
                 robot.door.setPosition(robot.DOOR_UP);
             }
@@ -517,7 +516,7 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            //telemetry.addData("position", robot.sorterFlip.getPosition());
 //            telemetry.addData("joystick", gamepad2.left_stick_y);
 //           telemetry.addData("intake lidar", lidar.getDistance(DistanceUnit.CM));
-          telemetry.addData("sorter", robot.sorterLidar.getDistance(DistanceUnit.CM));
+          //telemetry.addData("sorter", robot.sorterLidar.getDistance(DistanceUnit.CM));
 //           telemetry.addData("rotateMech", robot.rotateMech.getCurrentPosition());
 
                 //telemetry.addData("wallDetect Distance in CM", robot.wallDetect.getDistance(DistanceUnit.CM));
