@@ -90,10 +90,10 @@ public class SecondRobotTeleop extends LinearOpMode {
 
 
         while (opModeIsActive()) {
-            if (limitFlag = false) {
-                currentLim = new Timer();
-                currentLim.schedule(new SecondRobotTeleop.CurrentLim(), 20000, 10);
-            }
+//            if (limitFlag = false) {
+////                currentLim = new Timer();
+////                currentLim.schedule(new SecondRobotTeleop.CurrentLim(), 20000, 10);
+////            }
 
 
             yValue = gamepad1.right_stick_y;
@@ -227,10 +227,10 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            }
 
                 //Move intake in or out
-                if (gamepad2.a) {
-                    robot.intake.setPower(0.9);
-                } else if (gamepad2.b) {
+                if (gamepad2.b) {
                     robot.intake.setPower(-0.9);
+                } else if (gamepad2.a) {
+                    robot.intake.setPower(0.9);
                 } else if (gamepad2.y) {
                     robot.intake.setPower(0.0);
                 }
@@ -258,27 +258,30 @@ public class SecondRobotTeleop extends LinearOpMode {
             if (gamepad2.right_bumper) {
                 robot.door.setPosition(robot.DOOR_DOWN);
             }
-            else if(robot.sorterLidar.getDistance(DistanceUnit.CM) < 6 && lidar.getDistance(DistanceUnit.CM) < 8){
-                if(DoorFlag == true) {
-                    DoorFlag = false;
-                    TimerTask DoorRelease = new TimerTask() {
-                        @Override
-                        public void run() {
-                            robot.door.setPosition(robot.DOOR_DOWN);
-                            sleep(600);
-                            robot.door.setPosition(robot.DOOR_UP);
-                            cancel();
-                        }
-                    };
-                    Timer Door_Drop = new Timer("Door");
-                    Door_Drop.schedule(DoorRelease, 0);
-
-                }
-
-
-                }
-             else {
-                DoorFlag = true;
+//            else if(robot.sorterLidar.getDistance(DistanceUnit.CM) < 4.5 && lidar.getDistance(DistanceUnit.CM) < 8){
+//                if(DoorFlag == true) {
+//                    DoorFlag = false;
+//                    TimerTask DoorRelease = new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            robot.door.setPosition(robot.DOOR_DOWN);
+//                            sleep(600);
+//                            robot.door.setPosition(robot.DOOR_UP);
+//                            cancel();
+//                        }
+//                    };
+//                    Timer Door_Drop = new Timer("Door");
+//                    Door_Drop.schedule(DoorRelease, 0);
+//
+//                }
+//
+//
+//                }
+//             else if(lidar.getDistance(DistanceUnit.CM) > 8) {
+//                DoorFlag = true;
+//                robot.door.setPosition(robot.DOOR_UP);
+//            }
+            else{
                 robot.door.setPosition(robot.DOOR_UP);
             }
 
@@ -357,14 +360,14 @@ public class SecondRobotTeleop extends LinearOpMode {
                    rotateFlag = false;
                }
                 else if(robot.rotateMech.getCurrentPosition() < -30){
-                    robot.rotateMech.setPower(0.55);
+                    robot.rotateMech.setPower(0.6);
                     if (gamepad2.right_trigger >= 0.5) {
                         rotateFlag = false;
                     } else if (gamepad2.left_trigger >= 0.5) {
                         rotateFlag = false;
                     }
                 } else if (robot.rotateMech.getCurrentPosition() > 30){
-                    robot.rotateMech.setPower(-0.55);
+                    robot.rotateMech.setPower(-0.6);
                     if (gamepad2.right_trigger >= 0.5) {
                         rotateFlag = false;
                     } else if (gamepad2.left_trigger >= 0.5) {
@@ -409,8 +412,8 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            }.5
             if(gamepad2.left_stick_y > 0.1 && lidar.getDistance(DistanceUnit.CM) < 70 && lidar.getDistance(DistanceUnit.CM) > 8){
                  controlSpeed = (lidar.getDistance(DistanceUnit.CM) * 0.01);
-                robot.leftBop.setPower(gamepad2.left_stick_y * (controlSpeed*4));
-                robot.rightBop.setPower(gamepad2.left_stick_y * (controlSpeed *4));
+                robot.leftBop.setPower(gamepad2.left_stick_y * (controlSpeed*6));
+                robot.rightBop.setPower(gamepad2.left_stick_y * (controlSpeed *6));
             }
             else if( gamepad2.left_stick_y > 0.1 && lidar.getDistance(DistanceUnit.CM) < 8){
                 robot.leftBop.setPower(0);
@@ -418,8 +421,8 @@ public class SecondRobotTeleop extends LinearOpMode {
             }
             else
             {
-                robot.leftBop.setPower(gamepad2.left_stick_y * 0.95);
-                robot.rightBop.setPower(gamepad2.left_stick_y * 0.95);
+                robot.leftBop.setPower(gamepad2.left_stick_y * 0.7);
+                robot.rightBop.setPower(gamepad2.left_stick_y * 0.7);
             }
 
 
@@ -447,11 +450,11 @@ public class SecondRobotTeleop extends LinearOpMode {
                 //Rotates the Intake Arm
                 if (gamepad2.left_trigger >= 0.5) {
                     robot.rotateMech.setTargetPosition(-10);
-                    robot.rotateMech.setPower(-gamepad2.left_trigger * 0.8);
+                    robot.rotateMech.setPower(-gamepad2.left_trigger * 0.9);
                     rotateFlag = false;
                 } else if (gamepad2.right_trigger >= 0.5) {
                 robot.rotateMech.setTargetPosition(770);
-                    robot.rotateMech.setPower(gamepad2.right_trigger * 0.8);
+                    robot.rotateMech.setPower(gamepad2.right_trigger * 0.9);
                     rotateFlag = false;
                 } else {
                 robot.rotateMech.setTargetPosition(0);
@@ -500,7 +503,7 @@ public class SecondRobotTeleop extends LinearOpMode {
 ////            telemetry.addData("drop position", robot.drop.getCurrentPosition());
 ////            telemetry.addData("Drop Commanded Position", robot.drop.getTargetPosition());
 ////            telemetry.addData("Drop Power", robot.drop.getPower());
-           telemetry.addData("Gamepad Right Y", gamepad2.left_stick_y);
+     //      telemetry.addData("Gamepad Right Y", gamepad2.left_stick_y);
 ////            telemetry.addData("Button Flag", buttonFlag);
 ////            telemetry.addData("Bop Alpha", robot.bopLimit.alpha());
 ////            telemetry.addData("Sorter red", robot.sorterLimit.red());
@@ -512,10 +515,10 @@ public class SecondRobotTeleop extends LinearOpMode {
 ////            telemetry.addData("frontDetect Distance in Inches:", robot.frontDetect.getDistance(DistanceUnit.INCH));
 ////            telemetry.addData("backDetect Distance in Inches:", robot.backDetect.getDistance(DistanceUnit.INCH));
 //            //telemetry.addData("position", robot.sorterFlip.getPosition());
-            telemetry.addData("joystick", gamepad2.left_stick_y);
-           telemetry.addData("intake lidar", lidar.getDistance(DistanceUnit.CM));
-           telemetry.addData("sorter", robot.sorterLidar.getDistance(DistanceUnit.CM));
-           telemetry.addData("rotateMech", robot.rotateMech.getCurrentPosition());
+//            telemetry.addData("joystick", gamepad2.left_stick_y);
+//           telemetry.addData("intake lidar", lidar.getDistance(DistanceUnit.CM));
+          telemetry.addData("sorter", robot.sorterLidar.getDistance(DistanceUnit.CM));
+//           telemetry.addData("rotateMech", robot.rotateMech.getCurrentPosition());
 
                 //telemetry.addData("wallDetect Distance in CM", robot.wallDetect.getDistance(DistanceUnit.CM));
 //            telemetry.addData("rotateFlag State", rotateFlag);
@@ -547,24 +550,24 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            sorterOut.cancel();
 //        }
 //    }
-        class BopOut extends TimerTask {
-            public void run() {
-                robot.leftBop.setPower(-0.4);
-                robot.rightBop.setPower(-0.4);
-                intakeOut.cancel();
-            }
-        }
-        class CurrentReg extends TimerTask {
-            public void run() {
-                currentDiv = currentDiv + 7;
-                currentReg.cancel();
-            }
-        }
-
-        class CurrentLim extends TimerTask {
-            public void run() {
-                limitFlag = true;
-                currentLim.cancel();
-            }
-        }
+//        class BopOut extends TimerTask {
+//            public void run() {
+//                robot.leftBop.setPower(-0.4);
+//                robot.rightBop.setPower(-0.4);
+//                intakeOut.cancel();
+//            }
+//        }
+//        class CurrentReg extends TimerTask {
+//            public void run() {
+//                currentDiv = currentDiv + 7;
+//                currentReg.cancel();
+//            }
+//        }
+//
+//        class CurrentLim extends TimerTask {
+//            public void run() {
+//                limitFlag = true;
+//                currentLim.cancel();
+//            }
+//        }
     }
