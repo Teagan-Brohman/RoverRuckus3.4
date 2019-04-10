@@ -31,16 +31,7 @@ public class idk extends LinearOpMode {
         waitForStart();
         while(opModeIsActive()){
 
-
-
-
-
-
-
-
             waitForStart();
-
-
 
             if(gamepad1.x){
                 robot.leftBop.setPower(-.6);
