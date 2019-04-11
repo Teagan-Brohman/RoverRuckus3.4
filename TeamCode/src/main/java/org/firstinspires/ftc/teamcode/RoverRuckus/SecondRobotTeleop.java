@@ -418,10 +418,9 @@ public class SecondRobotTeleop extends LinearOpMode {
                 robot.leftBop.setPower(0);
                 robot.rightBop.setPower(0);
             }
-            else
-            {
-                robot.leftBop.setPower(gamepad2.left_stick_y * 0.7);
-                robot.rightBop.setPower(gamepad2.left_stick_y * 0.7);
+            else {
+                robot.leftBop.setPower(gamepad2.left_stick_y * 0.9);
+                robot.rightBop.setPower(gamepad2.left_stick_y * 0.9);
             }
 
 

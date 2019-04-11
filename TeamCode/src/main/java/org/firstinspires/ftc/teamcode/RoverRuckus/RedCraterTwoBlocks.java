@@ -277,8 +277,8 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2200);//5200
-            robot.right1.setTargetPosition(-2200);//5200
+            robot.left1.setTargetPosition(-1400);//5200
+            robot.right1.setTargetPosition(-1400);//5200
             robot.left1.setPower(-0.99);
             robot.right1.setPower(-0.99);
             while (robot.left1.isBusy() && opModeIsActive()) {
@@ -290,15 +290,12 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             telemetry.update();
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            timer = 0;
+            robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             while (robot.angles.firstAngle < -75 && opModeIsActive()) {
-                robot.left1.setPower(Math.abs((-75 - robot.angles.firstAngle) / -40) * -0.4);
-                robot.right1.setPower(Math.abs((-75 - robot.angles.firstAngle) / -40) * 0.4);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
+                robot.left1.setPower(-0.9);
+                robot.right1.setPower(-0.45);
                 telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.addData("Timer", timer);
                 telemetry.update();
             }
             robot.left1.setPower(0);
@@ -383,8 +380,8 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2400);//5200
-            robot.right1.setTargetPosition(-2400);//5200
+            robot.left1.setTargetPosition(-1600);//5200
+            robot.right1.setTargetPosition(-1600);//5200
             robot.left1.setPower(-0.99);
             robot.right1.setPower(-0.99);
             while (robot.left1.isBusy() && opModeIsActive()) {
@@ -396,15 +393,12 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             telemetry.update();
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            timer = 0;
+            robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             while (robot.angles.firstAngle < -75 && opModeIsActive()) {
-                robot.left1.setPower(Math.abs((-75 - robot.angles.firstAngle) / -40) * -0.4);
-                robot.right1.setPower(Math.abs((-75 - robot.angles.firstAngle) / -40) * 0.4);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
+                robot.left1.setPower(-0.9);
+                robot.right1.setPower(-0.45);
                 telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.addData("Timer", timer);
                 telemetry.update();
             }
             robot.left1.setPower(0);
@@ -416,8 +410,8 @@ public class RedCraterTwoBlocks extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2100);//-6000
-            robot.right1.setTargetPosition(-2100);//-6000
+            robot.left1.setTargetPosition(-1200);//-6000
+            robot.right1.setTargetPosition(-1200);//-6000
             robot.left1.setPower(-0.95 * 1.1);
             robot.right1.setPower(-0.95);
             while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {
@@ -485,8 +479,8 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-1600);//5200
-            robot.right1.setTargetPosition(-1600);//5200
+            robot.left1.setTargetPosition(-1000);//5200
+            robot.right1.setTargetPosition(-1000);//5200
             robot.left1.setPower(-0.99);
             robot.right1.setPower(-0.99);
             while (robot.left1.isBusy() && opModeIsActive()) { }
@@ -497,15 +491,12 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             telemetry.update();
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            timer = 0;
-            while (robot.angles.firstAngle < -71 && opModeIsActive()) {
-                robot.left1.setPower(Math.abs((-75 - robot.angles.firstAngle) / -40) * -0.4);
-                robot.right1.setPower(Math.abs((-75 - robot.angles.firstAngle) / -40) * 0.4);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
+            robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            while (robot.angles.firstAngle < -75 && opModeIsActive()) {
+                robot.left1.setPower(-0.9);
+                robot.right1.setPower(-0.45);
                 telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.addData("Timer", timer);
                 telemetry.update();
             }
             robot.left1.setPower(0);
@@ -517,8 +508,8 @@ public class RedCraterTwoBlocks extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2000);//-6000
-            robot.right1.setTargetPosition(-2000);//-6000
+            robot.left1.setTargetPosition(-1200);//-6000
+            robot.right1.setTargetPosition(-1200);//-6000
             robot.left1.setPower(-0.9 * 1.1);
             robot.right1.setPower(-0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {}
