@@ -101,12 +101,13 @@ public class SecondRobotTeleop extends LinearOpMode {
 
 
 
-            if( lidar.getDistance(DistanceUnit.CM) > 800){
-                telemetry.addData("Is LIDAR mad/broken: Yes","");
-            }
-            else{
-                telemetry.addData("Is LIDAR mad/broken: No","");
-            }
+//            if( lidar.getDistance(DistanceUnit.CM) > 800){
+//                telemetry.addData("Is LIDAR mad/broken: Yes","");
+//            }
+//            else{
+//                telemetry.addData("Is LIDAR mad/broken: No","");
+//            }
+
             //GAMEPAD 1
             //Arcade Style Drive Motors
 //            if(Math.abs(gamepad1.right_stick_y) > 0.2|| Math.abs(gamepad1.right_stick_x) > 0.2){
@@ -127,15 +128,17 @@ public class SecondRobotTeleop extends LinearOpMode {
             leftPower = yValue - xValue;
             rightPower = yValue + xValue;
 
-            robot.left1.setPower(Range.clip(leftPower, -1.0, 1.0));
-            robot.right1.setPower(Range.clip(rightPower, -1.0, 1.0));
-
-            //Tank Drive (if driver prefers it
-//            robot.left1.setPower(gamepad1.left_stick_y);
-//            robot.right1.setPower(gamepad1.right_stick_y);
+            if(Math.abs(gamepad1.right_stick_y) > 0.2 || Math.abs(gamepad1.right_stick_x) > 0.2){
+                robot.left1.setPower(Range.clip(leftPower, -1.0, 1.0));
+                robot.right1.setPower(Range.clip(rightPower, -1.0, 1.0));
+            }
+            else{
+                robot.left1.setPower(0);
+                robot.right1.setPower(0);
+            }
 
             //Arm that shoots blocks and balls
-            if (Math.abs(gamepad2.right_stick_y) >= 0.2 /*|| gamepad1.right_stick_y <= -0.5*/) {
+            if (Math.abs(gamepad2.right_stick_y) >= 0.2) {
                 buttonFlag = true;
             }
 
@@ -276,6 +279,9 @@ public class SecondRobotTeleop extends LinearOpMode {
                 }
                 if( DoorFlag == false && lidar.getDistance(DistanceUnit.CM) > 8) {
                     DoorFlag = true;
+                    robot.door.setPosition(robot.DOOR_UP);
+                }
+                else{
                     robot.door.setPosition(robot.DOOR_UP);
                 }
 
@@ -419,8 +425,8 @@ public class SecondRobotTeleop extends LinearOpMode {
                 robot.rightBop.setPower(0);
             }
             else {
-                robot.leftBop.setPower(gamepad2.left_stick_y * 0.9);
-                robot.rightBop.setPower(gamepad2.left_stick_y * 0.9);
+                robot.leftBop.setPower(gamepad2.left_stick_y * 0.75);
+                robot.rightBop.setPower(gamepad2.left_stick_y * 0.75);
             }
 
 
