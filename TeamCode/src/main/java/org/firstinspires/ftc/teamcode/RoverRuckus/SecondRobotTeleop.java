@@ -31,6 +31,7 @@ public class SecondRobotTeleop extends LinearOpMode {
     public float xValue;
     public float yValue;
     public double controlSpeed;
+    float angleTurn;
 
     ExpansionHubEx expansionHub;
     Timer stopMotor;
@@ -51,6 +52,7 @@ public class SecondRobotTeleop extends LinearOpMode {
     boolean intakeFlag;
     boolean intakeReverse = true;
     boolean DoorFlag = true;
+    boolean backUpFlag = true;
     public int currentDiv = 1;
 
 
@@ -77,6 +79,8 @@ public class SecondRobotTeleop extends LinearOpMode {
         parameters1.loggingEnabled = true;
         parameters1.loggingTag = "IMU";
         parameters1.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        robot.sorter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
         robot.imu.initialize(parameters1);
@@ -157,13 +161,30 @@ public class SecondRobotTeleop extends LinearOpMode {
                 } else if (robot.sorterLidar.getDistance(DistanceUnit.CM) <= 20 && robot.sorterLidar.getDistance(DistanceUnit.CM) > 4) {
                     robot.sorter.setPower(-0.6);
                 } else if (robot.sorterLidar.getDistance(DistanceUnit.CM) < 2.5) {
-                    robot.sorter.setPower(0);
-                } else {
+                    robot.sorter.setPower(-0.1);
+                }
+                else if(robot.sorterLidar.getDistance(DistanceUnit.CM) > 500) {
+                    if (gamepad1.right_bumper) {
+                        sorterFlag = false;
+                        robot.sorter.setPower(.99);
+                    }
+                    if(gamepad1.left_bumper){
+                        sorterFlag = false;
+                        robot.sorter.setPower(-.99);
+                    }
+                }
+                else {
                     robot.sorter.setPower(0);
                 }
 
-            } else {
-                robot.sorter.setPower(0);
+            }
+            else {
+                if(robot.sorterLidar.getDistance(DistanceUnit.CM) < 15){
+                    robot.sorter.setPower(-0.25);
+                }
+                else{
+                    robot.sorter.setPower(0);
+                }
             }
 
             if (gamepad1.a) {
@@ -202,6 +223,26 @@ public class SecondRobotTeleop extends LinearOpMode {
 
             }
 
+
+//            if(gamepad1.dpad_left && gamepad1.y){
+//                robot.left1.setPower(-1);
+//                robot.right1.setPower(-1);
+//                sleep(400);
+//                robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                while (robot.angles.firstAngle < 66.2 && opModeIsActive()) {
+//                    angleTurn = robot.angles.firstAngle;
+//                    //This is a right turn to 78 degrees
+//                    robot.left1.setPower(((69.2 - angleTurn) / 35) * -0.47);
+//                    robot.right1.setPower(((69.2 - angleTurn) / 35) * 0.47);
+//                    telemetry.addData("left1 power", robot.left1.getPower());
+//                    telemetry.addData("right1 power", robot.right1.getPower());
+//                    telemetry.addData("heading", robot.angles.firstAngle);
+//                    telemetry.addData("angle var:", angleTurn);
+//                    telemetry.update();
+//                }
+//
+//            }
 //            //Shoots blocks
 //            if (gamepad1.b){
 //                robot.launcher.setPower(-1);
@@ -238,24 +279,24 @@ public class SecondRobotTeleop extends LinearOpMode {
                     robot.intake.setPower(0.0);
                 }
 
-                if(lidar.getDistance(DistanceUnit.CM) > 35 && lidar.getDistance(DistanceUnit.CM) < 75 && gamepad2.left_stick_y > 0.1){
-                    if(intakeReverse == true){
-                        TimerTask SpinOut = new TimerTask() {
-                            public void run() {
-                                robot.intake.setPower(0);
-                                cancel();
-                            }
-                        };
-
-                        intakeReverse = false;
-                        Timer intake = new Timer("IntakeReverse");
-                        robot.intake.setPower(-0.8);
-                        intake.schedule(SpinOut, 500);
-                    }
-                }
-                else if(lidar.getDistance(DistanceUnit.CM) < 35 || lidar.getDistance(DistanceUnit.CM) > 75){
-                intakeReverse = true;
-                }
+//                if(lidar.getDistance(DistanceUnit.CM) > 35 && lidar.getDistance(DistanceUnit.CM) < 75 && gamepad2.left_stick_y > 0.1){
+//                    if(intakeReverse == true){
+//                        TimerTask SpinOut = new TimerTask() {
+//                            public void run() {
+//                                robot.intake.setPower(0);
+//                                cancel();
+//                            }
+//                        };
+//
+//                        intakeReverse = false;
+//                        Timer intake = new Timer("IntakeReverse");
+//                        robot.intake.setPower(-0.8);
+//                        intake.schedule(SpinOut, 500);
+//                    }
+//                }
+//                else if(lidar.getDistance(DistanceUnit.CM) < 35 || lidar.getDistance(DistanceUnit.CM) > 75){
+//                intakeReverse = true;
+//                }
 
 
             if (gamepad2.right_bumper) {
@@ -425,8 +466,8 @@ public class SecondRobotTeleop extends LinearOpMode {
                 robot.rightBop.setPower(0);
             }
             else {
-                robot.leftBop.setPower(gamepad2.left_stick_y * 0.75);
-                robot.rightBop.setPower(gamepad2.left_stick_y * 0.75);
+                robot.leftBop.setPower(gamepad2.left_stick_y * 0.85);
+                robot.rightBop.setPower(gamepad2.left_stick_y * 0.85);
             }
 
 
