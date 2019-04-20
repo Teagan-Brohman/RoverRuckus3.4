@@ -345,7 +345,7 @@ public class BlueDepotOneBlock extends LinearOpMode {
             robot.right1.setTargetPosition(400);
             robot.left1.setPower(-0.4);
             robot.right1.setPower(-0.4);
-            while (robot.left1.isBusy() && opModeIsActive()) {}
+            while (robot.left1.isBusy() && opModeIsActive()){}
             robot.left1.setPower(0);
             robot.right1.setPower(0);
 
