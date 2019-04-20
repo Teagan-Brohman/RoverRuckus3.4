@@ -164,7 +164,6 @@ public class CraterOneBlock extends BaseAuto {
         telemetry.addData("blockPosition", blockPosition);
         telemetry.update();
 
-
         if (detector.getAligned() == true && Xpos >= 100|| detector.getAligned() == false && Xpos >= 100) {
            if(blockPosition == 3) {
                 robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -533,7 +532,7 @@ public class CraterOneBlock extends BaseAuto {
         robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("range", String.format("%.01f cm", robot.frontDetect.getDistance(DistanceUnit.CM)));
         telemetry.update();
-        while(robot.frontDetect.getDistance(DistanceUnit.CM) > 26.5 && opModeIsActive() && robot.left1.getCurrentPosition() < 4000){
+        while(robot.frontDetect.getDistance(DistanceUnit.CM) > 25.5 && opModeIsActive() && robot.left1.getCurrentPosition() < 4000){
             telemetry.addData("EncoderR", robot.right1.getCurrentPosition());
             telemetry.addData("EncoderL", robot.left1.getCurrentPosition());
             encoderticksL = robot.left1.getCurrentPosition();
@@ -586,13 +585,13 @@ public class CraterOneBlock extends BaseAuto {
 ////        robot.right1.setPower(0.9 * 1.08 );
 ////        while (robot.left1.isBusy() && opModeIsActive()) {}
 //
-        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.hang.setTargetPosition(-7900);
-        robot.hang.setPower(1);
-        while(robot.hang.isBusy()){
-            telemetry.addData("hanger position", robot.hang.getCurrentPosition());
-            telemetry.update();
-        }
+//        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        robot.hang.setTargetPosition(-7900);
+//        robot.hang.setPower(1);
+//        while(robot.hang.isBusy()){
+//            telemetry.addData("hanger position", robot.hang.getCurrentPosition());
+//            telemetry.update();
+//        }
         //TODO look at pause thats janky
     }
 

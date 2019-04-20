@@ -286,7 +286,7 @@ public class BlueDepotOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle < 144 && opModeIsActive()) {
+            while (robot.angles.firstAngle < 139 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
                 robot.left1.setPower(((144 - angleTurn) / 40) * -0.31);
@@ -452,7 +452,7 @@ public class BlueDepotOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > -95 && opModeIsActive()) {
+            while (robot.angles.firstAngle > -97 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
                 robot.left1.setPower(((-95 - angleTurn) / -45) * 0.36);
@@ -464,13 +464,17 @@ public class BlueDepotOneBlock extends LinearOpMode {
                 telemetry.update();
             }
 //
+            robot.right1.setPower(0);
+            robot.left1.setPower(0);
+            sleep(500);
+
             //Drive to the team marker area
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2600);//5200
-            robot.right1.setTargetPosition(-2600);//5200
+            robot.left1.setTargetPosition(-2700);//5200
+            robot.right1.setTargetPosition(-2700);//5200
             robot.left1.setPower(-0.9);
             robot.right1.setPower(-0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {}
@@ -499,7 +503,7 @@ public class BlueDepotOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setTargetPosition(-2000);//5200
             robot.right1.setTargetPosition(-2000);//5200
-            robot.left1.setPower(-0.6 * 1.1);
+            robot.left1.setPower(-0.6 * 1.2);
             robot.right1.setPower(-0.6);
             while (robot.left1.isBusy() && opModeIsActive()) {}
 
@@ -532,7 +536,7 @@ public class BlueDepotOneBlock extends LinearOpMode {
         robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("range", String.format("%.01f cm", robot.frontDetect.getDistance(DistanceUnit.CM)));
         telemetry.update();
-        while(robot.frontDetect.getDistance(DistanceUnit.CM) > 24 && opModeIsActive() && robot.left1.getCurrentPosition() < 4000){
+        while(robot.frontDetect.getDistance(DistanceUnit.CM) > 2 && opModeIsActive() && robot.left1.getCurrentPosition() < 4000){
             telemetry.addData("EncoderR", robot.right1.getCurrentPosition());
             telemetry.addData("EncoderL", robot.left1.getCurrentPosition());
             encoderticksL = robot.left1.getCurrentPosition();
@@ -559,18 +563,18 @@ public class BlueDepotOneBlock extends LinearOpMode {
 //        robot.right1.setPower(0.2);
 //        robot.left1.setPower(0.2);
 
-        robot.leftBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.rightBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.leftBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.rightBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.leftBop.setPower(-0.4);
-        robot.rightBop.setPower(-0.4);
-        robot.intake.setPower(-0.9);
-        sleep(1250);
-
-        robot.rightBop.setPower(0);
-        robot.leftBop.setPower(0);
-        sleep(1000);
+//        robot.leftBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        robot.rightBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        robot.leftBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        robot.rightBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        robot.leftBop.setPower(-0.4);
+//        robot.rightBop.setPower(-0.4);
+//        robot.intake.setPower(0.9);
+//        sleep(1250);
+//
+//        robot.rightBop.setPower(0);
+//        robot.leftBop.setPower(0);
+//        sleep(1000);
 
 //        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        robot.hang.setTargetPosition(-7900);
