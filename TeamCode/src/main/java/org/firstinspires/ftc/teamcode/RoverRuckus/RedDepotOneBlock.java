@@ -103,9 +103,9 @@ public class RedDepotOneBlock extends LinearOpMode {
         detector.enable();
 
         robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.hang.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.hang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        robot.marker.setPosition(robot.DILBERT_UP );
+        robot.marker.setPosition(robot.DILBERT_UP);
 
         //Raise arm
         while (robot.upperLimit.red() > 110 && opModeIsActive()) {
@@ -115,6 +115,9 @@ public class RedDepotOneBlock extends LinearOpMode {
         }
         robot.hang.setPower(0);
         sleep(200);
+//
+        telemetry.addData("BlockPosition", blockPosition);
+        telemetry.update();
 
         telemetry.addData("BlockPosition", blockPosition);
         telemetry.update();
@@ -575,13 +578,17 @@ public class RedDepotOneBlock extends LinearOpMode {
 //        robot.leftBop.setPower(0);
 //        sleep(1000);
 
-//        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.hang.setTargetPosition(-7900);
-//        robot.hang.setPower(1);
-//        while(robot.hang.isBusy()){
-//            telemetry.addData("hanger position", robot.hang.getCurrentPosition());
-//            telemetry.update();
-//        }
+        robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.hang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        telemetry.addData("hang position", robot.hang.getCurrentPosition());
+        telemetry.update();
+        while(robot.hang.getCurrentPosition() > -4600 && opModeIsActive()){
+            telemetry.addData("hang position", robot.hang.getCurrentPosition());
+            telemetry.update();
+            robot.hang.setPower(.99);
+        }
+        robot.hang.setPower(0);
     }
 
     void composeTelemetry(){

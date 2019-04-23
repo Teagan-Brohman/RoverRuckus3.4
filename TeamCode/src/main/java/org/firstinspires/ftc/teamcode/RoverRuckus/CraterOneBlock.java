@@ -105,9 +105,9 @@ public class CraterOneBlock extends BaseAuto {
         detector.enable();
 
         robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.hang.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.hang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        robot.marker.setPosition(robot.DILBERT_UP );
+        robot.marker.setPosition(robot.DILBERT_UP);
 
         //Raise arm
         while (robot.upperLimit.red() > 110 && opModeIsActive()) {
@@ -117,7 +117,7 @@ public class CraterOneBlock extends BaseAuto {
         }
         robot.hang.setPower(0);
         sleep(200);
-
+//
         telemetry.addData("BlockPosition", blockPosition);
         telemetry.update();
 
@@ -570,28 +570,18 @@ public class CraterOneBlock extends BaseAuto {
         robot.rightBop.setPower(0);
         robot.leftBop.setPower(0);
         sleep(1000);
-//////
-////        //Extend arm out
-//
-//
-////        robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-////        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-////        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-////        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-////        robot.left1.setTargetPosition(4400);
-////        robot.right1.setTargetPosition(4400);
-////        robot.left1.setPower(0.9);
-////        robot.right1.setPower(0.9 * 1.08 );
-////        while (robot.left1.isBusy() && opModeIsActive()) {}
-//
-//        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.hang.setTargetPosition(-7900);
-//        robot.hang.setPower(1);
-//        while(robot.hang.isBusy()){
-//            telemetry.addData("hanger position", robot.hang.getCurrentPosition());
-//            telemetry.update();
-//        }
-        //TODO look at pause thats janky
+
+        robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.hang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        telemetry.addData("hang position", robot.hang.getCurrentPosition());
+        telemetry.update();
+        while(robot.hang.getCurrentPosition() > -4600 && opModeIsActive()){
+            telemetry.addData("hang position", robot.hang.getCurrentPosition());
+            telemetry.update();
+            robot.hang.setPower(.99);
+        }
+        robot.hang.setPower(0);
     }
 
         void composeTelemetry () {
