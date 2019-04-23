@@ -102,16 +102,15 @@ public class CraterOneBlock extends BaseAuto {
 //            }
         }
         waitForStart();
-
         detector.enable();
 
         robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.hang.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        robot.marker.setPosition(robot.DILBERT_UP);
+        robot.marker.setPosition(robot.DILBERT_UP );
 
         //Raise arm
-        while (robot.upperLimit.red() > 150 && opModeIsActive()) {
+        while (robot.upperLimit.red() > 110 && opModeIsActive()) {
             robot.hang.setPower(-1);
             telemetry.addData("Red Color", robot.upperLimit.red());
             telemetry.update();
@@ -548,16 +547,16 @@ public class CraterOneBlock extends BaseAuto {
         robot.right1.setPower(0);
 
 //        //Hold position
-//        robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        int currentPosL = robot.left1.getCurrentPosition();
-//        int currentPosR = robot.right1.getCurrentPosition();
-//        robot.left1.setTargetPosition(currentPosL);
-//        robot.right1.setTargetPosition(currentPosR);
-//        robot.right1.setPower(0.2);
-//        robot.left1.setPower(0.2);
+        robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int currentPosL = robot.left1.getCurrentPosition();
+        int currentPosR = robot.right1.getCurrentPosition();
+        robot.left1.setTargetPosition(currentPosL);
+        robot.right1.setTargetPosition(currentPosR);
+        robot.right1.setPower(0.2);
+        robot.left1.setPower(0.2);
 
         robot.leftBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.rightBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

@@ -8,6 +8,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -71,9 +72,6 @@ public class RedCraterOneBlock extends LinearOpMode {
         robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
         robot.imu.initialize(parameters1);
 
-        robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
         composeTelemetry();
 
         telemetry.addLine()
@@ -103,16 +101,15 @@ public class RedCraterOneBlock extends LinearOpMode {
 //            }
         }
         waitForStart();
-
         detector.enable();
 
         robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.hang.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        robot.marker.setPosition(robot.DILBERT_UP);
+        robot.marker.setPosition(robot.DILBERT_UP );
 
         //Raise arm
-        while (robot.upperLimit.red() > 150 && opModeIsActive()) {
+        while (robot.upperLimit.red() > 110 && opModeIsActive()) {
             robot.hang.setPower(-1);
             telemetry.addData("Red Color", robot.upperLimit.red());
             telemetry.update();
@@ -164,7 +161,6 @@ public class RedCraterOneBlock extends LinearOpMode {
 
         telemetry.addData("blockPosition", blockPosition);
         telemetry.update();
-
 
         if (detector.getAligned() == true && Xpos >= 100|| detector.getAligned() == false && Xpos >= 100) {
             if(blockPosition == 3) {
@@ -227,6 +223,8 @@ public class RedCraterOneBlock extends LinearOpMode {
 
 
         if(blockPosition == 1){
+            robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -348,7 +346,7 @@ public class RedCraterOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > -98 && opModeIsActive()) {
+            while (robot.angles.firstAngle > -94 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
                 robot.left1.setPower(((-90 - angleTurn) / -48) * 0.3);
@@ -390,18 +388,16 @@ public class RedCraterOneBlock extends LinearOpMode {
             // Drive forward and slightly into the wall
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-1800);//-6000
-            robot.right1.setTargetPosition(-1800);//-6000
+            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//Position
+            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//Position
+//            robot.left1.setTargetPosition(-1800);//-6000
+//            robot.right1.setTargetPosition(-1800);//-6000
             robot.left1.setPower(-0.9 * 1.1);
             robot.right1.setPower(-0.9);
-            while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) { }
+            sleep(100);
+            //while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
             robot.left1.setPower(-0.4);
             robot.right1.setPower(-0.4);
-            robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
             telemetry.update();
         }
@@ -444,7 +440,7 @@ public class RedCraterOneBlock extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > -94 && opModeIsActive()) {
+            while (robot.angles.firstAngle > -98 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
                 robot.left1.setPower(((-95 - angleTurn) / -40) * 0.3);
@@ -461,8 +457,8 @@ public class RedCraterOneBlock extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-1600);//5200
-            robot.right1.setTargetPosition(-1600);//5200
+            robot.left1.setTargetPosition(-1700);//5200
+            robot.right1.setTargetPosition(-1700);//5200
             robot.left1.setPower(-0.9);
             robot.right1.setPower(-0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {
@@ -510,14 +506,10 @@ public class RedCraterOneBlock extends LinearOpMode {
         robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
         telemetry.update();
-        while (robot.cornerSensor.red() <= 40 && opModeIsActive()) {
-            red = robot.cornerSensor.red();
-            robot.left1.setPower(-0.3 * 1.03);
+        while(robot.cornerSensor.red() <= 40  && opModeIsActive()){
+            robot.left1.setPower(-0.3);
             robot.right1.setPower(-0.3);
             telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
-            telemetry.addData("Alpha", robot.cornerSensor.alpha());
-            telemetry.addData("RED", red);
-            telemetry.addData("Searching", "");
             telemetry.update();
         }
         robot.left1.setPower(0);
@@ -538,7 +530,7 @@ public class RedCraterOneBlock extends LinearOpMode {
         robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("range", String.format("%.01f cm", robot.frontDetect.getDistance(DistanceUnit.CM)));
         telemetry.update();
-        while(robot.frontDetect.getDistance(DistanceUnit.CM) > 27.5 && opModeIsActive() && robot.left1.getCurrentPosition() < 6000){
+        while(robot.frontDetect.getDistance(DistanceUnit.CM) > 25.5 && opModeIsActive() && robot.left1.getCurrentPosition() < 4000){
             telemetry.addData("EncoderR", robot.right1.getCurrentPosition());
             telemetry.addData("EncoderL", robot.left1.getCurrentPosition());
             encoderticksL = robot.left1.getCurrentPosition();
@@ -554,16 +546,16 @@ public class RedCraterOneBlock extends LinearOpMode {
         robot.right1.setPower(0);
 
 //        //Hold position
-//        robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        int currentPosL = robot.left1.getCurrentPosition();
-//        int currentPosR = robot.right1.getCurrentPosition();
-//        robot.left1.setTargetPosition(currentPosL);
-//        robot.right1.setTargetPosition(currentPosR);
-//        robot.right1.setPower(0.2);
-//        robot.left1.setPower(0.2);
+        robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int currentPosL = robot.left1.getCurrentPosition();
+        int currentPosR = robot.right1.getCurrentPosition();
+        robot.left1.setTargetPosition(currentPosL);
+        robot.right1.setTargetPosition(currentPosR);
+        robot.right1.setPower(0.2);
+        robot.left1.setPower(0.2);
 
         robot.leftBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.rightBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -572,6 +564,10 @@ public class RedCraterOneBlock extends LinearOpMode {
         robot.leftBop.setPower(-0.4);
         robot.rightBop.setPower(-0.4);
         robot.intake.setPower(-0.9);
+        sleep(1250);
+
+        robot.rightBop.setPower(0);
+        robot.leftBop.setPower(0);
         sleep(1000);
 //////
 ////        //Extend arm out

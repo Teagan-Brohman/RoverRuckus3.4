@@ -8,11 +8,13 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
@@ -33,10 +35,12 @@ public class RedCraterTwoBlocks extends LinearOpMode {
 
     double POWER = 1.15;
 
+    DistanceSensor lidar;
+
     public void runOpMode() {//Starts running the code
         robot.init(hardwareMap); //register the hardware mappings from the hardware class with names given to motors servos, etc.
         RevExtensions2.init(); //create name for our RevExpansion hub to look at things like voltage
-        //robot.drop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lidar = hardwareMap.get(DistanceSensor.class, "lidar");
 
         //Initialize OpenCV
         detector = new GoldAlignDetector();
@@ -107,7 +111,7 @@ public class RedCraterTwoBlocks extends LinearOpMode {
         robot.marker.setPosition(robot.DILBERT_UP );
 
         //Raise arm
-        while (robot.upperLimit.red() > 150 && opModeIsActive()) {
+        while (robot.upperLimit.red() > 110 && opModeIsActive()) {
             robot.hang.setPower(-1);
             telemetry.addData("Red Color", robot.upperLimit.red());
             telemetry.update();
@@ -117,8 +121,8 @@ public class RedCraterTwoBlocks extends LinearOpMode {
 
         telemetry.addData("BlockPosition", blockPosition);
         telemetry.update();
-
-        //Drive forward slightly
+//
+//        //Drive forward slightly
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -150,7 +154,7 @@ public class RedCraterTwoBlocks extends LinearOpMode {
         }
         else if(detector.getAligned() == true || detector.getAligned() == false) {
             //Block is located in the middle spot
-            if (Xpos < 400 && Xpos > 160) {
+            if (Xpos < 400 && Xpos > 60) {//160
                 blockPosition = 2;//Block is located in the middle.
             } else if (Xpos > 400) {
                 blockPosition = 3;//Block is located in the right spot
@@ -161,24 +165,7 @@ public class RedCraterTwoBlocks extends LinearOpMode {
         telemetry.update();
 
         if (detector.getAligned() == true && Xpos >= 100|| detector.getAligned() == false && Xpos >= 100) {
-            //Hunt for the Block
-            if (blockPosition == 2){
-                robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                while (detector.getXPosition() < 235 && opModeIsActive() || detector.getXPosition() > 345 && opModeIsActive()) {
-                    telemetry.addData("Status", "searching for angle");
-                    telemetry.addData("xpos", detector.getXPosition());
-                    telemetry.addData("IsAligned", detector.getAligned());
-                    if (detector.getXPosition() < 235) {
-                        robot.left1.setPower(-.4);
-                        robot.right1.setPower(.4);
-                    } else if (detector.getXPosition() > 340) {
-                        robot.left1.setPower(.4);
-                        robot.right1.setPower(-.4);
-                    }
-                }
-            }
-            else if(blockPosition == 3) {
+            if(blockPosition == 3) {
                 robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -236,7 +223,10 @@ public class RedCraterTwoBlocks extends LinearOpMode {
         telemetry.addData("heading", robot.angles.firstAngle);
         telemetry.update();
 
-        if (blockPosition == 1) {
+
+        if(blockPosition == 1){
+            robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -245,18 +235,116 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             robot.right1.setTargetPosition(1900);//3400
             robot.left1.setPower(0.8);
             robot.right1.setPower(0.8);
-            while (robot.left1.isBusy() && opModeIsActive()) {
-            }
+            while (robot.left1.isBusy() && opModeIsActive()) {}
 
             robot.left1.setTargetPosition(800);//3400
             robot.right1.setTargetPosition(800);//3400
             robot.left1.setPower(0.8);
             robot.right1.setPower(0.8);
-            while (robot.left1.isBusy() && opModeIsActive()) {
-            }
+            while (robot.left1.isBusy() && opModeIsActive()) {}
 
             robot.right1.setPower(0);
             robot.left1.setPower(0);
+
+            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            while (robot.angles.firstAngle > -94 && opModeIsActive()) {
+                angleTurn = robot.angles.firstAngle;
+                //This is a right turn to 78 degrees
+                robot.left1.setPower(((-90 - angleTurn) / -48) * 0.3);
+                robot.right1.setPower(((-90 - angleTurn) / -48) * -0.3);
+                telemetry.addData("left1 power", robot.left1.getPower());
+                telemetry.addData("right1 power", robot.right1.getPower());
+                telemetry.addData("heading", robot.angles.firstAngle);
+                telemetry.addData("angle var:", angleTurn);
+                telemetry.update();
+            }
+//
+            //Drive to the team marker area
+            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.left1.setTargetPosition(-750);//5200
+            robot.right1.setTargetPosition(-750);//5200
+            robot.left1.setPower(-0.9);
+            robot.right1.setPower(-0.9);
+            while (robot.left1.isBusy() && opModeIsActive()) {
+            }
+            robot.right1.setPower(0);
+            robot.left1.setPower(0);
+
+            //Turn Parallel with wall
+            //Turn Parallel with wall
+            telemetry.update();
+            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            while (robot.angles.firstAngle < -75 && opModeIsActive()) {
+                robot.left1.setPower(-0.9);
+                robot.right1.setPower(-0.45);
+                telemetry.addData("heading", robot.angles.firstAngle);
+                telemetry.update();
+            }
+            robot.left1.setPower(0);
+            robot.right1.setPower(0);
+////
+            // Drive forward and slightly into the wall
+            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.left1.setTargetPosition(-1000);//-6000
+            robot.right1.setTargetPosition(-1000);//-6000
+            robot.left1.setPower(-0.9 * 1.1);
+            robot.right1.setPower(-0.9);
+            while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
+            robot.left1.setPower(-0.4);
+            robot.right1.setPower(-0.4);
+            robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
+            telemetry.update();
+        }
+        if (blockPosition == 2) {
+//            float currentAngle = robot.angles.firstAngle;
+//            telemetry.addData("heading", robot.angles.firstAngle);
+//            telemetry.update();
+//            while (robot.angles.firstAngle > (currentAngle - 1) && opModeIsActive()) {
+//                angleTurn = robot.angles.firstAngle;
+//                robot.left1.setPower(((-55 - angleTurn) / -8) * 0.05);
+//                robot.right1.setPower(((-55 - angleTurn) / -8) * -0.05);
+//                telemetry.addData("left1 power", robot.left1.getPower());
+//                telemetry.addData("right1 power", robot.right1.getPower());
+//                telemetry.addData("heading", robot.angles.firstAngle);
+//                telemetry.addData("angle var:", angleTurn);
+//                telemetry.update();
+//            }
+
+            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.left1.setTargetPosition(1450);//2500
+            robot.right1.setTargetPosition(1450);//2500
+            robot.left1.setPower(0.9);
+            robot.right1.setPower(0.9);
+            while (robot.left1.isBusy() && opModeIsActive()) {
+                telemetry.addData("left1", robot.left1.getCurrentPosition());
+                telemetry.update();
+            }
+
+            robot.left1.setTargetPosition(400);
+            robot.right1.setTargetPosition(400);
+            robot.left1.setPower(-0.6);
+            robot.right1.setPower(-0.6);
+            while (robot.left1.isBusy() && opModeIsActive()) {}
+            robot.left1.setPower(0);
+            robot.right1.setPower(0);
+
+            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -279,12 +367,10 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setTargetPosition(-1400);//5200
             robot.right1.setTargetPosition(-1400);//5200
-            robot.left1.setPower(-0.99);
-            robot.right1.setPower(-0.99);
+            robot.left1.setPower(-0.9);
+            robot.right1.setPower(-0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {
             }
-            robot.right1.setPower(0);
-            robot.left1.setPower(0);
 
             //Turn Parallel with wall
             telemetry.update();
@@ -304,126 +390,20 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             // Drive forward and slightly into the wall
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-2000);//-6000
-            robot.right1.setTargetPosition(-2000);//-6000
+            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//Position
+            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//Position
+//            robot.left1.setTargetPosition(-1800);//-6000
+//            robot.right1.setTargetPosition(-1800);//-6000
             robot.left1.setPower(-0.9 * 1.1);
             robot.right1.setPower(-0.9);
-            while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {
-            }
+            sleep(100);
+            //while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {}
             robot.left1.setPower(-0.4);
             robot.right1.setPower(-0.4);
-            robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
             telemetry.update();
         }
-        if (blockPosition == 2) {
-
-            float currentAngle = robot.angles.firstAngle;
-            telemetry.addData("heading", robot.angles.firstAngle);
-            telemetry.update();
-            while (robot.angles.firstAngle > (currentAngle - 1) && opModeIsActive()) {
-                angleTurn = robot.angles.firstAngle;
-                robot.left1.setPower(((-55 - angleTurn) / -10) * 0.04);
-                robot.right1.setPower(((-55 - angleTurn) / -10) * -0.04);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.update();
-            }
-
-            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(1450);//2500
-            robot.right1.setTargetPosition(1450);//2500
-            robot.left1.setPower(0.99);
-            robot.right1.setPower(0.99);
-            while (robot.left1.isBusy() && opModeIsActive()) {
-                telemetry.addData("left1", robot.left1.getCurrentPosition());
-                telemetry.update();
-            }
-
-            robot.left1.setTargetPosition(400);
-            robot.right1.setTargetPosition(400);
-            robot.left1.setPower(-0.6);
-            robot.right1.setPower(-0.6);
-            while (robot.left1.isBusy() && opModeIsActive()) {
-            }
-            robot.left1.setPower(0);
-            robot.right1.setPower(0);
-
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > -94 && opModeIsActive()) {
-                angleTurn = robot.angles.firstAngle;
-                //This is a right turn to 78 degrees
-                robot.left1.setPower(((-90 - angleTurn) / -48) * 0.3);
-                robot.right1.setPower(((-90 - angleTurn) / -48) * -0.3);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.update();
-            }
-//
-            //Drive to the team marker area
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-1600);//5200
-            robot.right1.setTargetPosition(-1600);//5200
-            robot.left1.setPower(-0.99);
-            robot.right1.setPower(-0.99);
-            while (robot.left1.isBusy() && opModeIsActive()) {
-            }
-            robot.right1.setPower(0);
-            robot.left1.setPower(0);
-
-            //Turn Parallel with wall
-            telemetry.update();
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            while (robot.angles.firstAngle < -75 && opModeIsActive()) {
-                robot.left1.setPower(-0.9);
-                robot.right1.setPower(-0.45);
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.update();
-            }
-            robot.left1.setPower(0);
-            robot.right1.setPower(0);
-////
-            // Drive forward and slightly into the wall
-            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-1200);//-6000
-            robot.right1.setTargetPosition(-1200);//-6000
-            robot.left1.setPower(-0.95 * 1.1);
-            robot.right1.setPower(-0.95);
-            while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {
-            }
-            robot.left1.setPower(-0.6);
-            robot.right1.setPower(-0.6);
-            robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
-            telemetry.update();
-        }
-        if (blockPosition == 3) {
+        if(blockPosition == 3) {
             float currentAngle = robot.angles.firstAngle;
             telemetry.addData("heading", robot.angles.firstAngle);
             telemetry.update();
@@ -444,17 +424,17 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setTargetPosition(1900);//2500
             robot.right1.setTargetPosition(1900);//2500
-            robot.left1.setPower(0.95);
-            robot.right1.setPower(0.95);
+            robot.left1.setPower(0.9);
+            robot.right1.setPower(0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {
                 telemetry.addData("left1", robot.left1.getCurrentPosition());
                 telemetry.update();
             }
 
-            robot.left1.setTargetPosition(700);//2500
-            robot.right1.setTargetPosition(700);//2500
-            robot.left1.setPower(0.65);
-            robot.right1.setPower(0.65);
+            robot.left1.setTargetPosition(650);//2500
+            robot.right1.setTargetPosition(650);//2500
+            robot.left1.setPower(0.9);
+            robot.right1.setPower(0.9);
             while (robot.left1.isBusy() && opModeIsActive()) {
                 telemetry.addData("left1", robot.left1.getCurrentPosition());
                 telemetry.update();
@@ -462,11 +442,11 @@ public class RedCraterTwoBlocks extends LinearOpMode {
 
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > -96 && opModeIsActive()) {
+            while (robot.angles.firstAngle > -98 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
-                robot.left1.setPower(((-92 - angleTurn) / -40) * 0.3);
-                robot.right1.setPower(((-92 - angleTurn) / -40) * -0.3);
+                robot.left1.setPower(((-95 - angleTurn) / -40) * 0.3);
+                robot.right1.setPower(((-95 - angleTurn) / -40) * -0.3);
                 telemetry.addData("left1 power", robot.left1.getPower());
                 telemetry.addData("right1 power", robot.right1.getPower());
                 telemetry.addData("heading", robot.angles.firstAngle);
@@ -479,14 +459,16 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-1000);//5200
-            robot.right1.setTargetPosition(-1000);//5200
-            robot.left1.setPower(-0.99);
-            robot.right1.setPower(-0.99);
-            while (robot.left1.isBusy() && opModeIsActive()) { }
+            robot.left1.setTargetPosition(-1700);//5200
+            robot.right1.setTargetPosition(-1700);//5200
+            robot.left1.setPower(-0.9);
+            robot.right1.setPower(-0.9);
+            while (robot.left1.isBusy() && opModeIsActive()) {
+            }
             robot.right1.setPower(0);
             robot.left1.setPower(0);
 
+            //Turn Parallel with wall
             //Turn Parallel with wall
             telemetry.update();
             robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -512,220 +494,162 @@ public class RedCraterTwoBlocks extends LinearOpMode {
             robot.right1.setTargetPosition(-1200);//-6000
             robot.left1.setPower(-0.9 * 1.1);
             robot.right1.setPower(-0.9);
-            while (robot.left1.isBusy() && opModeIsActive()) {}
-            robot.left1.setPower(-0.6);
-            robot.right1.setPower(-0.6);
+            while (robot.right1.isBusy() && robot.left1.isBusy() && opModeIsActive()) {
+            }
+            robot.left1.setPower(-0.4);
+            robot.right1.setPower(-0.4);
             robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
             telemetry.update();
         }
 
+        robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
-        while (robot.cornerSensor.red() <= 40 && opModeIsActive()) {
-            red = robot.cornerSensor.red();
-            robot.left1.setPower(-0.3 * 1.03);
+        telemetry.update();
+        while(robot.cornerSensor.red() <= 40  && opModeIsActive()){
+            robot.left1.setPower(-0.3);
             robot.right1.setPower(-0.3);
             telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
-            telemetry.addData("Alpha", robot.cornerSensor.alpha());
-            telemetry.addData("RED", red);
-            telemetry.addData("Searching", "");
             telemetry.update();
         }
         robot.left1.setPower(0);
         robot.right1.setPower(0);
-
-        robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(-150);
-        robot.right1.setTargetPosition(-150);
-        robot.left1.setPower(-0.4);
-        robot.right1.setPower(-0.4);
-        while (robot.left1.isBusy()){}
-
-        if(blockPosition == 3){
-            telemetry.update();
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            timer = 0;
-            while (robot.angles.firstAngle < -67 && opModeIsActive()) {
-                robot.left1.setPower(Math.abs((-75 - robot.angles.firstAngle) / -40) * -0.4);
-                robot.right1.setPower(Math.abs((-75 - robot.angles.firstAngle) / -40) * 0.4);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.addData("Timer", timer);
-                telemetry.update();
-            }
-            robot.left1.setPower(0);
-            robot.right1.setPower(0);
-        }
 
         robot.marker.setPosition(robot.DILBERT_DOWN);
         sleep(1000);
 
         robot.marker.setPosition(robot.DILBERT_UP);
 
-
-        if (blockPosition == 1) {
+        int encoderticksR = 0;
+        int encoderticksL = 0;
+        robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        telemetry.addData("range", String.format("%.01f cm", robot.frontDetect.getDistance(DistanceUnit.CM)));
+        telemetry.update();
+        while(robot.frontDetect.getDistance(DistanceUnit.CM) > 25.5 && opModeIsActive() && robot.left1.getCurrentPosition() < 4000){
+            telemetry.addData("EncoderR", robot.right1.getCurrentPosition());
+            telemetry.addData("EncoderL", robot.left1.getCurrentPosition());
+            encoderticksL = robot.left1.getCurrentPosition();
+            encoderticksR = robot.right1.getCurrentPosition();
+            telemetry.addData("ticksR", encoderticksR);
+            telemetry.addData("ticksL", encoderticksL);
+            robot.left1.setPower(0.9 / ((encoderticksL / 1500.083)));
+            robot.right1.setPower(0.9 * 1.08 / ((encoderticksR / 1500.083)));
+            telemetry.addData("Distance", robot.frontDetect.getDistance(DistanceUnit.CM));
             telemetry.update();
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle < 28 && opModeIsActive()) {
-                robot.left1.setPower(Math.abs((28 - robot.angles.firstAngle) / 25) * -0.15);
-                robot.right1.setPower(Math.abs((28 - robot.angles.firstAngle) / 25 ) * 0.15);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.addData("Timer", timer);
-                telemetry.update();
-            }
-            robot.left1.setPower(0);
-            robot.right1.setPower(0);
+        }
+        robot.left1.setPower(0);
+        robot.right1.setPower(0);
 
-            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-1800);
-            robot.right1.setTargetPosition(-1800);
-            robot.left1.setPower(-0.9);
-            robot.right1.setPower(-0.9);
-            while (robot.left1.isBusy()) {
-            }
-
-            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(2100);
-            robot.right1.setTargetPosition(2100);
-            robot.left1.setPower(0.9);
-            robot.right1.setPower(0.9);
-            while (robot.left1.isBusy()) {
-            }
-            robot.left1.setPower(0);
-            robot.right1.setPower(0);
-
-            telemetry.update();
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > 23 && opModeIsActive()) {
-                robot.left1.setPower(Math.abs((20 - robot.angles.firstAngle) / 10) * 0.4);
-                robot.right1.setPower(Math.abs((20 - robot.angles.firstAngle) / 10) * -0.4);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.addData("Timer", timer);
-                telemetry.update();
-            }
-
-            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-5000);
-            robot.right1.setTargetPosition(-5000);
-            robot.left1.setPower(-0.99);
-            robot.right1.setPower(-0.99);
-            while (robot.left1.isBusy()) {}
-
-        } else if (blockPosition == 2) {
-            telemetry.update();
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle < 46 && opModeIsActive()) {
-                robot.left1.setPower(Math.abs((45 - robot.angles.firstAngle) / 25) * -0.15);
-                robot.right1.setPower(Math.abs((45 - robot.angles.firstAngle) / 25 ) * 0.15);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.addData("Timer", timer);
-                telemetry.update();
-            }
-            robot.left1.setPower(0);
-            robot.right1.setPower(0);
-
-            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-900);
-            robot.right1.setTargetPosition(-900);
-            robot.left1.setPower(-0.9);
-            robot.right1.setPower(-0.9);
-            while (robot.left1.isBusy()) {
-            }
-
-            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(1400);
-            robot.right1.setTargetPosition(1400);
-            robot.left1.setPower(0.9);
-            robot.right1.setPower(0.9);
-            while (robot.left1.isBusy()) {
-            }
-            robot.left1.setPower(0);
-            robot.right1.setPower(0);
-
-            telemetry.update();
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle > 12 && opModeIsActive()) {
-                robot.left1.setPower(Math.abs((10 - robot.angles.firstAngle) / 10) * 0.4);
-                robot.right1.setPower(Math.abs((10  - robot.angles.firstAngle) / 10) * -0.4);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.addData("Timer", timer);
-                telemetry.update();
-            }
-
-            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-5700);
-            robot.right1.setTargetPosition(-5700);
-            robot.left1.setPower(-0.6);
-            robot.right1.setPower(-0.6);
-            while (robot.left1.isBusy()) {}
-
-        } else if (blockPosition == 3) {
-            telemetry.update();
-            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            while (robot.angles.firstAngle < 6 && opModeIsActive()) {
-                robot.left1.setPower(Math.abs((10 - robot.angles.firstAngle) / 30) * -0.2);
-                robot.right1.setPower(Math.abs((10 - robot.angles.firstAngle) / 30) * 0.2);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.addData("Timer", timer);
-                telemetry.update();
-            }
-            robot.left1.setPower(0);
-            robot.right1.setPower(0);
+        //Hold position
+        robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int currentPosL = robot.left1.getCurrentPosition();
+        int currentPosR = robot.right1.getCurrentPosition();
+        robot.left1.setTargetPosition(currentPosL);
+        robot.right1.setTargetPosition(currentPosR);
+        robot.right1.setPower(0.2);
+        robot.left1.setPower(0.2);
 //
-            robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.left1.setTargetPosition(-5200);
-            robot.right1.setTargetPosition(-5200);
-            robot.left1.setPower(-0.6);
-            robot.right1.setPower(-0.6);
-            while (robot.left1.isBusy()) {}
+        robot.door.setPosition(robot.DOOR_UP);
+        robot.sorterFlip.setPosition(robot.SORTER_UP);
+//
+        robot.leftBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.rightBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.leftBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("lidar Position", lidar.getDistance(DistanceUnit.CM));
+        telemetry.update();
+        while(lidar.getDistance(DistanceUnit.CM) < 65 && opModeIsActive()) {
+            robot.leftBop.setPower(-0.6);
+            robot.rightBop.setPower(-0.6);
+            robot.intake.setPower(-0.9);
+            telemetry.addData("lidar Position", lidar.getDistance(DistanceUnit.CM));
+            telemetry.update();
+        }
+//
+        robot.rightBop.setPower(0);
+        robot.leftBop.setPower(0);
+
+        telemetry.addData("lidar Position", lidar.getDistance(DistanceUnit.CM));
+        telemetry.update();
+        while(lidar.getDistance(DistanceUnit.CM) > 50 && opModeIsActive()) {
+            robot.leftBop.setPower(0.6);
+            robot.rightBop.setPower(0.6);
+            robot.intake.setPower(0.9);
+            telemetry.addData("lidar Position", lidar.getDistance(DistanceUnit.CM));
+            telemetry.update();
+        }
+        robot.rightBop.setPower(0);
+        robot.leftBop.setPower(0);
+
+        telemetry.addData("lidar Position", lidar.getDistance(DistanceUnit.CM));
+        telemetry.update();
+        while(lidar.getDistance(DistanceUnit.CM) < 90 && opModeIsActive()) {
+            robot.leftBop.setPower(-0.5);
+            robot.rightBop.setPower(-0.5);
+            telemetry.addData("lidar Position", lidar.getDistance(DistanceUnit.CM));
+            telemetry.update();
+        }
+
+        robot.rightBop.setPower(0);
+        robot.leftBop.setPower(0);
+
+        sleep(500);
+
+        telemetry.addData("lidar Position", lidar.getDistance(DistanceUnit.CM));
+        telemetry.update();
+        while(lidar.getDistance(DistanceUnit.CM) > 8 && opModeIsActive()) {
+            robot.leftBop.setPower(0.6);
+            robot.rightBop.setPower(0.6);
+            telemetry.addData("lidar Position", lidar.getDistance(DistanceUnit.CM));
+            telemetry.update();
+        }
+        robot.leftBop.setPower(0);
+        robot.rightBop.setPower(0);
+        robot.intake.setPower(0);
+
+
+        robot.door.setPosition(.06);
+        sleep(1000);
+
+        robot.door.setPosition(robot.DOOR_UP);
+        sleep(500);
+//
+//        robot.sorter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        robot.sorter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        robot.sorter.setTargetPosition(1900);
+//            robot.sorter.setPower(0.99);
+//        while(robot.sorter.isBusy()){}
+//
+//        robot.sorter.setPower(0);
+//
+//        robot.sorterFlip.setPosition(robot.SORTER_DOWN);
+//        sleep(1000);
+
+//        robot.leftBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        robot.rightBop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        robot.leftBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        robot.rightBop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        robot.leftBop.setPower(-0.4);
+//        robot.rightBop.setPower(-0.4);
+//        robot.intake.setPower(-0.9);
+//        sleep(1250);
+//
+        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.hang.setTargetPosition(-7900);
+        robot.hang.setPower(1);
+        while(robot.hang.isBusy()){
+            telemetry.addData("hanger position", robot.hang.getCurrentPosition());
+            telemetry.update();
         }
     }
 

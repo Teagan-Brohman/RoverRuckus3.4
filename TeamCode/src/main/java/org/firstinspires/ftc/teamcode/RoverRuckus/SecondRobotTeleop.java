@@ -88,6 +88,7 @@ public class SecondRobotTeleop extends LinearOpMode {
         robot.initServoPositions();
         robot.rotateMech.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rotateMech.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.hang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //robot.drop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
@@ -195,7 +196,7 @@ public class SecondRobotTeleop extends LinearOpMode {
             }
 
             //Hanging Mechanism
-            if (gamepad1.dpad_up && robot.upperLimit.red() < 300 && robot.upperLimit.alpha() > 500 ) {
+            if (gamepad1.dpad_up && robot.upperLimit.red() < 300 && robot.upperLimit.alpha() > 230) {
                 robot.hang.setPower(-1);
             } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 100) {
                 robot.hang.setPower(1);
@@ -564,6 +565,7 @@ public class SecondRobotTeleop extends LinearOpMode {
 //           telemetry.addData("intake lidar", lidar.getDistance(DistanceUnit.CM));
           //telemetry.addData("sorter", robot.sorterLidar.getDistance(DistanceUnit.CM));
 //           telemetry.addData("rotateMech", robot.rotateMech.getCurrentPosition());
+            telemetry.addData("hang encoder", robot.hang.getCurrentPosition());
 
                 //telemetry.addData("wallDetect Distance in CM", robot.wallDetect.getDistance(DistanceUnit.CM));
 //            telemetry.addData("rotateFlag State", rotateFlag);

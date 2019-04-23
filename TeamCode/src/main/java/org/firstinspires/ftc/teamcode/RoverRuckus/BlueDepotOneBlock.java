@@ -100,7 +100,6 @@ public class BlueDepotOneBlock extends LinearOpMode {
 //            }
         }
         waitForStart();
-
         detector.enable();
 
         robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -109,7 +108,7 @@ public class BlueDepotOneBlock extends LinearOpMode {
         robot.marker.setPosition(robot.DILBERT_UP );
 
         //Raise arm
-        while (robot.upperLimit.red() > 150 && opModeIsActive()) {
+        while (robot.upperLimit.red() > 110 && opModeIsActive()) {
             robot.hang.setPower(-1);
             telemetry.addData("Red Color", robot.upperLimit.red());
             telemetry.update();
