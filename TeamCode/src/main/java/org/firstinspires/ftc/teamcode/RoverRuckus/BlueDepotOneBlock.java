@@ -535,7 +535,7 @@ public class BlueDepotOneBlock extends LinearOpMode {
         robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("range", String.format("%.01f cm", robot.frontDetect.getDistance(DistanceUnit.CM)));
         telemetry.update();
-        while(robot.frontDetect.getDistance(DistanceUnit.CM) > 2 && opModeIsActive() && robot.left1.getCurrentPosition() < 4000){
+        while(robot.frontDetect.getDistance(DistanceUnit.CM) > 2 && opModeIsActive() && robot.left1.getCurrentPosition() < 4000 || robot.left1.getCurrentPosition() < 2000 && opModeIsActive()){
             telemetry.addData("EncoderR", robot.right1.getCurrentPosition());
             telemetry.addData("EncoderL", robot.left1.getCurrentPosition());
             encoderticksL = robot.left1.getCurrentPosition();

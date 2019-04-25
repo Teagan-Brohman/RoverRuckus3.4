@@ -225,25 +225,57 @@ public class SecondRobotTeleop extends LinearOpMode {
             }
 
 
-//            if(gamepad1.dpad_left && gamepad1.y){
-//                robot.left1.setPower(-1);
-//                robot.right1.setPower(-1);
-//                sleep(400);
-//                robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//                robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//                while (robot.angles.firstAngle < 66.2 && opModeIsActive()) {
-//                    angleTurn = robot.angles.firstAngle;
-//                    //This is a right turn to 78 degrees
-//                    robot.left1.setPower(((69.2 - angleTurn) / 35) * -0.47);
-//                    robot.right1.setPower(((69.2 - angleTurn) / 35) * 0.47);
-//                    telemetry.addData("left1 power", robot.left1.getPower());
-//                    telemetry.addData("right1 power", robot.right1.getPower());
-//                    telemetry.addData("heading", robot.angles.firstAngle);
-//                    telemetry.addData("angle var:", angleTurn);
-//                    telemetry.update();
-//                }
-//
-//            }
+            if(gamepad1.right_trigger > 0.5 && gamepad1.left_trigger > 0.5){
+                robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.left1.setTargetPosition(-500);
+                robot.right1.setTargetPosition(-500);
+                robot.left1.setPower(-1);
+                robot.right1.setPower(-1);
+                while(robot.left1.isBusy() && opModeIsActive()){
+                }
+                robot.left1.setPower(0);
+                robot.right1.setPower(0);
+
+
+                telemetry.addData("heading", robot.angles.firstAngle);
+                telemetry.update();
+                double offsetHeading = robot.angles.firstAngle;
+                double targetHeading = 180 - offsetHeading;
+
+                robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                telemetry.addData("heading", robot.angles.firstAngle);
+                telemetry.update();
+                boolean exit = false;
+                while (robot.angles.firstAngle < (targetHeading - 1) && opModeIsActive() && exit == false){
+                    if(Math.abs(gamepad1.right_stick_y) > 0.5 || Math.abs(gamepad1.right_stick_x) > 0.5){
+                        exit = true;
+                    }
+                    angleTurn = robot.angles.firstAngle;
+                    //This is a right turn to 78 degrees
+                    double leftPower = (((targetHeading - angleTurn) / 40) * 0.3);
+                    double rightPower = (((targetHeading - angleTurn) / 40) * -0.3);
+                    if(leftPower < 0.15){
+                        leftPower = 0.15;
+                    } if(rightPower > -0.15){
+                        rightPower = -0.15;
+                    }
+                    robot.left1.setPower(leftPower);
+                    robot.right1.setPower(rightPower);
+                    telemetry.addData("left1 power", robot.left1.getPower());
+                    telemetry.addData("right1 power", robot.right1.getPower());
+                    telemetry.addData("heading", robot.angles.firstAngle);
+                    telemetry.addData("angle var:", angleTurn);
+                    telemetry.update();
+                }
+            }
+
+
 //            //Shoots blocks
 //            if (gamepad1.b){
 //                robot.launcher.setPower(-1);
@@ -300,16 +332,17 @@ public class SecondRobotTeleop extends LinearOpMode {
 //                }
 
 
-            if (gamepad2.right_bumper) {
+            if ((gamepad2.right_bumper && robot.sorterLidar.getDistance(DistanceUnit.CM) < 6) || (gamepad2.right_bumper && robot.sorterLidar.getDistance(DistanceUnit.CM) > 700) || (gamepad2.left_bumper == true && gamepad2.right_bumper == true)) {
                 robot.door.setPosition(robot.DOOR_DOWN);
+
             }
-            else if(robot.sorterLidar.getDistance(DistanceUnit.CM) < 4.5 && lidar.getDistance(DistanceUnit.CM) < 8){
+            else if(robot.sorterLidar.getDistance(DistanceUnit.CM) < 4.5 && lidar.getDistance(DistanceUnit.CM) < 8 && gamepad2.right_bumper == false){
                 if(DoorFlag == true) {
                     TimerTask DoorRelease = new TimerTask() {
                         @Override
                         public void run() {
                             robot.door.setPosition(robot.DOOR_DOWN);
-                            sleep(600);
+                            sleep(650);
                             robot.door.setPosition(robot.DOOR_UP);
                             DoorFlag = false;
                             cancel();
@@ -318,10 +351,6 @@ public class SecondRobotTeleop extends LinearOpMode {
                     Timer Door_Drop = new Timer("Door");
                     Door_Drop.schedule(DoorRelease, 0);
 
-                }
-                if( DoorFlag == false && lidar.getDistance(DistanceUnit.CM) > 8) {
-                    DoorFlag = true;
-                    robot.door.setPosition(robot.DOOR_UP);
                 }
                 else{
                     robot.door.setPosition(robot.DOOR_UP);
@@ -333,6 +362,9 @@ public class SecondRobotTeleop extends LinearOpMode {
             }
 
 
+            if( DoorFlag == false && lidar.getDistance(DistanceUnit.CM) > 8) {
+                DoorFlag = true;
+            }
 
 
 
@@ -467,8 +499,9 @@ public class SecondRobotTeleop extends LinearOpMode {
                 robot.rightBop.setPower(0);
             }
             else {
-                robot.leftBop.setPower(gamepad2.left_stick_y * 0.85);
-                robot.rightBop.setPower(gamepad2.left_stick_y * 0.85);
+
+                robot.leftBop.setPower(gamepad2.left_stick_y * 0.88);
+                robot.rightBop.setPower(gamepad2.left_stick_y * 0.88);
             }
 
 
@@ -563,7 +596,7 @@ public class SecondRobotTeleop extends LinearOpMode {
 //            //telemetry.addData("position", robot.sorterFlip.getPosition());
 //            telemetry.addData("joystick", gamepad2.left_stick_y);
 //           telemetry.addData("intake lidar", lidar.getDistance(DistanceUnit.CM));
-          //telemetry.addData("sorter", robot.sorterLidar.getDistance(DistanceUnit.CM));
+//          telemetry.addData("sorter", robot.sorterLidar.getDistance(DistanceUnit.CM));
 //           telemetry.addData("rotateMech", robot.rotateMech.getCurrentPosition());
             telemetry.addData("hang encoder", robot.hang.getCurrentPosition());
 
