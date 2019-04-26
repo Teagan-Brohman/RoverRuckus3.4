@@ -204,7 +204,7 @@ public class RedCraterOneBlock extends LinearOpMode {
             robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             telemetry.addData("status", "entered block1");
             telemetry.update();
-            while (detector.getXPosition() < 235 && opModeIsActive() || detector.getXPosition() > 345 && opModeIsActive()) {
+            while ((detector.getXPosition() < 235 && opModeIsActive()) || (detector.getXPosition() > 345 && opModeIsActive())) {
                 telemetry.addData("Status", "searching for angle");
                 telemetry.addData("xpos", detector.getXPosition());
                 telemetry.addData("IsAligned", detector.getAligned());

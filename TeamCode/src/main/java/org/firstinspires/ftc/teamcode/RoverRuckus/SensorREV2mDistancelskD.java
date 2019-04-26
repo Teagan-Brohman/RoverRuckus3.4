@@ -53,6 +53,7 @@ import org.firstinspires.ftc.teamcode.RelicRecovery.RRHardwarePresets;
  * @see <a href="http://revrobotics.com">REV Robotics Web Page</a>
  */
 @TeleOp(name = "Sensor: REV2mDistance", group = "Sensor")
+@Disabled
 public class SensorREV2mDistancelskD extends LinearOpMode {
     RoverHardware robot = new RoverHardware();
 

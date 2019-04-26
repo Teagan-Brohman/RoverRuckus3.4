@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.RoverRuckus;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -16,6 +17,7 @@ import org.openftc.revextensions2.RevBulkData;
 import org.openftc.revextensions2.RevExtensions2;
 
 @TeleOp(name = "Test", group = "Teleop")
+@Disabled
 public class idk extends LinearOpMode {
 
     public RoverHardware robot = new RoverHardware();

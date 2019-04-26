@@ -6,6 +6,7 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -20,6 +21,7 @@ import java.util.Locale;
 import java.util.Timer;
 
 @Autonomous(name = "ArchTurn", group = "Autonomous")
+@Disabled
 public class ArchTurnsRUs extends LinearOpMode {
 //    RRHardwarePresets robot = new RRHardwarePresets();
 //
