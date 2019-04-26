@@ -73,7 +73,7 @@ public class DepotTeleop extends LinearOpMode {
         left = (ExpansionHubMotor) hardwareMap.dcMotor.get("left1");
         right = (ExpansionHubMotor) hardwareMap.dcMotor.get("right1");
 
-        //Initialize Gyro
+////        //Initialize Gyro
         BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
         parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters1.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -237,86 +237,67 @@ public class DepotTeleop extends LinearOpMode {
 
             }
 
-
-            if(gamepad1.right_trigger > 0.5 && gamepad1.left_trigger > 0.5){
-//                robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//                robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//                robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//                robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//                robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                robot.left1.setTargetPosition(-500);
-//                robot.right1.setTargetPosition(-500);
-//                robot.left1.setPower(-1);
-//                robot.right1.setPower(-1);
-//                while(robot.left1.isBusy() && opModeIsActive()){
-//                }
-//                robot.left1.setPower(0);
-//                robot.right1.setPower(0);
-
+            if(gamepad1.right_trigger > 0.5){ //target shuld be 45
+                robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 telemetry.addData("heading", robot.angles.firstAngle);
                 telemetry.update();
-                while(robot.angles.firstAngle > -140) {
-                    robot.left1.setPower(-0.8);
-                    robot.right1.setPower(0.8);
+                while(robot.angles.firstAngle > -130) {//45
+                    robot.left1.setPower(0.8);
+                    robot.right1.setPower(-0.8);
                     telemetry.addData("heading", robot.angles.firstAngle);
                     telemetry.update();
                 }
-
-                robot.left1.setPower(0.5);
-                robot.right1.setPower(-0.5);
+                robot.left1.setPower(-0.18);
+                robot.right1.setPower(0.18);
                 telemetry.addData("heading", robot.angles.firstAngle);
                 telemetry.update();
-                while(robot.angles.firstAngle > -177 || robot.angles.firstAngle > 0){
-                    double leftPower = (((targetHeading - angleTurn) / 60) * 0.3);
-                    double rightPower = (((targetHeading - angleTurn) / 60) * -0.3);
-                    robot.left1.setPower(leftPower);
-                    robot.right1.setPower(rightPower);
+                while(robot.angles.firstAngle < 140 && opModeIsActive() || robot.angles.firstAngle > -120 && opModeIsActive()){
                     telemetry.addData("heading", robot.angles.firstAngle);
                     telemetry.update();
                 }
-
                 robot.left1.setPower(0);
                 robot.right1.setPower(0);
-
-
-//                telemetry.addData("heading", robot.angles.firstAngle);
-//                telemetry.update();
-//                offsetHeading = robot.angles.firstAngle;
-//                targetHeading = -180 + Math.abs(offsetHeading);
-//
-//                robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//                robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//                telemetry.addData("heading", robot.angles.firstAngle);
-//                telemetry.update();
-//                boolean exit = false;
-//                while (robot.angles.firstAngle > (targetHeading + 3) && opModeIsActive() && exit == false){
-//                    if(Math.abs(gamepad1.right_stick_y) > 0.5 || Math.abs(gamepad1.right_stick_x) > 0.5){
-//                        exit = true;
-//                    }
-//                    if(robot.angles.firstAngle < 0){
-//                        angleTurn = offsetHeading - robot.angles.firstAngle;
-//                    } else if(robot.angles.firstAngle > 0){
-//                        angleTurn = offsetHeading + robot.angles.firstAngle;
-//                    }
-//                    //This is a right turn to 78 degrees
-//                    double leftPower = (((targetHeading - angleTurn) / 60) * 0.3);
-//                    double rightPower = (((targetHeading - angleTurn) / 60) * -0.3);
-//                    if(leftPower < 0.15){
-//                        leftPower = 0.15;
-//                    } if(rightPower > -0.15){
-//                        rightPower = -0.15;
-//                    }
-//                    robot.left1.setPower(leftPower);
-//                    robot.right1.setPower(rightPower);
-//                    telemetry.addData("left1 power", robot.left1.getPower());
-//                    telemetry.addData("right1 power", robot.right1.getPower());
-//                    telemetry.addData("heading", robot.angles.firstAngle);
-//                    telemetry.addData("angle var:", angleTurn);
-//                    telemetry.update();
-//                }
             }
+            //TODO find correct angles, find correct powers
 
+             if(gamepad1.left_trigger > 0.5){ //target should be -138
+                 robot.left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                 robot.right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                 robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                 robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                 robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                 robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                 robot.left1.setTargetPosition(-500);
+                 robot.right1.setTargetPosition(-500);
+                 robot.left1.setPower(-1);
+                 robot.right1.setPower(-1);
+                 while(robot.left1.isBusy() && opModeIsActive()){
+                 }
+                 robot.left1.setPower(0);
+                 robot.right1.setPower(0);
+
+                 robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                 robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                 telemetry.addData("heading", robot.angles.firstAngle);
+                 telemetry.update();
+                 while(robot.angles.firstAngle < 20){
+                     robot.left1.setPower(-0.8);
+                     robot.right1.setPower(0.8);
+                     telemetry.addData("heading", robot.angles.firstAngle);
+                     telemetry.update();
+                 }
+                 robot.left1.setPower(0.18);
+                 robot.right1.setPower(-0.18);
+                 telemetry.addData("heading", robot.angles.firstAngle);
+                 telemetry.update();
+                 while(robot.angles.firstAngle < 25 && opModeIsActive() || robot.angles.firstAngle > 45 && opModeIsActive()){
+                     telemetry.addData("heading", robot.angles.firstAngle);
+                     telemetry.update();
+                 }
+                 robot.left1.setPower(0);
+                 robot.right1.setPower(0);
+            }
 
 //            //Shoots blocks
 //            if (gamepad1.b){
@@ -753,3 +734,40 @@ void composeTelemetry () {
             });
 }
 }
+
+
+//                telemetry.addData("heading", robot.angles.firstAngle);
+//                telemetry.update();
+//                offsetHeading = robot.angles.firstAngle;
+//                targetHeading = -180 + Math.abs(offsetHeading);
+//
+//                robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                telemetry.addData("heading", robot.angles.firstAngle);
+//                telemetry.update();
+//                boolean exit = false;
+//                while (robot.angles.firstAngle > (targetHeading + 3) && opModeIsActive() && exit == false){
+//                    if(Math.abs(gamepad1.right_stick_y) > 0.5 || Math.abs(gamepad1.right_stick_x) > 0.5){
+//                        exit = true;
+//                    }
+//                    if(robot.angles.firstAngle < 0){
+//                        angleTurn = offsetHeading - robot.angles.firstAngle;
+//                    } else if(robot.angles.firstAngle > 0){
+//                        angleTurn = offsetHeading + robot.angles.firstAngle;
+//                    }
+//                    //This is a right turn to 78 degrees
+//                    double leftPower = (((targetHeading - angleTurn) / 60) * 0.3);
+//                    double rightPower = (((targetHeading - angleTurn) / 60) * -0.3);
+//                    if(leftPower < 0.15){
+//                        leftPower = 0.15;
+//                    } if(rightPower > -0.15){
+//                        rightPower = -0.15;
+//                    }
+//                    robot.left1.setPower(leftPower);
+//                    robot.right1.setPower(rightPower);
+//                    telemetry.addData("left1 power", robot.left1.getPower());
+//                    telemetry.addData("right1 power", robot.right1.getPower());
+//                    telemetry.addData("heading", robot.angles.firstAngle);
+//                    telemetry.addData("angle var:", angleTurn);
+//                    telemetry.update();
+//                }
